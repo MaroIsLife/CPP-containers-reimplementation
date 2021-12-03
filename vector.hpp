@@ -29,11 +29,13 @@ namespace ft
 				for (int i = 0; i < n; i++)
 				{
 					_table[i] = val;
-					std::cout << _table[i] << std::endl;
+					// std::cout << _table[i] << std::endl;
 				}
 				this->_capacity = n;
 				this->_size = n;
 			}
+			size_type capacity() {return (_capacity);}
+			size_type size() {return (_size);}
 		private:
 			pointer _table;
 			allocator_type _allocator;
