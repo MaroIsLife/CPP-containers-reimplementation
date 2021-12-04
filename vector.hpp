@@ -2,7 +2,7 @@
 #define VECTOR_HPP
 #include <iostream>
 #include <memory>
-
+#include "iterator.hpp"
 namespace ft
 {
 
@@ -17,6 +17,8 @@ namespace ft
 			typedef const T& const_reference;
 			typedef T* pointer;
 			typedef const T* const_pointer;
+			// typedef ft::iterator(T);
+
 			explicit vector (const allocator_type& alloc = allocator_type())
 			{
 				_table = _allocator.allocate(0);
