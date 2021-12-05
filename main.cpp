@@ -4,17 +4,16 @@
 #include <memory>
 
 int main()
-{
-	// ft::vector<int> abc;
-	// ft::vector<int> abc(1);
+{	
+
 	int data[5] = {1, 3, 4, 5,6};
-	ft::iterator<int> it(data);
+	int data2[5] = {3, 18, 4, 5,6};
+	ft::vector<int>::iterator it(data);
+	ft::vector<int>::iterator it2(data2);
 
 	
-	std::cout << *it << std::endl;
-
-
-
+	if (it < it2)
+		std::cout << "True" << std::endl;
 
 
 }

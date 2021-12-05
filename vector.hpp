@@ -5,7 +5,6 @@
 #include "iterator.hpp"
 namespace ft
 {
-
 	template < class T, class Alloc = std::allocator<T> > 
 	class vector
 	{
@@ -17,8 +16,9 @@ namespace ft
 			typedef const T& const_reference;
 			typedef T* pointer;
 			typedef const T* const_pointer;
+			typedef ft::myiterator<T> iterator;
 			// typedef ft::iterator(T);
-
+			
 			explicit vector (const allocator_type& alloc = allocator_type())
 			{
 				_table = _allocator.allocate(0);
@@ -35,6 +35,14 @@ namespace ft
 				}
 				this->_capacity = n;
 				this->_size = n;
+			}
+			iterator begin()
+			{
+				return(iterator(_table));
+			}
+			iterator end()
+			{
+				return(iterator(&_table[_size]));
 			}
 			size_type capacity() {return (_capacity);}
 			size_type size() {return (_size);}
