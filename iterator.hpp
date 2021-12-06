@@ -8,17 +8,6 @@ namespace ft
 	
 	struct random_access_iterator_tag {};
 
-
-	template <class Iterator>
-	class iterator_traits // Find out later why this needs to be implemented https://www.cplusplus.com/reference/iterator/iterator_traits/
-	{
-		// typedef typename ft::base_iterator::difference_type difference_type;
-		// typedef typename ft::base_iterator::value_type value_type;
-		// typedef typename ft::base_iterator::pointer pointer;
-		// typedef typename ft::base_iterator::reference reference;
-		// typedef typename ft::base_iterator::iterator_category iterator_category;
-	};
-
 	template <class Category, class T, class Distance = ptrdiff_t,
 			class Pointer = T*, class Reference = T&>
 	struct base_iterator 
@@ -36,11 +25,16 @@ namespace ft
 		typedef T         value_type;
 		typedef T*   pointer;
 		typedef T& reference;
+		typedef ptrdiff_t difference_type;
 		
 		public:
 			myiterator(pointer abc = NULL)
 			{
 				ptr = abc;
+			}
+			myiterator(const myiterator &it)
+			{
+				this->ptr = it.ptr;
 			}
 			reference operator*(){return (*ptr);}
 			pointer operator->() {return(ptr);}
@@ -57,6 +51,23 @@ namespace ft
 				myiterator abc = *this; 
 				--(*this);
 				return abc;
+			}
+			myiterator operator+(const int &a)
+			{
+				myiterator<T> it(*this);
+				for(int i = 0;i < a;i++)
+				{
+					it.ptr++;
+				}
+				return (it);
+			}
+			difference_type operator-(const myiterator &first)
+			{
+				return (this->ptr - first.ptr);
+			}
+			reference operator[](const int &a)
+			{ 
+				return ptr[a];
 			}
 			bool operator==(const myiterator& a)
 			{ 

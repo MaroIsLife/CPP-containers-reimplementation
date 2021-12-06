@@ -17,8 +17,9 @@ namespace ft
 			typedef T* pointer;
 			typedef const T* const_pointer;
 			typedef ft::myiterator<T> iterator;
+			typedef ptrdiff_t difference_type;
 			// typedef ft::iterator(T);
-			
+
 			explicit vector (const allocator_type& alloc = allocator_type())
 			{
 				_table = _allocator.allocate(0);
@@ -36,6 +37,15 @@ namespace ft
 				this->_capacity = n;
 				this->_size = n;
 			}
+			vector (iterator first, iterator last, const allocator_type& alloc = allocator_type())
+			{
+				// for (; first != last; ++first)
+				// {
+
+				// }
+				// this->_capacity = n;
+				// this->_size = n;
+			}
 			iterator begin()
 			{
 				return(iterator(_table));
@@ -46,8 +56,32 @@ namespace ft
 			}
 			size_type capacity() {return (_capacity);}
 			size_type size() {return (_size);}
+			void push_back(T n)
+			{
+				if (_size + 1 >= _capacity)
+				{
+					_table2 = _allocator.allocate(_capacity);
+					for (int i = 0; i < _size; i++)
+					{
+						_table2[i] = _table[i];
+					}
+					_allocator.destroy(_table);
+					_allocator.deallocate(_table, _capacity);
+					_capacity *= 2;
+					_table = _allocator.allocate(_capacity);
+					for(int i = 0; i < _size; i++)
+					{
+						_table[i] = _table2[i];
+					}
+					_allocator.destroy(_table2);
+					_allocator.deallocate(_table2, _capacity / 2);
+				}
+				_table[_size] = n;
+				_size++;
+			}
 		private:
 			pointer _table;
+			pointer _table2;
 			allocator_type _allocator;
 			size_type _capacity;
 			size_type _size;
