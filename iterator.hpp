@@ -41,7 +41,7 @@ namespace ft
 			myiterator& operator++() { ptr++; return *this;}
 			myiterator operator++(int)
 			{ 
-				myiterator abc = *this; 
+				myiterator abc(*this); 
 				++(*this);
 				return abc;
 			}
@@ -71,37 +71,37 @@ namespace ft
 			}
 			bool operator==(const myiterator& a)
 			{ 
-				if (*this->ptr == *a.ptr)
+				if (this->ptr == a.ptr)
 					return (true);
 				return (false);
 			}
 			bool operator!=(const myiterator& a)
 			{ 
-				if (*this->ptr != *a.ptr)
+				if (this->ptr != a.ptr)
 					return (true);
 				return (false);
 			}
 			bool operator>(const myiterator& a)
 			{ 
-				if (*this->ptr > *a.ptr)
+				if (this->ptr > a.ptr)
 					return (true);
 				return (false);
 			}
 			bool operator<(const myiterator& a)
 			{ 
-				if (*this->ptr < *a.ptr)
+				if (this->ptr < a.ptr)
 					return (true);
 				return (false);
 			}
 			bool operator<=(const myiterator& a)
 			{ 
-				if (*this->ptr <= *a.ptr)
+				if (this->ptr <= a.ptr)
 					return (true);
 				return (false);
 			}
 			bool operator>=(const myiterator& a)
 			{ 
-				if (*this->ptr >= *a.ptr)
+				if (this->ptr >= a.ptr)
 					return (true);
 				return (false);
 			}

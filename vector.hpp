@@ -30,21 +30,18 @@ namespace ft
 			{
 				_table = _allocator.allocate(n);
 				for (int i = 0; i < n; i++)
-				{
 					_table[i] = val;
-					// std::cout << _table[i] << std::endl;
-				}
 				this->_capacity = n;
 				this->_size = n;
 			}
 			vector (iterator first, iterator last, const allocator_type& alloc = allocator_type())
 			{
-				// for (; first != last; ++first)
-				// {
-
-				// }
-				// this->_capacity = n;
-				// this->_size = n;
+				_diff = last - first;
+				_size = _diff;
+				_capacity = _size;
+				_table = _allocator.allocate(_diff);
+				for (int i = 0; first != last; first++)
+					_table[i++] = *first;
 			}
 			iterator begin()
 			{
@@ -62,17 +59,16 @@ namespace ft
 				{
 					_table2 = _allocator.allocate(_capacity);
 					for (int i = 0; i < _size; i++)
-					{
 						_table2[i] = _table[i];
-					}
 					_allocator.destroy(_table);
 					_allocator.deallocate(_table, _capacity);
-					_capacity *= 2;
+					if (_capacity == 0)
+						_capacity++;
+					else
+						_capacity *= 2;
 					_table = _allocator.allocate(_capacity);
 					for(int i = 0; i < _size; i++)
-					{
 						_table[i] = _table2[i];
-					}
 					_allocator.destroy(_table2);
 					_allocator.deallocate(_table2, _capacity / 2);
 				}
@@ -85,6 +81,7 @@ namespace ft
 			allocator_type _allocator;
 			size_type _capacity;
 			size_type _size;
+			difference_type _diff;
 	};
 }
 
