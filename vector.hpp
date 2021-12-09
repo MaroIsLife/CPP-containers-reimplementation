@@ -53,6 +53,27 @@ namespace ft
 			}
 			size_type capacity() {return (_capacity);}
 			size_type size() {return (_size);}
+			size_type max_size(){return(_allocator.max_size());}
+			void resize (size_type n, value_type val = value_type())
+			{
+				if (n == _size)
+					return;
+				while (n > _capacity)
+					_capacity *= 2;
+				_table2 = _allocator.allocate(_capacity);
+				for (int i = 0; i < _size; i++)
+					_table2[i] = _table[i];
+				_size = n;
+				for (int i = 0; i < _size; i++)
+					_table2[i] = val;
+				_allocator.destroy(_table);
+				_allocator.deallocate(_table, _capacity);
+				_table = _allocator.allocate(_capacity);
+				for (int i = 0; i < _size; i++)
+					_table[i] = _table2[i];
+				_allocator.destroy(_table2);
+				_allocator.deallocate(_table2, _capacity / 2);
+			}
 			void push_back(T n)
 			{
 				if (_size + 1 >= _capacity)
@@ -67,7 +88,7 @@ namespace ft
 					else
 						_capacity *= 2;
 					_table = _allocator.allocate(_capacity);
-					for(int i = 0; i < _size; i++)
+					for (int i = 0; i < _size; i++)
 						_table[i] = _table2[i];
 					_allocator.destroy(_table2);
 					_allocator.deallocate(_table2, _capacity / 2);
@@ -75,6 +96,7 @@ namespace ft
 				_table[_size] = n;
 				_size++;
 			}
+			reference operator[](const int &a){return (_table[a]);}
 		private:
 			pointer _table;
 			pointer _table2;
