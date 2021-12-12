@@ -6,16 +6,18 @@
 int main()
 {	
 
-	
-	std::vector<int> abc(10);
-	std::vector<int>::iterator it;
+	ft::vector<int> oneten;
+		for(int i =1; i <= 3;i++)
+			oneten.push_back(i);
+	ft::vector<int> abc(10);
+	ft::vector<int>::iterator it;
 	// for(int i = 0; i < 10; i++)
 	// 	abc.push_back(i);
 	it = abc.begin();
 	it++;
 	it++;
-	abc.insert(it,3,99);
-	for(int i = 0; i < 10; i++)
+	abc.insert(it,oneten.begin(),oneten.end());
+	for(int i = 0; i < 20; i++)
 		std::cout << abc[i] << std::endl;
 	std::cout << "Size: " << abc.size() << " Capacity: " << abc.capacity() << std::endl;
 

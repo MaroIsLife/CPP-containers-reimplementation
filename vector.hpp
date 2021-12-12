@@ -20,7 +20,7 @@ namespace ft
 			typedef ptrdiff_t difference_type;
 			// typedef ft::iterator(T);
 		public:
-			explicit vector (const allocator_type& alloc = allocator_type()) : _allocator(alloc)
+			explicit vector (const allocator_type& alloc = allocator_type())
 			{
 				_table = _allocator.allocate(0);
 				_capacity = 0;
@@ -174,8 +174,34 @@ namespace ft
 			_allocator.destroy(_table2);
 			_allocator.deallocate(_table2, _capacity);
 		}
+		void insert (iterator position, iterator first, iterator last)
+		{
+			_diff = last - first;
+			if (_diff > _capacity)
+				_capacity = _diff + _size;
+			else
+				_capacity *= 2;
+			_size += _diff;
+			_table2 = _allocator.allocate(_capacity);
+			int o = 0;
+			iterator it(this->begin());
+			for (int i = 0; i < _size; i++)
+			{
+				if (it == position)
+					for (; first != last; first++)
+						_table2[o++] = *first;
+				it++;
+				_table2[o++] = _table[i];
+			}
+			_allocator.destroy(_table);
+			_allocator.deallocate(_table, _capacity);
+			_table = _allocator.allocate(_capacity);
+			for (int i = 0; i < _size; i++)
+				_table[i] = _table2[i];
+			_allocator.destroy(_table2);
+			_allocator.deallocate(_table2, _capacity);
+		}
 
-		
 		allocator_type get_allocator() const {return(allocator_type());}
 		reference operator[](const int &a){return (_table[a]);}
 		private:
