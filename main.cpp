@@ -7,20 +7,17 @@ int main()
 {	
 
 	
-	ft::vector<int> abc(5);
-
-	for(int i = 0;i < abc.size();i++)
+	std::vector<int> abc(10);
+	std::vector<int>::iterator it;
+	// for(int i = 0; i < 10; i++)
+	// 	abc.push_back(i);
+	it = abc.begin();
+	it++;
+	it++;
+	abc.insert(it,3,99);
+	for(int i = 0; i < 10; i++)
 		std::cout << abc[i] << std::endl;
 	std::cout << "Size: " << abc.size() << " Capacity: " << abc.capacity() << std::endl;
-	std::cout << "-------------" << std::endl;
-	abc.resize(5);
-	for(int i = 0;i < abc.size();i++)
-		std::cout << abc[i] << std::endl;
-	std::cout << "Size: " << abc.size() << " Capacity: " << abc.capacity() << std::endl;
-
-
-  // set some content in the vector:
-
 
 
 

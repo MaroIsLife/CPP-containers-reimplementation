@@ -19,8 +19,8 @@ namespace ft
 			typedef ft::myiterator<T> iterator;
 			typedef ptrdiff_t difference_type;
 			// typedef ft::iterator(T);
-
-			explicit vector (const allocator_type& alloc = allocator_type())
+		public:
+			explicit vector (const allocator_type& alloc = allocator_type()) : _allocator(alloc)
 			{
 				_table = _allocator.allocate(0);
 				_capacity = 0;
@@ -96,7 +96,88 @@ namespace ft
 				_table[_size] = n;
 				_size++;
 			}
-			reference operator[](const int &a){return (_table[a]);}
+			void pop_back()
+			{
+				if (_size == 0)
+					return ;
+				_table[_size] = 0; 
+				_size--;
+			}
+		void assign (size_type n, const value_type& val)
+		{	
+			_allocator.destroy(_table);
+			_allocator.deallocate(_table, _capacity);
+			if (n > _capacity)
+				_capacity = n;
+			_table = _allocator.allocate(_capacity);
+			_size = n;
+			for (int i = 0;i < _size;i++)
+				_table[i] = val;
+		}
+  		void assign (iterator first, iterator last)
+		{
+			_allocator.destroy(_table);
+			_allocator.deallocate(_table, _capacity);
+			_diff = last - first;
+			_size = _diff;
+			if (_diff > _capacity)
+				_capacity = _diff;
+			_table = _allocator.allocate(_capacity);
+			for (int i = 0; first != last; first++)
+				_table[i++] = *first;
+		}
+		iterator insert (iterator position, const value_type& val)
+		{
+			_size++;
+			if (_size > _capacity)
+				_capacity *= 2;
+			_table2 = _allocator.allocate(_capacity);
+			int o = 0;
+			iterator it(this->begin());
+			for (int i = 0; i < _size; i++)
+			{
+				if (it == position)
+					_table2[o++] = val;
+				it++;
+				_table2[o++] = _table[i];
+			}
+			_allocator.destroy(_table);
+			_allocator.deallocate(_table, _capacity);
+			_table = _allocator.allocate(_capacity);
+			for (int i = 0; i < _size; i++)
+				_table[i] = _table2[i];
+			_allocator.destroy(_table2);
+			_allocator.deallocate(_table2, _capacity);
+			return (position);
+		}
+		void insert (iterator position, size_type n, const value_type& val)
+		{
+			_size+= n;
+			while (_size > _capacity)
+				_capacity *= 2;
+			_table2 = _allocator.allocate(_capacity);
+			int o = 0;
+			iterator it(this->begin());
+			for (int i = 0; i < _size; i++)
+			{
+				if (it == position)
+					for (int k = 0; k < n; k++)
+						_table2[o++] = val;
+				it++;
+				_table2[o++] = _table[i];
+			}
+			_allocator.destroy(_table);
+			_allocator.deallocate(_table, _capacity);
+			_table = _allocator.allocate(_capacity);
+			for (int i = 0; i < _size; i++)
+				_table[i] = _table2[i];
+			_allocator.destroy(_table2);
+			_allocator.deallocate(_table2, _capacity);
+		}
+
+		
+		allocator_type get_allocator() const {return(allocator_type());}
+		reference operator[](const int &a){return (_table[a]);}
 		private:
 			pointer _table;
 			pointer _table2;
