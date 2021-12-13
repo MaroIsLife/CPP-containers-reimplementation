@@ -34,7 +34,8 @@ namespace ft
 				this->_capacity = n;
 				this->_size = n;
 			}
-			vector (iterator first, iterator last, const allocator_type& alloc = allocator_type())
+			template <class InputIterator>
+			vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type())
 			{
 				_diff = last - first;
 				_size = _diff;
@@ -114,7 +115,8 @@ namespace ft
 			for (int i = 0;i < _size;i++)
 				_table[i] = val;
 		}
-  		void assign (iterator first, iterator last)
+		template <class InputIterator>
+  		void assign (InputIterator first, InputIterator last)
 		{
 			_allocator.destroy(_table);
 			_allocator.deallocate(_table, _capacity);
@@ -174,7 +176,8 @@ namespace ft
 			_allocator.destroy(_table2);
 			_allocator.deallocate(_table2, _capacity);
 		}
-		void insert (iterator position, iterator first, iterator last)
+		template <class InputIterator>
+		void insert (iterator position, InputIterator first, InputIterator last)
 		{
 			_diff = last - first;
 			if (_diff > _capacity)
@@ -200,6 +203,47 @@ namespace ft
 				_table[i] = _table2[i];
 			_allocator.destroy(_table2);
 			_allocator.deallocate(_table2, _capacity);
+		}
+		iterator erase (iterator position)
+		{
+			iterator it(this->begin());
+			_size--;
+			int o = 0;
+			for(int i = 0; i < _size ;i++)
+			{
+				if (it == position)
+					o++;
+				_table[i] = _table[o++];
+				it++;
+			}
+			return (position);
+		}
+		iterator erase (iterator first, iterator last)
+		{
+			_diff = last - first;
+			_table2 = _allocator.allocate(_capacity);
+			iterator it(this->begin());
+			for (int i = 0;i < _size;i++)
+			{
+				if (it == first)
+					for (;it != last; it++)
+						i++;
+				_table2[i] = _table[i];
+				it++;
+			}
+			_allocator.destroy(_table);
+			_allocator.deallocate(_table, _capacity);
+			_size -= _diff;
+			for (int i = 0; i < _size; i++)
+				_table[i] = _table2[i];
+			_allocator.destroy(_table2);
+			_allocator.deallocate(_table2, _capacity);
+			return (first);
+		}
+		void clear()
+		{
+			_allocator.destroy(_table);
+			_size = 0;
 		}
 
 		allocator_type get_allocator() const {return(allocator_type());}

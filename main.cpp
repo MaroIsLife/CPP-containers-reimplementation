@@ -3,26 +3,33 @@
 #include <vector>
 #include <memory>
 
+
+class khobza_libghiti 
+{
+	public:
+		int x;
+		char c;
+	khobza_libghiti()
+	{
+		x = 99;
+	}
+
+};
+
 int main()
 {	
+	ft::vector<khobza_libghiti> abc;
+	for(int i = 0; i < 10;i++)
+		abc.push_back(khobza_libghiti());
+	ft::vector<khobza_libghiti>::iterator it = abc.begin();
+	ft::vector<khobza_libghiti>::iterator end = abc.end();
+	ft::vector<khobza_libghiti> data(it,end);
+	
+	std::cout << abc[0].x << std::endl;
+	// for(int i = 0; i < abc.size(); i++)
+	// 	std::cout << abc[i] << std::endl;
 
-	ft::vector<int> oneten;
-		for(int i =1; i <= 3;i++)
-			oneten.push_back(i);
-	ft::vector<int> abc(10);
-	ft::vector<int>::iterator it;
-	// for(int i = 0; i < 10; i++)
-	// 	abc.push_back(i);
-	it = abc.begin();
-	it++;
-	it++;
-	abc.insert(it,oneten.begin(),oneten.end());
-	for(int i = 0; i < 20; i++)
-		std::cout << abc[i] << std::endl;
-	std::cout << "Size: " << abc.size() << " Capacity: " << abc.capacity() << std::endl;
-
-
-
+	std::cout << "Size: " << data.size() << " Capacity: " << data.capacity() << std::endl;
 }
 
 

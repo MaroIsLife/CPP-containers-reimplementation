@@ -52,13 +52,25 @@ namespace ft
 				--(*this);
 				return abc;
 			}
+			myiterator &operator-=(const int &a)
+			{
+				for (int i = 0;i < a; i++)
+					(*this)--;
+				return (*this);
+			}
+
+			myiterator &operator+=(const int &a)
+			{
+				for (int i = 0;i < a; i++)
+					(*this)++;
+				return (*this);
+			}
+
 			myiterator operator+(const int &a)
 			{
 				myiterator<T> it(*this);
 				for(int i = 0;i < a;i++)
-				{
 					it.ptr++;
-				}
 				return (it);
 			}
 			difference_type operator-(const myiterator &first)
