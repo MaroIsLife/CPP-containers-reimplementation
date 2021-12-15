@@ -1,11 +1,12 @@
-#ifndef VECTOR_HPP
-#define VECTOR_HPP
+#pragma once 
+//https://en.wikipedia.org/wiki/Pragma_once
 #include <iostream>
 #include <algorithm>
 #include <memory>
 #include "iterator.hpp"
 namespace ft
 {
+	//https://www.cplusplus.com/reference/vector/vector/?kw=vector
 	template < class T, class Alloc = std::allocator<T> > 
 	class vector
 	{
@@ -32,23 +33,27 @@ namespace ft
 			{
 				_table = _allocator.allocate(n);
 				for (int i = 0; i < n; i++)
-					_allocator.construct(&_table[i],val);
+					_allocator.construct(&_table[i], val);
 					// _table[i] = val;
 				this->_capacity = n;
 				this->_size = n;
 			}
-			template <class InputIterator>
-			vector (iterator first, InputIterator last, const allocator_type& alloc = allocator_type())
+			template <typename InputIterator> //catch-all property of templates
+			vector (InputIterator first, InputIterator last,const allocator_type& alloc = allocator_type())
 			{
 				_diff = last - first;
 				_size = _diff;
 				_capacity = _size;
 				_table = _allocator.allocate(_diff);
 				for (int i = 0; first != last; first++)
-				{
-					_allocator.construct(&_table[i++],*first);
-				}
+					_allocator.construct(&_table[i++], *first);
 					// _table[i++] = *first;
+			}
+			vector (const vector& x)
+			{
+				this->_table = x._table;
+				this->_size = x._size;
+				this->_capacity = x._capacity;
 			}
 			//#Iterators:
 			iterator begin()
@@ -326,5 +331,3 @@ namespace ft
 			difference_type _diff;
 	};
 }
-
-#endif

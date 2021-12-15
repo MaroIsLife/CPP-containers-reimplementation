@@ -1,8 +1,10 @@
-#ifndef ITERATOR_TRAITS_HPP
-#define ITERATOR_TRAITS_HPP
+#pragma once
 #include "iterator.hpp"
 #include "vector.hpp"
 
+//https://www.codeproject.com/Articles/36530/An-Introduction-to-Iterator-Traits
+//https://en.cppreference.com/w/cpp/iterator/iterator_traits
+//https://www.fluentcpp.com/2018/05/08/std-iterator-deprecated/
 namespace ft
 {
 	template <class Iterator>
@@ -34,4 +36,3 @@ namespace ft
 		typedef typename Iterator::iterator_category iterator_category;
 	};
 }
-#endif

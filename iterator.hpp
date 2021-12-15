@@ -1,13 +1,13 @@
-#ifndef ITERATOR_HPP
-#define ITERATOR_HPP
+#pragma once
 #include <iostream>
 #include "vector.hpp"
 
 namespace ft
 {
-	
+	//https://www.cplusplus.com/reference/iterator/RandomAccessIterator/
 	struct random_access_iterator_tag {};
 
+	//https://www.cplusplus.com/reference/iterator/iterator/
 	template <class Category, class T, class Distance = ptrdiff_t,
 			class Pointer = T*, class Reference = T&>
 	struct base_iterator 
@@ -19,6 +19,7 @@ namespace ft
 		typedef Category  iterator_category;
 	};
 	
+	//https://www.cplusplus.com/reference/iterator/
 	template <typename T>
 	class myiterator : public ft::base_iterator<ft::random_access_iterator_tag, T> 
 	{
@@ -36,7 +37,10 @@ namespace ft
 			{
 				this->ptr = it.ptr;
 			}
-			reference operator*(){return (*ptr);}
+			reference operator*()
+			{
+				return (*ptr);
+			}
 			pointer operator->() {return(ptr);}
 			myiterator& operator++() { ptr++; return *this;}
 			myiterator operator++(int)
@@ -121,4 +125,3 @@ namespace ft
 			pointer ptr;
 	};
 }
-#endif
