@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <memory>
 #include "iterator.hpp"
+#include "algorithm.hpp"
 #include "type_traits.hpp"
 namespace ft
 {
@@ -60,11 +61,11 @@ namespace ft
 			//#Iterators:
 			iterator begin()
 			{
-				return(iterator(_table));
+				return (iterator(_table));
 			}
 			iterator end()
 			{
-				return(iterator(&_table[_size]));
+				return (iterator(&_table[_size]));
 			}
 			//#Capacity:
 			size_type capacity() {return (_capacity);}
@@ -299,7 +300,6 @@ namespace ft
 			this->_table = tmp;
 			this->_capacity = tmp_capacity;
 			this->_size = tmp_size;
-						
 		}
 		void clear()
 		{
@@ -326,6 +326,7 @@ namespace ft
 		const_reference front() const{return(_table[0]);}
 		reference back(){return(_table[_size]);}
 		const_reference back() const{return(_table[_size]);}
+
 		private:
 			pointer _table;
 			pointer _table2;
@@ -334,4 +335,37 @@ namespace ft
 			size_type _size;
 			difference_type _diff;
 	};
+
+	//https://www.cplusplus.com/reference/vector/vector/operators/
+	//https://www.cplusplus.com/reference/algorithm/equal/?kw=equal
+	//https://www.cplusplus.com/reference/algorithm/lexicographical_compare/
+	template <class T, class Alloc>
+	bool operator== (ft::vector<T,Alloc> &lhs, ft::vector<T,Alloc> &rhs)
+	{
+		if (lhs.size() == rhs.size()) //test this later
+			return (ft::equal(lhs.begin(),lhs.end(),rhs.begin()));
+		return (false);
+	}
+
+	template <class T, class Alloc>
+	bool operator!= (vector<T,Alloc>& lhs, vector<T,Alloc>& rhs)
+	{
+		if (lhs.size() != rhs.size())
+			return (true);
+		else if (!ft::equal(lhs.begin(),lhs.end(),rhs.begin()))
+			return (true);
+		return (false);
+	}
+
+	// template <class T, class Alloc>
+	// friend bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+
+	// template <class T, class Alloc>
+	// friend bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+
+	// template <class T, class Alloc>
+	// friend bool operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+
+	// template <class T, class Alloc>
+	// friend bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
 }

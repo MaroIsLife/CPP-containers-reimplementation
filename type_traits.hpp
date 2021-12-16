@@ -29,7 +29,7 @@ namespace ft
 	};
 
 	////https://www.cplusplus.com/reference/type_traits/integral_constant/
-	template <typename T,T v>
+	template <typename T, T v>
 	struct integral_constant
 	{
 		const static T value = v;

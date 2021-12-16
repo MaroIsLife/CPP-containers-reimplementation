@@ -20,6 +20,7 @@ namespace ft
 	};
 	
 	//https://www.cplusplus.com/reference/iterator/
+	//https://www.cplusplus.com/reference/iterator/RandomAccessIterator/
 	template <typename T>
 	class myiterator : public ft::base_iterator<ft::random_access_iterator_tag, T> 
 	{

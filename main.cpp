@@ -6,7 +6,7 @@
 
 
 template <class T>
-void do_stuff(T& t, typename ft::enable_if<!ft::is_integral<T>::value,T>::type *test = NULL) {
+void do_stuff(T& t, typename ft::enable_if<!ft::is_integral<T>::value,T>::type* = NULL) {
   std::cout << "do_stuff integral\n";
     // an implementation for integral types (int, char, unsigned, etc.)
 }
@@ -35,9 +35,11 @@ void do_stuff(char a)
 int main()
 {
 
-	int ab = 1;
-	do_stuff(ab);
-	ft::vector<int> abc(10,3);
+	ft::vector<int> ab(10,3);
+	ft::vector<int> ac(10,3);
+	
+	if (ac != ab)	
+		std::cout << "False" << std::endl;
 
 	// ft::vector<int> abc(10,7);
 
