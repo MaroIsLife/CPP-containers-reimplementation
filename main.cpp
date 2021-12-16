@@ -1,14 +1,44 @@
 #include "vector.hpp"
 #include "iterator.hpp"
 #include <vector>
+#include "type_traits.hpp"
 #include <memory>
 
 
+template <class T>
+void do_stuff(T& t, typename ft::enable_if<ft::is_integral<T>::value,T>::type* = nullptr) {
+  std::cout << "do_stuff integral\n";
+    // an implementation for integral types (int, char, unsigned, etc.)
+}
+
+// template <class T>
+// void do_stuff(T& t, typename std::enable_if<false,T>::type* = nullptr) {
+// 		std::cout << "do_stuff class\n";
+//     // an implementation for class types
+// }
+
+// template<typename Input>
+// void test(Input a,typename std::enable_if<!std::is_integral<Input>::value,
+//                                   Input>::type* = nullptr)
+// {
+// 	std::cout << "input" << std::endl;
+// 	std::cout << a[1] << std::endl;
+// }
 
 
 int main()
 {
-	ft::vector<int> abc(10,7);
+
+	std::string ab;
+	int *b = new int [5];
+	for(int i = 0;i < 5;i++)
+		b[i] = i;
+	b++;
+	std::cout << *b << std::endl;
+	// do_stuff(ab);
+
+	// ft::vector<int> abc(10,7);
+
 	// ft::vector<int> data(7);
 	// ft::vector<int> abc(10,3);
 
