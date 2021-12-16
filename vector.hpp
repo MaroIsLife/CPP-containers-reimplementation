@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <memory>
 #include "iterator.hpp"
+#include "type_traits.hpp"
 namespace ft
 {
 	//https://www.cplusplus.com/reference/vector/vector/?kw=vector
@@ -24,7 +25,7 @@ namespace ft
 		public:
 			//#Constructors
 			explicit vector (const allocator_type& alloc = allocator_type())
-			{
+			{ 
 				_table = _allocator.allocate(0);
 				_capacity = 0;
 				_size = 0;
@@ -38,8 +39,9 @@ namespace ft
 				this->_capacity = n;
 				this->_size = n;
 			}
-			template <typename InputIterator> //catch-all property of templates
-			vector (InputIterator first, InputIterator last,const allocator_type& alloc = allocator_type())
+			template <typename InputIterator> // <-- catch-all property of templates
+			vector (InputIterator first, InputIterator last,const allocator_type& alloc = allocator_type(), 
+				typename ft::enable_if<!ft::is_integral<InputIterator>::value,InputIterator>::type *ptr = NULL)
 			{
 				_diff = last - first;
 				_size = _diff;
@@ -157,7 +159,8 @@ namespace ft
 				_allocator.construct(&_table[i], val);
 		}
 		template <class InputIterator>
-  		void assign (InputIterator first, InputIterator last)
+  		void assign (InputIterator first, InputIterator last, 
+		  	typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type *ptr = NULL)
 		{
 			_allocator.destroy(_table);
 			_allocator.deallocate(_table, _capacity);
@@ -218,7 +221,8 @@ namespace ft
 			_allocator.deallocate(_table2, _capacity);
 		}
 		template <class InputIterator>
-		void insert (iterator position, InputIterator first, InputIterator last)
+		void insert (iterator position, InputIterator first, InputIterator last,
+			typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type *ptr = NULL)
 		{
 			_diff = last - first;
 			if (_diff > _capacity)
