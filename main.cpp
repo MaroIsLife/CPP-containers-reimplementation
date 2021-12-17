@@ -5,23 +5,6 @@
 #include <memory>
 
 
-template <class T>
-void do_stuff(T& t, typename ft::enable_if<!ft::is_integral<T>::value,T>::type* = NULL) {
-  std::cout << "do_stuff integral\n";
-    // an implementation for integral types (int, char, unsigned, etc.)
-}
-
-
-void do_stuff(char a)
-{
-	std::cout << "do\n";
-}
-
-// template <class T>
-// void do_stuff(T& t, typename std::enable_if<false,T>::type* = nullptr) {
-// 		std::cout << "do_stuff class\n";
-//     // an implementation for class types
-// }
 
 // template<typename Input>
 // void test(Input a,typename std::enable_if<!std::is_integral<Input>::value,
@@ -35,12 +18,10 @@ void do_stuff(char a)
 int main()
 {
 
-	ft::vector<int> ab(10,3);
 	ft::vector<int> ac(10,3);
-	
-	if (ac != ab)	
-		std::cout << "False" << std::endl;
+	ft::vector<int> ab(13,3);
 
+	
 	// ft::vector<int> abc(10,7);
 
 	// ft::vector<int> data(7);

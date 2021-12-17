@@ -1,5 +1,4 @@
 #pragma once 
-//https://en.wikipedia.org/wiki/Pragma_once
 #include <iostream>
 #include <algorithm>
 #include <memory>
@@ -8,7 +7,7 @@
 #include "type_traits.hpp"
 namespace ft
 {
-	//https://www.cplusplus.com/reference/vector/vector/?kw=vector
+	//?https://www.cplusplus.com/reference/vector/vector/?kw=vector
 	template < class T, class Alloc = std::allocator<T> > 
 	class vector
 	{
@@ -22,9 +21,8 @@ namespace ft
 			typedef const T* const_pointer;
 			typedef ft::myiterator<T> iterator;
 			typedef ptrdiff_t difference_type;
-			// typedef ft::iterator(T);
 		public:
-			//#Constructors
+			//!Constructors
 			explicit vector (const allocator_type& alloc = allocator_type())
 			{ 
 				_table = _allocator.allocate(0);
@@ -33,14 +31,14 @@ namespace ft
 			}	
 			explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
 			{
+				//*Using allocator construct for const data types
 				_table = _allocator.allocate(n);
 				for (int i = 0; i < n; i++)
 					_allocator.construct(&_table[i], val);
-					// _table[i] = val;
 				this->_capacity = n;
 				this->_size = n;
 			}
-			template <typename InputIterator> // <-- catch-all property of templates
+			template <typename InputIterator> //* <-- catch-all property of templates
 			vector (InputIterator first, InputIterator last,const allocator_type& alloc = allocator_type(), 
 				typename ft::enable_if<!ft::is_integral<InputIterator>::value,InputIterator>::type *ptr = NULL)
 			{
@@ -50,7 +48,6 @@ namespace ft
 				_table = _allocator.allocate(_diff);
 				for (int i = 0; first != last; first++)
 					_allocator.construct(&_table[i++], *first);
-					// _table[i++] = *first;
 			}
 			vector (const vector& x)
 			{
@@ -58,7 +55,7 @@ namespace ft
 				this->_size = x._size;
 				this->_capacity = x._capacity;
 			}
-			//#Iterators:
+			//!Iterators:
 			iterator begin()
 			{
 				return (iterator(_table));
@@ -67,9 +64,18 @@ namespace ft
 			{
 				return (iterator(&_table[_size]));
 			}
-			//#Capacity:
+			const iterator begin() const
+			{
+				return (iterator(_table));
+			}
+			const iterator end() const
+			{
+				return (iterator(&_table[_size]));
+			}
+			//!Capacity:
 			size_type capacity() {return (_capacity);}
 			size_type size() {return (_size);}
+			const size_type size() const {return (_size);}
 			size_type max_size(){return(_allocator.max_size());}
 			void reserve (size_type n)
 			{
@@ -101,23 +107,18 @@ namespace ft
 				_table2 = _allocator.allocate(_capacity);
 				for (int i = 0; i < _size; i++)
 					_allocator.construct(&_table2[i],_table[i]);
-					// _table2[i] = _table[i];
-				// std::copy(this->begin(),this->end(),_table2);
 				for (int i = _size; i < _capacity; i++)
 						_allocator.construct(&_table2[i],val);
-					// _table2[i] = val;
 				_size = n;
 				_allocator.destroy(_table);
 				_allocator.deallocate(_table, _capacity);
 				_table = _allocator.allocate(_capacity);
 				for (int i = 0; i < _size; i++)
 					_allocator.construct(&_table[i],_table2[i]);
-				// 	_table[i] = _table2[i];
-				// std::copy(iterator(&_table2[0]),iterator(&_table2[_size]),_table);
 				_allocator.destroy(_table2);
 				_allocator.deallocate(_table2, _capacity / 2);
 			}
-			//#Modifiers
+			//!Modifiers
 			void push_back(T n)
 			{
 				if (_size + 1 >= _capacity)
@@ -306,9 +307,9 @@ namespace ft
 			_allocator.destroy(_table);
 			_size = 0;
 		}
-		//#Allocator
+		//!Allocator
 		allocator_type get_allocator() const {return(allocator_type());}
-		//#Element Access
+		//!Element Access
 		reference operator[](const int &a){return (_table[a]);}
 		reference at (size_type n)
 		{
@@ -318,6 +319,7 @@ namespace ft
 		}
 		const_reference at (size_type n) const
 		{
+			//Object should be const
 			if (n >= _size)
 				throw std::out_of_range("const");
 			return(_table[n]);
@@ -326,7 +328,6 @@ namespace ft
 		const_reference front() const{return(_table[0]);}
 		reference back(){return(_table[_size]);}
 		const_reference back() const{return(_table[_size]);}
-
 		private:
 			pointer _table;
 			pointer _table2;
@@ -336,19 +337,19 @@ namespace ft
 			difference_type _diff;
 	};
 
-	//https://www.cplusplus.com/reference/vector/vector/operators/
-	//https://www.cplusplus.com/reference/algorithm/equal/?kw=equal
-	//https://www.cplusplus.com/reference/algorithm/lexicographical_compare/
+	//?https://www.cplusplus.com/reference/vector/vector/operators/
+	//?https://www.cplusplus.com/reference/algorithm/equal/?kw=equal
+	//?https://www.cplusplus.com/reference/algorithm/lexicographical_compare/
+	//!#Relational Operators
 	template <class T, class Alloc>
-	bool operator== (ft::vector<T,Alloc> &lhs, ft::vector<T,Alloc> &rhs)
+	bool operator== (const ft::vector<T,Alloc> &lhs, const ft::vector<T,Alloc> &rhs)
 	{
 		if (lhs.size() == rhs.size()) //test this later
 			return (ft::equal(lhs.begin(),lhs.end(),rhs.begin()));
 		return (false);
 	}
-
 	template <class T, class Alloc>
-	bool operator!= (vector<T,Alloc>& lhs, vector<T,Alloc>& rhs)
+	bool operator!= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
 	{
 		if (lhs.size() != rhs.size())
 			return (true);
@@ -356,16 +357,33 @@ namespace ft
 			return (true);
 		return (false);
 	}
-
-	// template <class T, class Alloc>
-	// friend bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
-
-	// template <class T, class Alloc>
-	// friend bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
-
-	// template <class T, class Alloc>
-	// friend bool operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
-
-	// template <class T, class Alloc>
-	// friend bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+	template <class T, class Alloc>
+	bool operator<(const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+	{
+		return(ft::lexicographical_compare(lhs.begin(),lhs.end(),rhs.begin(),rhs.end()));
+	}
+	template <class T, class Alloc>
+	bool operator>(const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+	{
+		return(ft::lexicographical_compare(rhs.begin(),rhs.end(),lhs.begin(),lhs.end()));
+	}
+	template <class T, class Alloc>
+	bool operator>=(const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+	{
+		if (lhs == rhs || lhs > rhs)
+			return (true);
+		return (false);
+	}
+	template <class T, class Alloc>
+	bool operator<=(const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+	{
+		if (lhs == rhs || lhs < rhs)
+			return (true);
+		return (false);
+	}
+	template <class T, class Alloc>
+  	void swap (const ft::vector<T,Alloc>& x, const ft::vector<T,Alloc>& y)
+	{
+		x.swap(y);
+	}
 }

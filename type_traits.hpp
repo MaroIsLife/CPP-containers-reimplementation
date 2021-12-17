@@ -5,16 +5,16 @@
 #include "iterator.hpp"
 
 
-//Type Traits
-//https://www.internalpointers.com/post/quick-primer-type-traits-modern-cpp
+//!Type Traits
+//?https://www.internalpointers.com/post/quick-primer-type-traits-modern-cpp
 
 namespace ft
 {
 
-	//Enable if
-	//SFINAE = Substitution failure is not an error 
-	//https://eli.thegreenplace.net/2014/sfinae-and-enable_if/
-	//https://riptutorial.com/cplusplus/example/3777/enable-if
+	//!Enable if
+	//*SFINAE = Substitution failure is not an error 
+	//?https://eli.thegreenplace.net/2014/sfinae-and-enable_if/
+	//?https://riptutorial.com/cplusplus/example/3777/enable-if
 	template<bool Cond, class T = void> 
 	struct enable_if
 	{
@@ -28,7 +28,8 @@ namespace ft
 
 	};
 
-	////https://www.cplusplus.com/reference/type_traits/integral_constant/
+	//?https://www.cplusplus.com/reference/type_traits/integral_constant/
+	
 	template <typename T, T v>
 	struct integral_constant
 	{
@@ -43,7 +44,7 @@ namespace ft
 		}
 	};
 	
-	//https://www.cplusplus.com/reference/type_traits/is_integral/?kw=is_integral
+	//?https://www.cplusplus.com/reference/type_traits/is_integral/?kw=is_integral
 	template <typename T> 
 	struct is_integral : public integral_constant<bool,false>
 	{};
