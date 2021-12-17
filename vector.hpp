@@ -20,7 +20,9 @@ namespace ft
 			typedef T* pointer;
 			typedef const T* const_pointer;
 			typedef ft::myiterator<T> iterator;
+			typedef const ft::myiterator<T> const_iterator;
 			typedef ft::reverse_myiterator<T> reverse_iterator;
+			typedef const ft::reverse_myiterator<T> const_reverse_iterator;
 			typedef ptrdiff_t difference_type;
 		public:
 			//!Constructors/Destructors
