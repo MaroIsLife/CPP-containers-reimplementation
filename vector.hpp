@@ -20,9 +20,10 @@ namespace ft
 			typedef T* pointer;
 			typedef const T* const_pointer;
 			typedef ft::myiterator<T> iterator;
+			typedef ft::reverse_myiterator<T> reverse_iterator;
 			typedef ptrdiff_t difference_type;
 		public:
-			//!Constructors
+			//!Constructors/Destructors
 			explicit vector (const allocator_type& alloc = allocator_type())
 			{ 
 				_table = _allocator.allocate(0);
@@ -49,11 +50,23 @@ namespace ft
 				for (int i = 0; first != last; first++)
 					_allocator.construct(&_table[i++], *first);
 			}
+			vector& operator= (const vector& x)
+			{
+				this->_table = x._table;
+				this->_size = x._size;
+				this->_capacity = x._capacity;
+				return (*this);
+			}
 			vector (const vector& x)
 			{
 				this->_table = x._table;
 				this->_size = x._size;
 				this->_capacity = x._capacity;
+			}
+			~vector()
+			{
+				_allocator.destroy(_table);
+				_allocator.deallocate(_table, _capacity);
 			}
 			//!Iterators:
 			iterator begin()
@@ -71,6 +84,14 @@ namespace ft
 			const iterator end() const
 			{
 				return (iterator(&_table[_size]));
+			}
+			reverse_iterator rbegin()
+			{
+				return(reverse_iterator(&_table[_size - 1]));
+			}
+			reverse_iterator rend()
+			{
+				return(reverse_iterator(_table));
 			}
 			//!Capacity:
 			size_type capacity() {return (_capacity);}
