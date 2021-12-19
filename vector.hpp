@@ -20,20 +20,22 @@ namespace ft
 			typedef T* pointer;
 			typedef const T* const_pointer;
 			typedef ft::myiterator<T> iterator;
-			typedef const ft::myiterator<T> const_iterator;
+			typedef ft::myiterator<const T>  const_iterator;
 			typedef ft::reverse_myiterator<T> reverse_iterator;
-			typedef const ft::reverse_myiterator<T> const_reverse_iterator;
+			typedef ft::reverse_myiterator<const T> const_reverse_iterator;
 			typedef ptrdiff_t difference_type;
 		public:
 			//!Constructors/Destructors
 			explicit vector (const allocator_type& alloc = allocator_type())
-			{ 
+			{
+				(void)alloc;
 				_table = _allocator.allocate(0);
 				_capacity = 0;
 				_size = 0;
 			}	
 			explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
 			{
+				(void)alloc;
 				//*Using allocator construct for const data types
 				_table = _allocator.allocate(n);
 				for (int i = 0; i < n; i++)
@@ -42,9 +44,11 @@ namespace ft
 				this->_size = n;
 			}
 			template <typename InputIterator> //* <-- catch-all property of templates
-			vector (InputIterator first, InputIterator last,const allocator_type& alloc = allocator_type(), 
+			vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(), 
 				typename ft::enable_if<!ft::is_integral<InputIterator>::value,InputIterator>::type *ptr = NULL)
 			{
+				(void)ptr;
+				(void)alloc;
 				_diff = last - first;
 				_size = _diff;
 				_capacity = _size;
@@ -67,8 +71,8 @@ namespace ft
 			}
 			~vector()
 			{
-				_allocator.destroy(_table);
-				_allocator.deallocate(_table, _capacity);
+				// _allocator.destroy(_table);
+				// _allocator.deallocate(_table, _capacity);
 			}
 			//!Iterators:
 			iterator begin()
@@ -79,13 +83,13 @@ namespace ft
 			{
 				return (iterator(&_table[_size]));
 			}
-			const iterator begin() const
+			const_iterator begin() const
 			{
-				return (iterator(_table));
+				return (const_iterator(_table));
 			}
-			const iterator end() const
+			const_iterator end() const
 			{
-				return (iterator(&_table[_size]));
+				return (const_iterator(&_table[_size]));
 			}
 			reverse_iterator rbegin()
 			{
@@ -95,10 +99,18 @@ namespace ft
 			{
 				return(reverse_iterator(_table));
 			}
+			const_reverse_iterator rbegin() const
+			{
+				return(const_reverse_iterator(&_table[_size - 1]));
+			}
+			const_reverse_iterator rend() const
+			{
+				return(const_reverse_iterator(_table));
+			}
 			//!Capacity:
 			size_type capacity() {return (_capacity);}
 			size_type size() {return (_size);}
-			const size_type size() const {return (_size);}
+			size_type size() const {return (_size);}
 			size_type max_size(){return(_allocator.max_size());}
 			void reserve (size_type n)
 			{
@@ -187,6 +199,7 @@ namespace ft
   		void assign (InputIterator first, InputIterator last, 
 		  	typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type *ptr = NULL)
 		{
+			(void)ptr;
 			_allocator.destroy(_table);
 			_allocator.deallocate(_table, _capacity);
 			_diff = last - first;
@@ -249,6 +262,7 @@ namespace ft
 		void insert (iterator position, InputIterator first, InputIterator last,
 			typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type *ptr = NULL)
 		{
+			(void)ptr;
 			_diff = last - first;
 			if (_diff > _capacity)
 				_capacity = _diff + _size;
@@ -288,6 +302,7 @@ namespace ft
 			}
 			return (position);
 		}
+		
 		iterator erase (iterator first, iterator last)
 		{
 			_diff = last - first;
@@ -349,8 +364,8 @@ namespace ft
 		}
 		reference front(){return(_table[0]);}
 		const_reference front() const{return(_table[0]);}
-		reference back(){return(_table[_size]);}
-		const_reference back() const{return(_table[_size]);}
+		reference back(){return(_table[_size - 1]);}
+		const_reference back() const{return(_table[_size - 1]);}
 		private:
 			pointer _table;
 			pointer _table2;
@@ -365,14 +380,14 @@ namespace ft
 	//?https://www.cplusplus.com/reference/algorithm/lexicographical_compare/
 	//!#Relational Operators
 	template <class T, class Alloc>
-	bool operator== (const ft::vector<T,Alloc> &lhs, const ft::vector<T,Alloc> &rhs)
+	bool operator== (const ft::vector<T,Alloc> &lhs, const ft::vector<T, Alloc> &rhs)
 	{
 		if (lhs.size() == rhs.size()) //test this later
 			return (ft::equal(lhs.begin(),lhs.end(),rhs.begin()));
 		return (false);
 	}
 	template <class T, class Alloc>
-	bool operator!= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+	bool operator!= (const ft::vector<T,Alloc>& lhs, const ft::vector<T, Alloc>& rhs)
 	{
 		if (lhs.size() != rhs.size())
 			return (true);
@@ -381,31 +396,31 @@ namespace ft
 		return (false);
 	}
 	template <class T, class Alloc>
-	bool operator<(const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+	bool operator<(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs)
 	{
 		return(ft::lexicographical_compare(lhs.begin(),lhs.end(),rhs.begin(),rhs.end()));
 	}
 	template <class T, class Alloc>
-	bool operator>(const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+	bool operator>(const ft::vector<T, Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
 	{
 		return(ft::lexicographical_compare(rhs.begin(),rhs.end(),lhs.begin(),lhs.end()));
 	}
 	template <class T, class Alloc>
-	bool operator>=(const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+	bool operator>=(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs)
 	{
 		if (lhs == rhs || lhs > rhs)
 			return (true);
 		return (false);
 	}
 	template <class T, class Alloc>
-	bool operator<=(const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+	bool operator<=(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs)
 	{
 		if (lhs == rhs || lhs < rhs)
 			return (true);
 		return (false);
 	}
 	template <class T, class Alloc>
-  	void swap (const ft::vector<T,Alloc>& x, const ft::vector<T,Alloc>& y)
+  	void swap (const ft::vector<T, Alloc>& x, const ft::vector<T, Alloc>& y)
 	{
 		x.swap(y);
 	}

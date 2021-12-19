@@ -1,22 +1,25 @@
 #pragma once
 #include <iostream>
 #include "vector.hpp"
-
 namespace ft
 {
 	//?https://www.cplusplus.com/reference/iterator/RandomAccessIterator/
-	struct random_access_iterator_tag {};
+	struct input_iterator_tag {};
+  	struct output_iterator_tag {};
+  	struct forward_iterator_tag : public input_iterator_tag {};
+  	struct bidirectional_iterator_tag : public forward_iterator_tag {};
+ 	struct random_access_iterator_tag : public bidirectional_iterator_tag {};
 
 	//?https://www.cplusplus.com/reference/iterator/iterator/
 	template <class Category, class T, class Distance = ptrdiff_t,
 			class Pointer = T*, class Reference = T&>
 	struct base_iterator 
 	{
-		typedef T         value_type;
-		typedef Distance  difference_type;
-		typedef Pointer   pointer;
-		typedef Reference reference;
-		typedef Category  iterator_category;
+		typedef T			value_type;
+		typedef Distance	difference_type;
+		typedef Pointer		pointer;
+		typedef Reference	reference;
+		typedef Category 	iterator_category;
 	};
 	
 	//?https://www.cplusplus.com/reference/iterator/
@@ -34,25 +37,30 @@ namespace ft
 		public:
 			myiterator(pointer abc = NULL)
 			{
-				ptr = abc;
+				_ptr = abc;
 			}
 			myiterator(const myiterator &it)
 			{
-				this->ptr = it.ptr;
+				this->_ptr = it._ptr;
+			}
+			myiterator &operator=(myiterator const &it)
+			{
+				this->_ptr = it._ptr;
+				return (*this);
 			}
 			reference operator*()
 			{
-				return (*ptr);
+				return (*_ptr);
 			}
-			pointer operator->() {return(ptr);}
-			myiterator& operator++() { ptr++; return *this;}
+			pointer operator->() {return(_ptr);}
+			myiterator& operator++() { _ptr++; return *this;}
 			myiterator operator++(int)
 			{ 
 				myiterator abc(*this); 
 				++(*this);
 				return abc;
 			}
-			myiterator& operator--() { ptr--; return *this;}
+			myiterator& operator--() { _ptr--; return *this;}
 			myiterator operator--(int)
 			{ 
 				myiterator abc = *this; 
@@ -77,55 +85,63 @@ namespace ft
 			{
 				myiterator<T> it(*this);
 				for(int i = 0;i < a;i++)
-					it.ptr++;
+					it._ptr++;
 				return (it);
 			}
 			difference_type operator-(const myiterator &first)
 			{
-				return (this->ptr - first.ptr);
+				return (this->_ptr - first._ptr);
 			}
 			reference operator[](const int &a)
-			{ 
-				return ptr[a];
+			{
+				return _ptr[a];
 			}
 			bool operator==(const myiterator& a)
 			{ 
-				if (this->ptr == a.ptr)
+				if (this->_ptr == a._ptr)
 					return (true);
 				return (false);
 			}
 			bool operator!=(const myiterator& a)
 			{ 
-				if (this->ptr != a.ptr)
+				if (this->_ptr != a._ptr)
 					return (true);
 				return (false);
 			}
 			bool operator>(const myiterator& a)
 			{ 
-				if (this->ptr > a.ptr)
+				if (this->_ptr > a._ptr)
 					return (true);
 				return (false);
 			}
 			bool operator<(const myiterator& a)
 			{ 
-				if (this->ptr < a.ptr)
+				if (this->_ptr < a._ptr)
 					return (true);
 				return (false);
 			}
 			bool operator<=(const myiterator& a)
 			{ 
-				if (this->ptr <= a.ptr)
+				if (this->_ptr <= a._ptr)
 					return (true);
 				return (false);
 			}
 			bool operator>=(const myiterator& a)
 			{ 
-				if (this->ptr >= a.ptr)
+				if (this->_ptr >= a._ptr)
 					return (true);
 				return (false);
 			}
+			//?https://en.cppreference.com/w/cpp/language/cast_operator
+			//?https://stackoverflow.com/questions/1307876/how-do-conversion-operators-work-in-c
+			//?https://www.youtube.com/watch?v=M2D11HXlgnE
+			//*Declares a user-defined conversion function that participates in all implicit and explicit conversions.
+			operator myiterator<const T>() const
+			{
+				return myiterator<const T>(_ptr);
+			}
 		private:
-			pointer ptr;
+			pointer _ptr;
 	};
 	
 	template <typename T>
@@ -156,45 +172,46 @@ namespace ft
 		typedef T& reference;
 		typedef ptrdiff_t difference_type;
 		
+		
 		public:
 			reverse_myiterator(pointer abc = NULL)
 			{
-				ptr = abc;
+				_ptr = abc;
 			}
 			reverse_myiterator(const reverse_myiterator &it)
 			{
-				this->ptr = it.ptr;
+				this->_ptr = it._ptr;
 			}
 			reference operator*()
 			{
-				return (*ptr);
+				return (*_ptr);
 			}
-			pointer operator->() {return(ptr);}
-			reverse_myiterator& operator++() { ptr--; return *this;}
+			pointer operator->() {return(_ptr);}
+			reverse_myiterator& operator++() { _ptr--; return *this;}
 			reverse_myiterator operator++(int)
 			{ 
 				reverse_myiterator abc(*this); 
-				this->ptr--;
+				this->_ptr--;
 				return abc;
 			}
-			reverse_myiterator& operator--() { ptr++; return *this;}
+			reverse_myiterator& operator--() { _ptr++; return *this;}
 			reverse_myiterator operator--(int)
 			{ 
 				reverse_myiterator abc = *this; 
-				this->ptr++;
+				this->_ptr++;
 				return abc;
 			}
 			reverse_myiterator &operator-=(const int &a)
 			{
 				for (int i = 0;i < a; i++)
-					this->ptr++;
+					this->_ptr++;
 				return (*this);
 			}
 
 			reverse_myiterator &operator+=(const int &a)
 			{
 				for (int i = 0;i < a; i++)
-					this->ptr--;
+					this->_ptr--;
 				return (*this);
 			}
 	
@@ -202,55 +219,59 @@ namespace ft
 			{
 				reverse_myiterator<T> it(*this);
 				for(int i = 0;i < a;i++)
-					it.ptr--;
+					it._ptr--;
 				return (it);
 			}
 			difference_type operator-(const reverse_myiterator &first)
 			{
-				return (this->ptr - first.ptr);
+				return (this->_ptr - first._ptr);
 			}
 			reference operator[](const int &a)
 			{ 
-				return ptr[a];
+				return _ptr[a];
 			}
 			bool operator==(const reverse_myiterator& a)
 			{ 
-				if (this->ptr == a.ptr)
+				if (this->_ptr == a._ptr)
 					return (true);
 				return (false);
 			}
 			bool operator!=(const reverse_myiterator& a)
 			{ 
-				if (this->ptr != a.ptr)
+				if (this->_ptr != a._ptr)
 					return (true);
 				return (false);
 			}
 			bool operator>(const reverse_myiterator& a)
 			{ 
-				if (this->ptr > a.ptr)
+				if (this->_ptr > a._ptr)
 					return (true);
 				return (false);
 			}
 			bool operator<(const reverse_myiterator& a)
 			{ 
-				if (this->ptr < a.ptr)
+				if (this->_ptr < a._ptr)
 					return (true);
 				return (false);
 			}
 			bool operator<=(const reverse_myiterator& a)
 			{ 
-				if (this->ptr <= a.ptr)
+				if (this->_ptr <= a._ptr)
 					return (true);
 				return (false);
 			}
 			bool operator>=(const reverse_myiterator& a)
 			{ 
-				if (this->ptr >= a.ptr)
+				if (this->_ptr >= a._ptr)
 					return (true);
 				return (false);
 			}
+			operator reverse_myiterator<const T>() 
+			{
+				return reverse_myiterator<const T>(_ptr);
+			}
 		private:
-			pointer ptr;
+			pointer _ptr;
 	};
 
 	template <typename T>
