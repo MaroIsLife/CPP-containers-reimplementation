@@ -28,22 +28,20 @@ class A
 int main()
 {  
 	ft::vector<int> abc;
-	ft::vector<int> data(20);
 	ft::vector<int>::iterator it;
 	
 	for (int i = 0; i < 10;i++)
 		abc.push_back(i);
 	it = abc.begin();
+	std::cout << distance(it, it + 3) << std::endl;	
 	// it = it + 3;
-	abc.erase(it);
 	// data.insert(it,abc.begin(),abc.end());
 	// it = it - 1;
-	// std::cout << *it++ << std::endl;	
 
-	for(int i = 0; i < data.size();i++)
-		std::cout << data[i] << std::endl;
-	std::cout << "Size: " << data.size() << " Capacity: " << data.capacity() << std::endl;
-	system("leaks a.out");
+	// for(int i = 0; i < data.size();i++)
+	// 	std::cout << data[i] << std::endl;
+	std::cout << "Size: " << abc.size() << " Capacity: " << abc.capacity() << std::endl;
+	// system("leaks a.out");
 
 }
 

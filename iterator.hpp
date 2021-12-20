@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include "iterator_traits.hpp"
 #include "vector.hpp"
 namespace ft
 {
@@ -15,6 +16,7 @@ namespace ft
 			class Pointer = T*, class Reference = T&>
 	struct base_iterator 
 	{
+		public:
 		typedef T			value_type;
 		typedef Distance	difference_type;
 		typedef Pointer		pointer;
@@ -28,13 +30,13 @@ namespace ft
 	//!#Iterator
 	template <typename T>
 	class myiterator : public ft::base_iterator<ft::random_access_iterator_tag, T> 
-	{
-		typedef T         value_type;
-		typedef T*   pointer;
-		typedef T& reference;
-		typedef ptrdiff_t difference_type;
-		
+	{		
 		public:
+			typedef T         value_type;
+			typedef T*   pointer;
+			typedef T& reference;
+			typedef ptrdiff_t difference_type;
+
 			myiterator(pointer abc = NULL)
 			{
 				_ptr = abc;
@@ -55,7 +57,7 @@ namespace ft
 			pointer operator->() {return(_ptr);}
 			myiterator& operator++() { _ptr++; return *this;}
 			myiterator operator++(int)
-			{ 
+			{
 				myiterator abc(*this); 
 				++(*this);
 				return abc;
@@ -84,7 +86,7 @@ namespace ft
 			myiterator operator+(const int &a)
 			{
 				myiterator<T> it(*this);
-				for(int i = 0;i < a;i++)
+				for (int i = 0;i < a;i++)
 					it._ptr++;
 				return (it);
 			}
@@ -136,7 +138,7 @@ namespace ft
 			//?https://stackoverflow.com/questions/1307876/how-do-conversion-operators-work-in-c
 			//?https://www.youtube.com/watch?v=M2D11HXlgnE
 			//*Declares a user-defined conversion function that participates in all implicit and explicit conversions.
-			operator myiterator<const T>() const
+			operator myiterator<const T>()
 			{
 				return myiterator<const T>(_ptr);
 			}
@@ -162,10 +164,19 @@ namespace ft
 			abc++;
 		return (abc);
 	}
+	template <typename T>
+	myiterator<T> operator+(const int &a, const myiterator<T> &it)
+	{
+		myiterator<T> abc(it);
+
+		for(int i = 0; i < a; i++)
+			abc++;
+		return (abc);
+	}
 
 	//!#Reverse Iterator
 	template <typename T>
-	class reverse_myiterator : public ft::base_iterator<ft::random_access_iterator_tag, T> 
+	class reverse_iterator : public ft::base_iterator<ft::random_access_iterator_tag, T> 
 	{
 		typedef T         value_type;
 		typedef T*   pointer;
@@ -174,55 +185,60 @@ namespace ft
 		
 		
 		public:
-			reverse_myiterator(pointer abc = NULL)
+			reverse_iterator(pointer abc = NULL)
 			{
 				_ptr = abc;
 			}
-			reverse_myiterator(const reverse_myiterator &it)
+			reverse_iterator(const reverse_iterator &it)
 			{
 				this->_ptr = it._ptr;
+			}
+			explicit reverse_iterator(ft::myiterator<T> x)
+			{
+				this->_ptr = x._ptr;
+
 			}
 			reference operator*()
 			{
 				return (*_ptr);
 			}
 			pointer operator->() {return(_ptr);}
-			reverse_myiterator& operator++() { _ptr--; return *this;}
-			reverse_myiterator operator++(int)
+			reverse_iterator& operator++() { _ptr--; return *this;}
+			reverse_iterator operator++(int)
 			{ 
-				reverse_myiterator abc(*this); 
+				reverse_iterator abc(*this); 
 				this->_ptr--;
 				return abc;
 			}
-			reverse_myiterator& operator--() { _ptr++; return *this;}
-			reverse_myiterator operator--(int)
+			reverse_iterator& operator--() { _ptr++; return *this;}
+			reverse_iterator operator--(int)
 			{ 
-				reverse_myiterator abc = *this; 
+				reverse_iterator abc = *this; 
 				this->_ptr++;
 				return abc;
 			}
-			reverse_myiterator &operator-=(const int &a)
+			reverse_iterator &operator-=(const int &a)
 			{
 				for (int i = 0;i < a; i++)
 					this->_ptr++;
 				return (*this);
 			}
 
-			reverse_myiterator &operator+=(const int &a)
+			reverse_iterator &operator+=(const int &a)
 			{
 				for (int i = 0;i < a; i++)
 					this->_ptr--;
 				return (*this);
 			}
 	
-			reverse_myiterator operator+(const int &a)
+			reverse_iterator operator+(const int &a)
 			{
-				reverse_myiterator<T> it(*this);
+				reverse_iterator<T> it(*this);
 				for(int i = 0;i < a;i++)
 					it._ptr--;
 				return (it);
 			}
-			difference_type operator-(const reverse_myiterator &first)
+			difference_type operator-(const reverse_iterator &first)
 			{
 				return (this->_ptr - first._ptr);
 			}
@@ -230,66 +246,95 @@ namespace ft
 			{ 
 				return _ptr[a];
 			}
-			bool operator==(const reverse_myiterator& a)
+			const T& operator[](const int &a) const
+			{ 
+				return _ptr[a];
+			}
+			bool operator==(const reverse_iterator& a)
 			{ 
 				if (this->_ptr == a._ptr)
 					return (true);
 				return (false);
 			}
-			bool operator!=(const reverse_myiterator& a)
+			bool operator!=(const reverse_iterator& a)
 			{ 
 				if (this->_ptr != a._ptr)
 					return (true);
 				return (false);
 			}
-			bool operator>(const reverse_myiterator& a)
+			bool operator>(const reverse_iterator& a)
 			{ 
 				if (this->_ptr > a._ptr)
 					return (true);
 				return (false);
 			}
-			bool operator<(const reverse_myiterator& a)
+			bool operator<(const reverse_iterator& a)
 			{ 
 				if (this->_ptr < a._ptr)
 					return (true);
 				return (false);
 			}
-			bool operator<=(const reverse_myiterator& a)
+			bool operator<=(const reverse_iterator& a)
 			{ 
 				if (this->_ptr <= a._ptr)
 					return (true);
 				return (false);
 			}
-			bool operator>=(const reverse_myiterator& a)
+			bool operator>=(const reverse_iterator& a)
 			{ 
 				if (this->_ptr >= a._ptr)
 					return (true);
 				return (false);
 			}
-			operator reverse_myiterator<const T>() 
+			operator reverse_iterator<const T>() 
 			{
-				return reverse_myiterator<const T>(_ptr);
+				return reverse_iterator<const T>(_ptr);
 			}
 		private:
 			pointer _ptr;
 	};
 
 	template <typename T>
-	reverse_myiterator<T> operator-(const reverse_myiterator<T> &it, const int &a)
+	reverse_iterator<T> operator-(const reverse_iterator<T> &it, const int &a)
 	{
-		reverse_myiterator<T> abc(it);
+		reverse_iterator<T> abc(it);
 
 		for(int i = 0; i < a; i++)
 			abc--;
 		return (abc);
 	}
 	template <typename T>
-	reverse_myiterator<T> operator+(const reverse_myiterator<T> &it, const int &a)
+	reverse_iterator<T> operator+(const reverse_iterator<T> &it, const int &a)
 	{
-		reverse_myiterator<T> abc(it);
+		reverse_iterator<T> abc(it);
 
 		for(int i = 0; i < a; i++)
 			abc++;
 		return (abc);
+	}
+	template <typename T>
+	reverse_iterator<T> operator+(const int &a, const reverse_iterator<T> &it)
+	{
+		reverse_iterator<T> abc(it);
+
+		for(int i = 0; i < a; i++)
+			abc++;
+		return (abc);
+	}
+
+
+
+	template <class InputIterator, class Distance>
+	void advance (InputIterator& it, Distance n)
+	{
+		for (Distance i = 0; i < n; i++)
+			it++;
+	}
+	template<class InputIterator>
+	typename iterator_traits<InputIterator>::difference_type distance (InputIterator first, InputIterator last)
+	{
+		typename iterator_traits<InputIterator>::difference_type mydiff = last - first;
+
+		return (mydiff);
 	}
 }

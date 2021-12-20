@@ -12,29 +12,34 @@ namespace ft
 	template <class Iterator>
 	class iterator_traits // *Find out later why this needs to be implemented
 	{
+		public:
 		typedef typename Iterator::difference_type difference_type;
 		typedef typename Iterator::value_type value_type;
 		typedef typename Iterator::pointer pointer;
 		typedef typename Iterator::reference reference;
 		typedef typename Iterator::iterator_category iterator_category;
+
 	};
 
 	template <class T> 
 	class iterator_traits<T*>
 	{
-		typedef typename Iterator::difference_type difference_type;
-		typedef typename Iterator::value_type value_type;
-		typedef typename Iterator::pointer pointer;
-		typedef typename Iterator::reference reference;
-		typedef typename Iterator::iterator_category iterator_category;
+		public:
+		typedef typename T::difference_type difference_type;
+		typedef typename T::value_type value_type;
+		typedef typename T::pointer pointer;
+		typedef typename T::reference reference;
+		typedef typename T::iterator_category iterator_category;
 	};
 
-	template <class T> class iterator_traits<const T*>
+	template <class T> 
+	class iterator_traits<const T*>
 	{
-		typedef typename Iterator::difference_type difference_type;
-		typedef typename Iterator::value_type value_type;
-		typedef typename Iterator::pointer pointer;
-		typedef typename Iterator::reference reference;
-		typedef typename Iterator::iterator_category iterator_category;
+		public:
+		typedef typename T::difference_type difference_type;
+		typedef typename T::value_type value_type;
+		typedef typename T::pointer pointer;
+		typedef typename T::reference reference;
+		typedef typename T::iterator_category iterator_category;
 	};
 }

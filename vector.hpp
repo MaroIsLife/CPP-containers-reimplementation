@@ -21,8 +21,8 @@ namespace ft
 			typedef const T* const_pointer;
 			typedef ft::myiterator<T> iterator;
 			typedef ft::myiterator<const T>  const_iterator;
-			typedef ft::reverse_myiterator<T> reverse_iterator;
-			typedef ft::reverse_myiterator<const T> const_reverse_iterator;
+			typedef ft::reverse_iterator<T> reverse_iterator;
+			typedef ft::reverse_iterator<const T> const_reverse_iterator;
 			typedef ptrdiff_t difference_type;
 		public:
 			//!Constructors/Destructors
@@ -38,7 +38,7 @@ namespace ft
 				(void)alloc;
 				//*Using allocator construct for const data types
 				_table = _allocator.allocate(n);
-				for (int i = 0; i < n; i++)
+				for (size_t i = 0; i < n; i++)
 					_allocator.construct(&_table[i], val);
 				this->_capacity = n;
 				this->_size = n;
@@ -245,7 +245,7 @@ namespace ft
 			for (int i = 0; i < _size; i++)
 			{
 				if (it == position)
-					for (int k = 0; k < n; k++)
+					for (size_t k = 0; k < n; k++)
 						_allocator.construct(&_table2[o++], val);
 				it++;
 				_allocator.construct(&_table2[o++], _table[i]);
