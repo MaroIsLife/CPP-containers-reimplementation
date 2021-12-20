@@ -28,13 +28,17 @@ class A
 int main()
 {  
 	ft::vector<int> abc;
-	ft::vector<int>::iterator it;
+	ft::vector<int>::reverse_iterator it;
+
 	
-	for (int i = 0; i < 10;i++)
+	for (int i = 1; i < 10;i++)
 		abc.push_back(i);
-	it = abc.begin();
-	std::cout << distance(it, it + 3) << std::endl;	
-	// it = it + 3;
+	it = abc.rbegin();
+	ft::vector<int>::reverse_iterator it2(it);
+	// std::cout << *it << std::endl;
+	// if (it == it2)
+	// 	std::cout << "true" << std::endl;
+	
 	// data.insert(it,abc.begin(),abc.end());
 	// it = it - 1;
 

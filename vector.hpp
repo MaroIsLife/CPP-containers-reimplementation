@@ -93,11 +93,11 @@ namespace ft
 			}
 			reverse_iterator rbegin()
 			{
-				return(reverse_iterator(&_table[_size - 1]));
+				return(reverse_iterator(this->end() - 1));
 			}
 			reverse_iterator rend()
 			{
-				return(reverse_iterator(_table));
+				return(reverse_iterator(this->begin() - 1));
 			}
 			const_reverse_iterator rbegin() const
 			{
@@ -159,7 +159,7 @@ namespace ft
 				if (_size + 1 >= _capacity)
 				{
 					_table2 = _allocator.allocate(_capacity);
-					for (int i = 0; i < _size; i++)
+					for (size_t i = 0; i < _size; i++)
 						_allocator.construct(&_table2[i],_table[i]);
 					
 					_allocator.destroy(_table);
@@ -169,7 +169,7 @@ namespace ft
 					else
 						_capacity *= 2;
 					_table = _allocator.allocate(_capacity);
-					for (int i = 0; i < _size; i++)
+					for (size_t i = 0; i < _size; i++)
 						_allocator.construct(&_table[i],_table2[i]);
 					_allocator.destroy(_table2);
 					_allocator.deallocate(_table2, _capacity / 2);
