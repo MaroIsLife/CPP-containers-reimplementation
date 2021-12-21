@@ -4,11 +4,19 @@
 #include "vector.hpp"
 namespace ft
 {
-	//?https://www.cplusplus.com/reference/iterator/RandomAccessIterator/
+	//?https://www.cplusplus.com/reference/iterator/InputIterator/
 	struct input_iterator_tag {};
+
+	//?https://www.cplusplus.com/reference/iterator/OutputIterator/
   	struct output_iterator_tag {};
+
+	//?https://www.cplusplus.com/reference/iterator/ForwardIterator/
   	struct forward_iterator_tag : public input_iterator_tag {};
+
+	//?https://www.cplusplus.com/reference/iterator/BidirectionalIterator/
   	struct bidirectional_iterator_tag : public forward_iterator_tag {};
+
+	//?https://www.cplusplus.com/reference/iterator/RandomAccessIterator/
  	struct random_access_iterator_tag : public bidirectional_iterator_tag {};
 
 	//?https://www.cplusplus.com/reference/iterator/iterator/
@@ -29,7 +37,7 @@ namespace ft
 
 	//!#Iterator
 	template <typename T>
-	class myiterator : public ft::base_iterator<ft::random_access_iterator_tag, T> 
+	class myiterator : public ft::base_iterator<std::random_access_iterator_tag, T> 
 	{		
 		public:
 			typedef T         value_type;
@@ -43,8 +51,6 @@ namespace ft
 			}
 			myiterator(const myiterator &it)
 			{
-								std::cout << "SIUUU" << std::endl;
-
 				this->_ptr = it._ptr;
 			}
 			myiterator &operator=(myiterator const &it)
@@ -187,20 +193,19 @@ namespace ft
 		
 		
 		public:
-			reverse_iterator()
+			explicit reverse_iterator(ft::myiterator<T> x = NULL)
 			{
-				it = NULL;
-			}
-			
-			explicit reverse_iterator(ft::myiterator<T> x)
-			{
-				std::cout << "yes" << std::endl;
 				it = x;
 			}
 			template <class Iter>
-  			reverse_iterator (const reverse_iterator<Iter>& rev_it)
+  			reverse_iterator (const reverse_iterator<Iter>& rev_it) //! check why function isn't called
 			{
 				this->it = rev_it;
+			}
+			ft::myiterator<T> base() const
+			{
+				ft::myiterator<T> it2(it);
+				return (it2);
 			}
 			reference operator*()
 			{
@@ -210,7 +215,10 @@ namespace ft
 			{
 				this->it = it1;
 			}
-			pointer operator->() {return(it);}
+			pointer operator->() 
+			{
+				return &(*it);
+			}
 			reverse_iterator& operator++() { it--; return *this;}
 			reverse_iterator operator++(int)
 			{ 
@@ -249,7 +257,7 @@ namespace ft
 			}
 			difference_type operator-(const reverse_iterator &first)
 			{
-				return (this->it - first);
+				return (this->it - first.it);
 			}
 			reference operator[](const int &a)
 			{ 
@@ -279,7 +287,7 @@ namespace ft
 			}
 			bool operator<(const reverse_iterator& a)
 			{ 
-				if (this->it < a.t)
+				if (this->it < a.it)
 					return (true);
 				return (false);
 			}

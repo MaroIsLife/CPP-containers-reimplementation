@@ -25,21 +25,21 @@ namespace ft
 	class iterator_traits<T*>
 	{
 		public:
-		typedef typename T::difference_type difference_type;
-		typedef typename T::value_type value_type;
-		typedef typename T::pointer pointer;
-		typedef typename T::reference reference;
-		typedef typename T::iterator_category iterator_category;
+		typedef  ptrdiff_t difference_type;
+		typedef  T value_type;
+		typedef  T* pointer;
+		typedef  T& reference;
+		typedef typename std::random_access_iterator_tag iterator_category;
 	};
 
 	template <class T> 
 	class iterator_traits<const T*>
 	{
 		public:
-		typedef typename T::difference_type difference_type;
-		typedef typename T::value_type value_type;
-		typedef typename T::pointer pointer;
-		typedef typename T::reference reference;
-		typedef typename T::iterator_category iterator_category;
+		typedef ptrdiff_t difference_type;
+		typedef  T value_type;
+		typedef const T* pointer;
+		typedef const T& reference;
+		typedef typename std::random_access_iterator_tag iterator_category;
 	};
 }
