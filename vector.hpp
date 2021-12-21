@@ -47,13 +47,11 @@ namespace ft
 			template <typename InputIterator>
 			void rangeContructor(InputIterator first, InputIterator last, std::input_iterator_tag)
 			{
-				while(first != last)
-				{
+				while (first != last)
 					push_back(*(first++));
-				}
 			}
 			template <typename InputIterator>
-			void rangeContructor(InputIterator first, InputIterator last, std::forward_iterator_tag)
+			void rangeContructor(InputIterator first, InputIterator last, std::random_access_iterator_tag)
 			{
 				 _diff = std::distance(first,last);
 				_size = _diff;
@@ -66,8 +64,7 @@ namespace ft
 			vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(), 
 				typename ft::enable_if<!ft::is_integral<InputIterator>::value,InputIterator>::type *ptr = NULL)
 			{
-				typename ft::iterator_traits<InputIterator>::iterator_category input;
-
+				typename ft::iterator_traits<InputIterator>::iterator_category input; //T* = Random access iterator in iterator traits
 				(void)ptr;
 				(void)alloc;
 				rangeContructor(first, last, input);

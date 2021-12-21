@@ -67,3 +67,6 @@ int main()
 
 //*Const Correctness 
 //https://isocpp.org/wiki/faq/const-correctness#overview-const
+
+//* Istream iterator
+//https://www.cplusplus.com/reference/iterator/istream_iterator/
