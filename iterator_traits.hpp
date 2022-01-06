@@ -10,7 +10,7 @@
 namespace ft
 {
 	template <class Iterator>
-	class iterator_traits // *Find out later why this needs to be implemented
+	class iterator_traits
 	{
 		public:
 		typedef typename Iterator::difference_type difference_type;

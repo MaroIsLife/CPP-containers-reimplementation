@@ -22,7 +22,7 @@ namespace ft
 			typedef const T* const_pointer;
 			typedef ft::myiterator<T> iterator;
 			typedef ft::myiterator<const T>  const_iterator;
-			typedef ft::reverse_iterator<T> reverse_iterator;
+			typedef ft::reverse_iterator<iterator> reverse_iterator;
 			typedef ft::reverse_iterator<const T> const_reverse_iterator;
 			typedef ptrdiff_t difference_type;
 		public:
@@ -325,20 +325,26 @@ namespace ft
 			_diff = last - first;
 			_table2 = _allocator.allocate(_capacity);
 			iterator it(this->begin());
-			for (size_t i = 0;i < _size;i++)
+			size_t o = 0;
+			for (size_t i = 0; i < _size; i++)
 			{
 				if (it == first)
 					for (;it != last; it++)
-						i++;
-				_allocator.construct(&_table2[i], _table[i]);
+						o++;
+				_allocator.construct(&_table2[i], _table[o++]);
 				it++;
 			}
-			_allocator.destroy(_table);
+			// std::cout << "Table2: " << _table2[i] << std::endl;
+
+			for (size_t i = 0; i < _size; i++)
+				_allocator.destroy(&_table[i]);
 			_allocator.deallocate(_table, _capacity);
 			_size -= _diff;
+			_table = _allocator.allocate(_capacity);
 			for (size_t i = 0; i < _size; i++)
 				_allocator.construct(&_table[i], _table2[i]);
-			_allocator.destroy(_table2);
+			for (size_t i = 0; i < _size; i++)
+				_allocator.destroy(&_table2[i]);
 			_allocator.deallocate(_table2, _capacity);
 			return (first);
 		}

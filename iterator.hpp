@@ -25,11 +25,11 @@ namespace ft
 	struct base_iterator 
 	{
 		public:
-		typedef T			value_type;
-		typedef Distance	difference_type;
-		typedef Pointer		pointer;
-		typedef Reference	reference;
-		typedef Category 	iterator_category;
+			typedef T			value_type;
+			typedef Distance	difference_type;
+			typedef Pointer		pointer;
+			typedef Reference	reference;
+			typedef Category 	iterator_category;
 	};
 	
 	//?https://www.cplusplus.com/reference/iterator/
@@ -174,7 +174,6 @@ namespace ft
 	myiterator<T> operator+(const int &a, const myiterator<T> &it)
 	{
 		myiterator<T> abc(it);
-
 		for(int i = 0; i < a; i++)
 			abc++;
 		return (abc);
@@ -186,14 +185,14 @@ namespace ft
 	template <typename T>
 	class reverse_iterator
 	{
-		typedef T         value_type;
-		typedef T*   pointer;
-		typedef T& reference;
+		typedef typename ft::iterator_traits<T>::pointer	pointer;
+		typedef typename ft::iterator_traits<T>::reference reference;
+		typedef typename ft::iterator_traits<T>::value_type	value_type;
+		typedef typename ft::iterator_traits<T>::iterator_category iterator_category;
 		typedef ptrdiff_t difference_type;
 		
-		
 		public:
-			explicit reverse_iterator(ft::myiterator<T> x = NULL)
+			explicit reverse_iterator(T x = NULL)
 			{
 				it = x;
 			}
@@ -202,20 +201,20 @@ namespace ft
 			{
 				this->it = rev_it;
 			}
-			ft::myiterator<T> base() const
-			{
-				ft::myiterator<T> it2(it);
-				return (it2);
-			}
+			// ft::myiterator<T> base() const
+			// {
+			// 	ft::myiterator<T> it2(it);
+			// 	return (it2);
+			// }
 			reference operator*()
 			{
 				return (*it);
 			}
-			reverse_iterator& operator=(const myiterator<T> &it1)
+			reverse_iterator& operator=(const T &it1)
 			{
 				this->it = it1;
 			}
-			pointer operator->() 
+			pointer operator->()
 			{
 				return &(*it);
 			}
@@ -251,7 +250,7 @@ namespace ft
 			reverse_iterator operator+(const int &a)
 			{
 				reverse_iterator<T> it(*this);
-				for(int i = 0;i < a;i++)
+				for (int i = 0;i < a; i++)
 					it++;
 				return (it);
 			}
@@ -304,7 +303,8 @@ namespace ft
 				return (false);
 			}
 		private:
-			ft::myiterator<T> it;
+			T it;
+			// ft::myiterator<T> it;
 	};
 
 	template <typename T>
@@ -312,7 +312,7 @@ namespace ft
 	{
 		reverse_iterator<T> abc(it);
 
-		for(int i = 0; i < a; i++)
+		for (int i = 0; i < a; i++)
 			abc--;
 		return (abc);
 	}
