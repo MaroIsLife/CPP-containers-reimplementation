@@ -334,8 +334,6 @@ namespace ft
 				_allocator.construct(&_table2[i], _table[o++]);
 				it++;
 			}
-			// std::cout << "Table2: " << _table2[i] << std::endl;
-
 			for (size_t i = 0; i < _size; i++)
 				_allocator.destroy(&_table[i]);
 			_allocator.deallocate(_table, _capacity);

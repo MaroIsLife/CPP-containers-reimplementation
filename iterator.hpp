@@ -185,13 +185,13 @@ namespace ft
 	template <typename T>
 	class reverse_iterator
 	{
-		typedef typename ft::iterator_traits<T>::pointer	pointer;
-		typedef typename ft::iterator_traits<T>::reference reference;
-		typedef typename ft::iterator_traits<T>::value_type	value_type;
-		typedef typename ft::iterator_traits<T>::iterator_category iterator_category;
-		typedef ptrdiff_t difference_type;
 		
 		public:
+			typedef typename ft::iterator_traits<T>::pointer	pointer;
+			typedef typename ft::iterator_traits<T>::reference reference;
+			typedef typename ft::iterator_traits<T>::value_type	value_type;
+			typedef typename ft::iterator_traits<T>::iterator_category iterator_category;
+			typedef ptrdiff_t difference_type;
 			explicit reverse_iterator(T x = NULL)
 			{
 				it = x;
@@ -201,11 +201,10 @@ namespace ft
 			{
 				this->it = rev_it;
 			}
-			// ft::myiterator<T> base() const
-			// {
-			// 	ft::myiterator<T> it2(it);
-			// 	return (it2);
-			// }
+			T base() const
+			{
+				return (it);
+			}
 			reference operator*()
 			{
 				return (*it);

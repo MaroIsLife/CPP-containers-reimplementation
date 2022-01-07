@@ -30,14 +30,14 @@ class A
 int main()
 {
 	  
-	// int arr[9] = {1,2,3,4,5,6,7,8,9};
+	int arr[9] = {1,2,3,4,5,6,7,8,9};
 	// std::vector<int> abc;
 	// std::vector<int>::iterator it;
-	// std::vector<int> data(arr, arr + 9);
+	ft::vector<int> data(arr, arr + 9);
 	// std::vector<int>::reverse_iterator rit(data.rend());
 	// for (;rit != data.rbegin(); rit--)
 	// 	std::cout << *rit << std::endl;
-	// ft::vector<int> data((std::istream_iterator<int>(std::cin)),std::istream_iterator<int>());
+	ft::vector<int> data((std::istream_iterator<int>(std::cin)),std::istream_iterator<int>());
 	//enter + ctrl D
 	// for (int i = 1; i < 10;i++)
 	// 	abc.push_back(i);
@@ -53,32 +53,6 @@ int main()
 	// 	std::cout << data[i] << std::endl;
 	// std::cout << "Size: " << data.size() << " Capacity: " << data.capacity() << std::endl;
 	// system("leaks a.out");
-
-	 {
-		ft::vector<int> a;
-		a.push_back(5);
-		// std::cout << " my BEFOR size org ==>  " << a.size() << "    " << " BEFOR capasity ==> " << a.capacity() << std::endl;
-		a.push_back(9);
-		//std::cout << " my BEFOR size org ==>  " << a.size() << "    " << " BEFOR capasity ==> " << a.capacity() << std::endl;
-		a.push_back(8);
-		a.push_back(1);
-		//std::cout << " my BEFOR size org ==>  " << a.size() << "    " << " BEFOR capasity ==> " << a.capacity() << std::endl;
-		a.push_back(7);
-		// a.push_back(10);
-		// a.push_back(90);
-		// a.reserve(a.size() + 1);
-		// a.reserve(5);
-		std::cout << " my v BEFOR size  ==>  " << a.size() << "    " << " BEFOR capasity ==> " << a.capacity() << std::endl;
-		//std::cout << " BEFOR size my v ==>  " << a.size() << "    " << " BEFOR capasity my v ==> " << a.capacity() << std::endl;
-		ft::vector<int>::iterator it =   a.begin();
-		ft::vector<int>::iterator  rt =   a.erase(it  + 1, a.end() - 2);
-		std::cout << "test return ==> " <<  *rt  << std::endl; 
-		std::cout << " AFTER size my v  ==>  " << a.size() << "    " << " AFTER capasity my v==> " << a.capacity() << std::endl;
-		for (it = a.begin(); it != a.end(); it++)
-			std::cout << "element my v ==> " << *it << std::endl;
-		std::cout << "test return ==> " <<  *rt  << std::endl; 
-  }
-
 }
 
 
