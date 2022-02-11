@@ -6,6 +6,7 @@
 #include "algorithm.hpp"
 #include "type_traits.hpp"
 #include "iterator_traits.hpp"
+
 namespace ft
 {
 	//?https://www.cplusplus.com/reference/vector/vector/?kw=vector
@@ -23,7 +24,7 @@ namespace ft
 			typedef ft::myiterator<T> iterator;
 			typedef ft::myiterator<const T>  const_iterator;
 			typedef ft::reverse_iterator<iterator> reverse_iterator;
-			typedef ft::reverse_iterator<const T> const_reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 			typedef ptrdiff_t difference_type;
 		public:
 			//!Constructors/Destructors

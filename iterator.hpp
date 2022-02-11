@@ -43,13 +43,14 @@ namespace ft
 			typedef T         value_type;
 			typedef T*   pointer;
 			typedef T& reference;
+			typedef myiterator<const T> const_myiterator;
 			typedef ptrdiff_t difference_type;
 
 			myiterator(pointer abc = NULL)
 			{
 				_ptr = abc;
 			}
-			myiterator(const myiterator &it)
+			myiterator(myiterator const &it)
 			{
 				this->_ptr = it._ptr;
 			}
@@ -61,6 +62,10 @@ namespace ft
 			reference operator*()
 			{
 				return (*_ptr);
+			}
+			pointer base() const
+			{
+				return (_ptr);
 			}
 			pointer operator->() {return(_ptr);}
 			myiterator& operator++() { _ptr++; return *this;}
@@ -146,10 +151,14 @@ namespace ft
 			//?https://stackoverflow.com/questions/1307876/how-do-conversion-operators-work-in-c
 			//?https://www.youtube.com/watch?v=M2D11HXlgnE
 			//*Declares a user-defined conversion function that participates in all implicit and explicit conversions.
-			operator myiterator<const T>()
+			operator const_myiterator() const
 			{
-				return myiterator<const T>(_ptr);
+				return const_myiterator(_ptr);
 			}
+			// operator myiterator<const T>()
+			// {
+			// 	return myiterator<const T>();
+			// }
 		protected:
 			pointer _ptr;
 	};
@@ -182,26 +191,27 @@ namespace ft
 	//!#Reverse Iterator
 	//?https://www.cplusplus.com/reference/iterator/reverse_iterator/
 
-	template <typename T>
+	template <typename iterator>
 	class reverse_iterator
 	{
 		
 		public:
-			typedef typename ft::iterator_traits<T>::pointer	pointer;
-			typedef typename ft::iterator_traits<T>::reference reference;
-			typedef typename ft::iterator_traits<T>::value_type	value_type;
-			typedef typename ft::iterator_traits<T>::iterator_category iterator_category;
+			typedef typename ft::iterator_traits<iterator>::pointer	pointer;
+			typedef typename ft::iterator_traits<iterator>::reference reference;
+			typedef typename ft::iterator_traits<iterator>::value_type	value_type;
+			typedef typename ft::iterator_traits<iterator>::iterator_category iterator_category;
 			typedef ptrdiff_t difference_type;
-			explicit reverse_iterator(T x = NULL)
+
+			explicit reverse_iterator(iterator x = NULL)
 			{
 				it = x;
 			}
 			template <class Iter>
-  			reverse_iterator (const reverse_iterator<Iter>& rev_it) //! check why function isn't called
+  			reverse_iterator (reverse_iterator<Iter> const &rev_it) : it(rev_it.base())
 			{
-				this->it = rev_it;
+				
 			}
-			T base() const
+			iterator base() const
 			{
 				return (it);
 			}
@@ -209,9 +219,11 @@ namespace ft
 			{
 				return (*it);
 			}
-			reverse_iterator& operator=(const T &it1)
+			template <class Iter>
+			reverse_iterator& operator=(reverse_iterator<Iter> const &rev_it)
 			{
-				this->it = it1;
+				this->it = rev_it.base();
+				return (*this);
 			}
 			pointer operator->()
 			{
@@ -248,7 +260,7 @@ namespace ft
 	
 			reverse_iterator operator+(const int &a)
 			{
-				reverse_iterator<T> it(*this);
+				reverse_iterator<iterator> it(*this);
 				for (int i = 0;i < a; i++)
 					it++;
 				return (it);
@@ -261,7 +273,7 @@ namespace ft
 			{ 
 				return it[a];
 			}
-			const T& operator[](const int &a) const
+			const iterator& operator[](const int &a) const
 			{ 
 				return it[a];
 			}
@@ -302,7 +314,7 @@ namespace ft
 				return (false);
 			}
 		private:
-			T it;
+			iterator it;
 			// ft::myiterator<T> it;
 	};
 
@@ -344,7 +356,7 @@ namespace ft
 	typename iterator_traits<InputIterator>::difference_type distance (InputIterator first, InputIterator last)
 	{
 		typename iterator_traits<InputIterator>::difference_type mydiff = last - first;
-
+				
 		return (mydiff);
 	}
 }

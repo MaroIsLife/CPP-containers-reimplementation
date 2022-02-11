@@ -15,15 +15,7 @@
 // 	std::cout << a[1] << std::endl;
 // }
 
-class A
-{
-	public:
-	operator bool()
-	{
-		std::cout << "BOOOOL" << std::endl;
-		return (true);
-	}
-};
+
 
 //! Fix Assign and Insert with Enable_if (Input Iterator)
 //! Implement istream iterator with insert range and assign range
@@ -33,11 +25,14 @@ int main()
 	int arr[9] = {1,2,3,4,5,6,7,8,9};
 	// std::vector<int> abc;
 	// std::vector<int>::iterator it;
-	ft::vector<int> data(arr, arr + 9);
+	ft::vector<int> data(arr, &arr[9]);
+	ft::vector<int>::const_reverse_iterator it = data.rbegin();
+	// while (it != data.end())
+	// 	std::cout << *(it++) << std::endl;
 	// std::vector<int>::reverse_iterator rit(data.rend());
 	// for (;rit != data.rbegin(); rit--)
 	// 	std::cout << *rit << std::endl;
-	ft::vector<int> data((std::istream_iterator<int>(std::cin)),std::istream_iterator<int>());
+	// ft::vector<int> data((std::istream_iterator<int>(std::cin)),std::istream_iterator<int>());
 	//enter + ctrl D
 	// for (int i = 1; i < 10;i++)
 	// 	abc.push_back(i);
