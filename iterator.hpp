@@ -155,10 +155,10 @@ namespace ft
 			{
 				return const_myiterator(_ptr);
 			}
-			// operator myiterator<const T>()
-			// {
-			// 	return myiterator<const T>();
-			// }
+			operator myiterator<const T>()
+			{
+				return myiterator<const T>(_ptr);
+			}
 		protected:
 			pointer _ptr;
 	};
@@ -196,6 +196,7 @@ namespace ft
 	{
 		
 		public:
+			typedef iterator iterator_type;
 			typedef typename ft::iterator_traits<iterator>::pointer	pointer;
 			typedef typename ft::iterator_traits<iterator>::reference reference;
 			typedef typename ft::iterator_traits<iterator>::value_type	value_type;
@@ -217,7 +218,8 @@ namespace ft
 			}
 			reference operator*()
 			{
-				return (*it);
+				iterator it2(it);
+				return (*(--it2));
 			}
 			template <class Iter>
 			reverse_iterator& operator=(reverse_iterator<Iter> const &rev_it)
@@ -227,12 +229,13 @@ namespace ft
 			}
 			pointer operator->()
 			{
-				return &(*it);
+				iterator it2(it);
+				return &(*(--it2));
 			}
 			reverse_iterator& operator++() { it--; return *this;}
 			reverse_iterator operator++(int)
 			{ 
-				reverse_iterator abc(*this); 
+				reverse_iterator abc(*this);
 				this->it--;
 				return abc;
 			}

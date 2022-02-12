@@ -23,10 +23,20 @@ int main()
 {
 	  
 	int arr[9] = {1,2,3,4,5,6,7,8,9};
+	std::vector<int> v1(arr,arr+9);
+	std::vector<int>::reverse_iterator it(v1.rend());
+
+	std::cout << *it << std::endl;
+
+	// std::vector<int> v(3, 4);
+	// ft::reverse_iterator<std::vector<int>::iterator> my_rit(v.end());
+
+	// my_rit++;
+	// std::cout << *my_rit << std::endl;
+	// if (*my_rit == *(v.end() - 1))
+	// 	;
 	// std::vector<int> abc;
 	// std::vector<int>::iterator it;
-	ft::vector<int> data(arr, &arr[9]);
-	ft::vector<int>::const_reverse_iterator it = data.rbegin();
 	// while (it != data.end())
 	// 	std::cout << *(it++) << std::endl;
 	// std::vector<int>::reverse_iterator rit(data.rend());
