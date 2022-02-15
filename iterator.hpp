@@ -167,7 +167,7 @@ namespace ft
 	myiterator<T> operator-(const myiterator<T> &it, const int &a)
 	{
 		myiterator<T> abc(it);
-		for(int i = 0; i < a; i++)
+		for (int i = 0; i < a; i++)
 			abc--;
 		return (abc);
 	}
@@ -219,7 +219,8 @@ namespace ft
 			reference operator*()
 			{
 				iterator it2(it);
-				return (*(--it2));
+				--it2;
+				return (*(it2));
 			}
 			template <class Iter>
 			reverse_iterator& operator=(reverse_iterator<Iter> const &rev_it)
@@ -230,7 +231,8 @@ namespace ft
 			pointer operator->()
 			{
 				iterator it2(it);
-				return &(*(--it2));
+				--it2;
+				return &(*(it2));
 			}
 			reverse_iterator& operator++() { it--; return *this;}
 			reverse_iterator operator++(int)
@@ -241,7 +243,7 @@ namespace ft
 			}
 			reverse_iterator& operator--() { it++; return *this;}
 			reverse_iterator operator--(int)
-			{ 
+			{
 				reverse_iterator abc = *this; 
 				this->it++;
 				return abc;
@@ -273,8 +275,10 @@ namespace ft
 				return (this->it - first.it);
 			}
 			reference operator[](const int &a)
-			{ 
-				return it[a];
+			{
+				iterator it2(it);
+				it2--;
+				return (it2[a]);
 			}
 			const iterator& operator[](const int &a) const
 			{ 

@@ -54,7 +54,9 @@ namespace ft
 			template <typename InputIterator>
 			void rangeContructor(InputIterator first, InputIterator last, std::random_access_iterator_tag)
 			{
-				 _diff = std::distance(first,last);
+				_diff = std::distance(first, last);
+				if (_diff < 0)
+				_diff = _diff * -1;
 				_size = _diff;
 				_capacity = _size;
 				_table = _allocator.allocate(_diff);
@@ -107,11 +109,11 @@ namespace ft
 			}
 			reverse_iterator rbegin()
 			{
-				return(reverse_iterator(this->end() - 1));
+				return(reverse_iterator(this->end()));
 			}
 			reverse_iterator rend()
 			{
-				return(reverse_iterator(this->begin() - 1));
+				return(reverse_iterator(this->begin()));
 			}
 			const_reverse_iterator rbegin() const
 			{
@@ -151,6 +153,7 @@ namespace ft
 			{
 				if (n == _size)
 					return;
+				_size = n;
 				while (n > _capacity)
 					_capacity *= 2;
 				_table2 = _allocator.allocate(_capacity);
@@ -158,7 +161,6 @@ namespace ft
 					_allocator.construct(&_table2[i],_table[i]);
 				for (size_t i = _size; i < _capacity; i++)
 						_allocator.construct(&_table2[i],val);
-				_size = n;
 				_allocator.destroy(_table);
 				_allocator.deallocate(_table, _capacity);
 				_table = _allocator.allocate(_capacity);

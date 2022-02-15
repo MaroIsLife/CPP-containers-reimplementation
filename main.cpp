@@ -21,14 +21,26 @@
 //! Implement istream iterator with insert range and assign range
 int main()
 {
-	  
-	int arr[9] = {1,2,3,4,5,6,7,8,9};
-	std::vector<int> v1(arr,arr+9);
-	std::vector<int>::reverse_iterator it(v1.rend());
+	// std::vector<int> v1(arr,arr+9);
+	// std::vector<int>::reverse_iterator it(v1.rend());
 
-	std::cout << *it << std::endl;
+	// std::cout << *it << std::endl;
+	std::string arr[9] = {"1","2","3","4","5","6","7","8","9"};
+	// ft::vector<std::string> ft_v1(arr, arr + 9);
 
-	// std::vector<int> v(3, 4);
+ 	ft::vector<std::string> ft_v1(10, "string2");
+    ft::vector<std::string> ft_v5(ft_v1.rbegin(), ft_v1.rend());
+	
+	for(int i =0; i != ft_v5.size(); i++)
+		std::cout << ft_v5[i] << std::endl;
+	// std::vector<std::string> v(arr, arr + 9);
+
+        // ft::vector<std::string> ft_v1(3, "string2");
+				
+		//    std::cout << *rit << std::endl;//ft_res += *rit;
+        // for (ft::vector<std::string>::const_reverse_iterator rit = ft_v2.rbegin(); rit != ft_v2.rend(); ++rit) // fill c_ft_res from const ft_v1
+        //     c_ft_res += *rit;
+	// std::cout << c_ft_res << std::endl;
 	// ft::reverse_iterator<std::vector<int>::iterator> my_rit(v.end());
 
 	// my_rit++;
