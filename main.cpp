@@ -26,13 +26,23 @@ int main()
 
 	// std::cout << *it << std::endl;
 	std::string arr[9] = {"1","2","3","4","5","6","7","8","9"};
+	ft::vector<std::string> v(arr, arr + 9);	
+	ft::vector<std::string>::reverse_iterator it = v.rend() - 1;
+	std::vector<std::string> v1(arr, arr+9);	
+	std::vector<std::string>::reverse_iterator it1(v1.rend() - 1);
+
+	it--;
+	it1--;
+	std::cout << *it << std::endl;
+	std::cout << *it1 << std::endl;
+
+	// --my_rit;
+    // --rit;
+    // if ((&(*(2 + my_rit)) == &(*(1 + my_rit1))) && (&(*(2 + rit)) == &(*(1 + rit_1))))
+	// 	std::cout << "True" << std::endl;
 	// ft::vector<std::string> ft_v1(arr, arr + 9);
 
- 	ft::vector<std::string> ft_v1(10, "string2");
-    ft::vector<std::string> ft_v5(ft_v1.rbegin(), ft_v1.rend());
-	
-	for(int i =0; i != ft_v5.size(); i++)
-		std::cout << ft_v5[i] << std::endl;
+ 
 	// std::vector<std::string> v(arr, arr + 9);
 
         // ft::vector<std::string> ft_v1(3, "string2");

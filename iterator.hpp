@@ -250,29 +250,26 @@ namespace ft
 			}
 			reverse_iterator &operator-=(const int &a)
 			{
-				for (int i = 0;i < a; i++)
-					this->it--;
+				this->it = this->it - a;
 				return (*this);
 			}
-
-			reverse_iterator &operator+=(const int &a)
+			reverse_iterator &operator+= (difference_type n)
 			{
-
-				for (int i = 0;i < a; i++)
-					this->it++;
+				this->it = this->it - n;
 				return (*this);
 			}
-	
-			reverse_iterator operator+(const int &a)
+			reverse_iterator operator+ (difference_type n) const
 			{
 				reverse_iterator<iterator> it(*this);
-				for (int i = 0;i < a; i++)
-					it++;
+				this->it = this->it - n;
 				return (it);
 			}
-			difference_type operator-(const reverse_iterator &first)
+			reverse_iterator operator-(difference_type n) const
 			{
-				return (this->it - first.it);
+				reverse_iterator<iterator> it(*this);
+				for (int i = 0;i < n; i++)
+					it--;
+				return (it);
 			}
 			reference operator[](const int &a)
 			{
@@ -298,31 +295,30 @@ namespace ft
 			}
 			bool operator>(const reverse_iterator& a)
 			{ 
-				if (this->it > a.it)
+				if (this->it < a.it)
 					return (true);
 				return (false);
 			}
 			bool operator<(const reverse_iterator& a)
 			{ 
-				if (this->it < a.it)
+				if (this->it > a.it)
 					return (true);
 				return (false);
 			}
 			bool operator<=(const reverse_iterator& a)
 			{ 
-				if (this->it <= a.it)
+				if (this->it >= a.it)
 					return (true);
 				return (false);
 			}
 			bool operator>=(const reverse_iterator& a)
 			{ 
-				if (this->it >= a.it)
+				if (this->it <= a.it)
 					return (true);
 				return (false);
 			}
 		private:
 			iterator it;
-			// ft::myiterator<T> it;
 	};
 
 	template <typename T>
@@ -350,6 +346,11 @@ namespace ft
 		for (int i = 0; i < a; i++)
 			abc++;
 		return (abc);
+	}
+	template <class Iterator>
+  	typename reverse_iterator<Iterator>::difference_type operator- (const reverse_iterator<Iterator>& lhs, const reverse_iterator<Iterator>& rhs)
+	{
+		return (lhs.base() - rhs.base());
 	}
 
 	template <class InputIterator, class Distance>

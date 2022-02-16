@@ -117,11 +117,11 @@ namespace ft
 			}
 			const_reverse_iterator rbegin() const
 			{
-				return(const_reverse_iterator(&_table[_size - 1]));
+				return(const_reverse_iterator(this->end()));
 			}
 			const_reverse_iterator rend() const
 			{
-				return(const_reverse_iterator(_table));
+				return(const_reverse_iterator(this->begin()));
 			}
 			//!Capacity:
 			size_type capacity() {return (_capacity);}
@@ -424,12 +424,12 @@ namespace ft
 	template <class T, class Alloc>
 	bool operator<(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs)
 	{
-		return(ft::lexicographical_compare(lhs.begin(),lhs.end(),rhs.begin(),rhs.end()));
+		return (ft::lexicographical_compare(lhs.begin(),lhs.end(),rhs.begin(),rhs.end()));
 	}
 	template <class T, class Alloc>
 	bool operator>(const ft::vector<T, Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
 	{
-		return(ft::lexicographical_compare(rhs.begin(),rhs.end(),lhs.begin(),lhs.end()));
+		return (ft::lexicographical_compare(rhs.begin(),rhs.end(),lhs.begin(),lhs.end()));
 	}
 	template <class T, class Alloc>
 	bool operator>=(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs)
