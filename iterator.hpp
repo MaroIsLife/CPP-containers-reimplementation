@@ -70,12 +70,16 @@ namespace ft
 			pointer operator->() {return(_ptr);}
 			myiterator& operator++() { _ptr++; return *this;}
 			myiterator operator++(int)
-			{
+			{                                                                                         
 				myiterator abc(*this); 
 				++(*this);
 				return abc;
 			}
-			myiterator& operator--() { _ptr--; return *this;}
+			myiterator& operator--()
+			{
+				_ptr--;
+			 	return (*this);
+			}
 			myiterator operator--(int)
 			{ 
 				myiterator abc = *this; 
@@ -88,7 +92,6 @@ namespace ft
 					(*this)--;
 				return (*this);
 			}
-
 			myiterator &operator+=(const int &a)
 			{
 				for (int i = 0;i < a; i++)
@@ -234,9 +237,14 @@ namespace ft
 				--it2;
 				return &(*(it2));
 			}
-			reverse_iterator& operator++() { it--; return *this;}
+			reverse_iterator& operator++()
+			{
+				--it;
+				return (*this);
+			}
+
 			reverse_iterator operator++(int)
-			{ 
+			{
 				reverse_iterator abc(*this);
 				this->it--;
 				return abc;
@@ -250,7 +258,7 @@ namespace ft
 			}
 			reverse_iterator &operator-=(const int &a)
 			{
-				this->it = this->it - a;
+				this->it = this->it + a;
 				return (*this);
 			}
 			reverse_iterator &operator+= (difference_type n)
@@ -348,9 +356,10 @@ namespace ft
 		return (abc);
 	}
 	template <class Iterator>
-  	typename reverse_iterator<Iterator>::difference_type operator- (const reverse_iterator<Iterator>& lhs, const reverse_iterator<Iterator>& rhs)
+  	typename reverse_iterator<Iterator>::difference_type operator-(const reverse_iterator<Iterator>& lhs, const reverse_iterator<Iterator>& rhs)
 	{
-		return (lhs.base() - rhs.base());
+		// std::cout << "++" << std::endl;
+		return (rhs.base() - lhs.base());
 	}
 
 	template <class InputIterator, class Distance>

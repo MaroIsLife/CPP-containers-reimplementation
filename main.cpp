@@ -16,28 +16,51 @@
 // }
 
 
+std::string& asmae(std::string &a)
+{
+	return a;
+}
+
 
 //! Fix Assign and Insert with Enable_if (Input Iterator)
 //! Implement istream iterator with insert range and assign range
 int main()
 {
+
+
+
+
 	// std::vector<int> v1(arr,arr+9);
 	// std::vector<int>::reverse_iterator it(v1.rend());
 
 	// std::cout << *it << std::endl;
+
 	std::string arr[9] = {"1","2","3","4","5","6","7","8","9"};
-	ft::vector<std::string> v(arr, arr + 9);	
-	ft::vector<std::string>::reverse_iterator it = v.rend() - 1;
-	std::vector<std::string> v1(arr, arr+9);	
-	std::vector<std::string>::reverse_iterator it1(v1.rend() - 1);
+	std::vector<int> v(3, 4);
+	ft::vector<int> my_v(3, 4);
+	std::vector<int>::reverse_iterator rit(v.end()), rit_1(v.end() - 1);
+    ft::vector<int>::reverse_iterator my_rit(my_v.end()), my_rit1(my_v.end() - 1);
+	
 
-	it--;
-	it1--;
-	std::cout << *it << std::endl;
-	std::cout << *it1 << std::endl;
+	std::cout << (my_rit - my_rit1) << std::endl;
+	std::cout << (rit - rit_1) << std::endl;
+	if (((my_rit - my_rit1) == (rit - rit_1)) && ((my_rit1 - my_rit) == (rit_1 - rit)))
+		std::cout << "same" << std::endl;
+	else
+		std::cout << "not same" << std::endl;
 
-	// --my_rit;
-    // --rit;
+	// if((my_rit[0] = 5) == 5)
+	// 	std::cout << "5 = true" << std::endl;
+	std::cout << *my_rit << std::endl;
+	std::cout << *my_rit1 << std::endl;
+	std::cout << "my_rit: " << &(*my_rit) << std::endl;
+	std::cout << "my_rit: " << &(*my_rit1) << std::endl;
+	std::cout << *rit << std::endl;
+	std::cout << *rit_1 << std::endl;
+	std::cout << "rit: " << &(*rit) << std::endl;
+	std::cout << "rit_: " << &(*rit_1) << std::endl;
+	
+
     // if ((&(*(2 + my_rit)) == &(*(1 + my_rit1))) && (&(*(2 + rit)) == &(*(1 + rit_1))))
 	// 	std::cout << "True" << std::endl;
 	// ft::vector<std::string> ft_v1(arr, arr + 9);
