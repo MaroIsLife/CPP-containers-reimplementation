@@ -135,11 +135,15 @@ namespace ft
 					_table2 = _allocator.allocate(_capacity);
 					for (size_t i = 0; i < _size; i++)
 						_allocator.construct(&_table2[i],_table[i]);
-					_allocator.destroy(_table);
-					_allocator.deallocate(_table, _capacity);
-					_allocator.allocate(n);
+					for (size_t i = 0; i < _capacity; i++)
+						_allocator.destroy(&_table[i]);
+					// _allocator.deallocate(_table, _capacity);
+					_table = _allocator.allocate(n);
 					for (size_t i = 0; i < _size; i++)
 						_allocator.construct(&_table[i],_table2[i]);
+					for (size_t i = 0; i < _capacity; i++)
+						_allocator.destroy(&_table2[i]);
+					_allocator.deallocate(_table2, _capacity);
 					_capacity = n;
 				}
 			}
@@ -151,23 +155,26 @@ namespace ft
 			}
 			void resize (size_type n, value_type val = value_type())
 			{
+				pointer _table3;
+				int old_capacity = _capacity;
 				if (n == _size)
 					return;
-				while (n > _capacity)
-					_capacity *= 2;
+				if (n > _capacity)
+					_capacity = n;
 				_table2 = _allocator.allocate(_capacity);
 				for (size_t i = 0; i < _size; i++)
 					_allocator.construct(&_table2[i],_table[i]);
 				for (size_t i = _size; i < _capacity; i++)
 						_allocator.construct(&_table2[i],val);
+				for(size_t i = 0; i < _size; i++)
+					_allocator.destroy(&_table[i]);
+				_allocator.deallocate(_table, old_capacity);
 				_size = n;
-				_allocator.destroy(_table);
-				_allocator.deallocate(_table, _capacity);
 				_table = _allocator.allocate(_capacity);
 				for (size_t i = 0; i < _size; i++)
 					_allocator.construct(&_table[i],_table2[i]);
 				_allocator.destroy(_table2);
-				_allocator.deallocate(_table2, _capacity / 2);
+				_allocator.deallocate(_table2, _capacity);
 			}
 			//!Modifiers
 			void push_back(T n)

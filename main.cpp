@@ -27,6 +27,9 @@ std::string& asmae(std::string &a)
 int main()
 {
 
+	//! Fix resize
+	
+
 
 
 
@@ -36,57 +39,21 @@ int main()
 	// std::cout << *it << std::endl;
 
 	std::string arr[9] = {"1","2","3","4","5","6","7","8","9"};
-	std::vector<int> v(3, 4);
-	ft::vector<int> my_v(3, 4);
-	std::vector<int>::reverse_iterator rit(v.end()), rit_1(v.end() - 1);
-    ft::vector<int>::reverse_iterator my_rit(my_v.end()), my_rit1(my_v.end() - 1);
+
+
+	std::string ft_sit1;
+	ft::vector<std::string> ft_v1(50, "string2");
+	ft::vector<std::string>::iterator ft_valid_it, ft_valid_eit;
+	ft_valid_it = ft_v1.begin();
+	ft_valid_eit = ft_v1.end();
+
+	ft_v1.resize(40);
+	std::cout << ft_v1.capacity() << std::endl;
+	std::cout << ft_v1.size() << std::endl;
 	
+	for (; ft_valid_it != ft_valid_eit; ft_valid_it++)
+			std::cout << *ft_valid_it << std::endl;
 
-	std::cout << (my_rit - my_rit1) << std::endl;
-	std::cout << (rit - rit_1) << std::endl;
-	if (((my_rit - my_rit1) == (rit - rit_1)) && ((my_rit1 - my_rit) == (rit_1 - rit)))
-		std::cout << "same" << std::endl;
-	else
-		std::cout << "not same" << std::endl;
-
-	// if((my_rit[0] = 5) == 5)
-	// 	std::cout << "5 = true" << std::endl;
-	std::cout << *my_rit << std::endl;
-	std::cout << *my_rit1 << std::endl;
-	std::cout << "my_rit: " << &(*my_rit) << std::endl;
-	std::cout << "my_rit: " << &(*my_rit1) << std::endl;
-	std::cout << *rit << std::endl;
-	std::cout << *rit_1 << std::endl;
-	std::cout << "rit: " << &(*rit) << std::endl;
-	std::cout << "rit_: " << &(*rit_1) << std::endl;
-	
-
-    // if ((&(*(2 + my_rit)) == &(*(1 + my_rit1))) && (&(*(2 + rit)) == &(*(1 + rit_1))))
-	// 	std::cout << "True" << std::endl;
-	// ft::vector<std::string> ft_v1(arr, arr + 9);
-
- 
-	// std::vector<std::string> v(arr, arr + 9);
-
-        // ft::vector<std::string> ft_v1(3, "string2");
-				
-		//    std::cout << *rit << std::endl;//ft_res += *rit;
-        // for (ft::vector<std::string>::const_reverse_iterator rit = ft_v2.rbegin(); rit != ft_v2.rend(); ++rit) // fill c_ft_res from const ft_v1
-        //     c_ft_res += *rit;
-	// std::cout << c_ft_res << std::endl;
-	// ft::reverse_iterator<std::vector<int>::iterator> my_rit(v.end());
-
-	// my_rit++;
-	// std::cout << *my_rit << std::endl;
-	// if (*my_rit == *(v.end() - 1))
-	// 	;
-	// std::vector<int> abc;
-	// std::vector<int>::iterator it;
-	// while (it != data.end())
-	// 	std::cout << *(it++) << std::endl;
-	// std::vector<int>::reverse_iterator rit(data.rend());
-	// for (;rit != data.rbegin(); rit--)
-	// 	std::cout << *rit << std::endl;
 	// ft::vector<int> data((std::istream_iterator<int>(std::cin)),std::istream_iterator<int>());
 	//enter + ctrl D
 	// for (int i = 1; i < 10;i++)
@@ -123,3 +90,6 @@ int main()
 
 //* Istream iterator
 //https://www.cplusplus.com/reference/iterator/istream_iterator/
+
+//* Destroy vs Deallocate
+//https://stackoverflow.com/questions/26667026/difference-between-destroy-destructor-deallocate-in-stdallocator

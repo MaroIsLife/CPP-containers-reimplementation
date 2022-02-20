@@ -358,7 +358,6 @@ namespace ft
 	template <class Iterator>
   	typename reverse_iterator<Iterator>::difference_type operator-(const reverse_iterator<Iterator>& lhs, const reverse_iterator<Iterator>& rhs)
 	{
-		// std::cout << "++" << std::endl;
 		return (rhs.base() - lhs.base());
 	}
 
