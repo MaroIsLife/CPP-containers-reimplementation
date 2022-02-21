@@ -132,18 +132,11 @@ namespace ft
 			{
 				if (n > _capacity)
 				{
-					_table2 = _allocator.allocate(_capacity);
+					pointer _table3 = _allocator.allocate(n);
 					for (size_t i = 0; i < _size; i++)
-						_allocator.construct(&_table2[i],_table[i]);
-					for (size_t i = 0; i < _capacity; i++)
-						_allocator.destroy(&_table[i]);
-					// _allocator.deallocate(_table, _capacity);
-					_table = _allocator.allocate(n);
-					for (size_t i = 0; i < _size; i++)
-						_allocator.construct(&_table[i],_table2[i]);
-					for (size_t i = 0; i < _capacity; i++)
-						_allocator.destroy(&_table2[i]);
-					_allocator.deallocate(_table2, _capacity);
+						_allocator.construct(&_table3[i],_table[i]);
+					_allocator.deallocate(_table, _capacity);
+					_table = _table3;
 					_capacity = n;
 				}
 			}
@@ -155,26 +148,28 @@ namespace ft
 			}
 			void resize (size_type n, value_type val = value_type())
 			{
-				pointer _table3;
-				int old_capacity = _capacity;
 				if (n == _size)
 					return;
-				if (n > _capacity)
+				else if (n < _size)
+				{
+					for (size_t i = n; i < _size; i++)
+						_allocator.destroy(&_table[i]);
+					_size = n;
+				}
+				else if (n > _capacity)
+				{
+					pointer _table3 = _allocator.allocate(n);
+					for (size_t i = 0; i < _size; i++)
+						_allocator.construct(&_table3[i],_table[i]);
+					for (size_t i = _size; i < n; i++)
+							_allocator.construct(&_table3[i], val);
+					_size = n;
+					for (size_t i = 0; i < _capacity; i++)
+						_allocator.destroy(&_table[i]);
+					_allocator.deallocate(_table, _capacity);
+					_table = _table3;
 					_capacity = n;
-				_table2 = _allocator.allocate(_capacity);
-				for (size_t i = 0; i < _size; i++)
-					_allocator.construct(&_table2[i],_table[i]);
-				for (size_t i = _size; i < _capacity; i++)
-						_allocator.construct(&_table2[i],val);
-				for(size_t i = 0; i < _size; i++)
-					_allocator.destroy(&_table[i]);
-				_allocator.deallocate(_table, old_capacity);
-				_size = n;
-				_table = _allocator.allocate(_capacity);
-				for (size_t i = 0; i < _size; i++)
-					_allocator.construct(&_table[i],_table2[i]);
-				_allocator.destroy(_table2);
-				_allocator.deallocate(_table2, _capacity);
+				}
 			}
 			//!Modifiers
 			void push_back(T n)
@@ -379,7 +374,10 @@ namespace ft
 		//!Allocator
 		allocator_type get_allocator() const {return(allocator_type());}
 		//!Element Access
-		reference operator[](const int &a){return (_table[a]);}
+		reference operator[](const int &a)
+		{
+			return (_table[a]);
+		}
 		const T& operator[](const int &a) const {return (_table[a]);}
 		reference at (size_type n)
 		{

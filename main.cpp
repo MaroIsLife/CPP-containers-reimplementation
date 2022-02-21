@@ -15,13 +15,6 @@
 // 	std::cout << a[1] << std::endl;
 // }
 
-
-std::string& asmae(std::string &a)
-{
-	return a;
-}
-
-
 //! Fix Assign and Insert with Enable_if (Input Iterator)
 //! Implement istream iterator with insert range and assign range
 int main()
@@ -42,19 +35,29 @@ int main()
 
 
 	std::string ft_sit1;
-	ft::vector<std::string> ft_v1(50, "string2");
-	ft::vector<std::string>::iterator ft_valid_it, ft_valid_eit;
+	std::vector<std::string> ft_v1(10, "string2");
+	std::vector<std::string>::iterator ft_valid_it, ft_valid_eit;
 	ft_valid_it = ft_v1.begin();
 	ft_valid_eit = ft_v1.end();
 
-	ft_v1.resize(40);
+	// ft_v1.resize(25);
+	ft_v1.resize(1e6, "hello");
+
+	
 	std::cout << ft_v1.capacity() << std::endl;
 	std::cout << ft_v1.size() << std::endl;
-	
-	for (; ft_valid_it != ft_valid_eit; ft_valid_it++)
-			std::cout << *ft_valid_it << std::endl;
+	// for(int i = 0; i < 10; i++)
+	// {
+	// 	std::cout << ft_v1[i] << std::endl;
+	// }
+	// ft_v1.reserve(51);
+	// ft_v1.assign(100, "string1");	
+	// for (; ft_valid_it != ft_valid_eit; ft_valid_it++)
+	// 		ft_sit1 += *ft_valid_it;
 
-	// ft::vector<int> data((std::istream_iterator<int>(std::cin)),std::istream_iterator<int>());
+
+
+	//ft::vector<int> data((std::istream_iterator<int>(std::cin)),std::istream_iterator<int>());
 	//enter + ctrl D
 	// for (int i = 1; i < 10;i++)
 	// 	abc.push_back(i);
