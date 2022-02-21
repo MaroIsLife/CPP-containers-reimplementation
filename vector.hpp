@@ -179,7 +179,6 @@ namespace ft
 					_table2 = _allocator.allocate(_capacity);
 					for (size_t i = 0; i < _size; i++)
 						_allocator.construct(&_table2[i],_table[i]);
-					
 					_allocator.destroy(_table);
 					_allocator.deallocate(_table, _capacity);
 					if (_capacity == 0)
@@ -199,7 +198,7 @@ namespace ft
 			{
 				if (_size == 0)
 					return;
-				_table[_size] = (T)0;
+				_allocator.destroy(&_table[_size - 1]);
 				_size--;
 			}
 		void assign (size_type n, const value_type& val)

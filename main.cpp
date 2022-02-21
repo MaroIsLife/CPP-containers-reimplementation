@@ -35,13 +35,13 @@ int main()
 
 
 	std::string ft_sit1;
-	std::vector<std::string> ft_v1(10, "string2");
-	std::vector<std::string>::iterator ft_valid_it, ft_valid_eit;
+	ft::vector<std::string> ft_v1(10, "string2");
+	ft::vector<std::string>::iterator ft_valid_it, ft_valid_eit;
 	ft_valid_it = ft_v1.begin();
 	ft_valid_eit = ft_v1.end();
 
 	// ft_v1.resize(25);
-	ft_v1.resize(1e6, "hello");
+	ft_v1.pop_back();
 
 	
 	std::cout << ft_v1.capacity() << std::endl;
