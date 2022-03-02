@@ -270,58 +270,46 @@ namespace ft
 			if (_capacity == 0)
 			{
 				reserve(n);
+				_size = n;
 				for (size_t i = 0; i < n; i++)
 					_allocator.construct(&_table[_diff + i], val);
 				return;
 			}
 			else if (n > _size)
-				_capacity = _size + n;
-			else
-				_capacity *= 2;  
+				reserve(_size + n);
+			else  
+				reserve(_capacity * 2);
 
-			pointer _table3 = _allocator.allocate(_capacity);
-			for (size_t i = 0 ; i < (size_t)_diff; i++)
-				_allocator.construct(&_table3[i], _table[i]);
+			for (size_t i = _size; i > (size_t)_diff - 1; i--)
+				_allocator.construct(&_table[i + n], _table[i]);
 			for (size_t i = 0; i < n; i++)
-				_allocator.construct(&_table3[i + _diff], val);
-			for (size_t i = _size; i > (size_t)_diff; i--)
-			{
-				_allocator.construct(&_table3[i + n - 1], _table[i - 1]);
-				_allocator.destroy(&_table[i - 1]);
-			}
+				_allocator.construct(&_table[i + _diff], val);
 			_size+= n;
-			_table = _table3;
 		}
 		template <class InputIterator>
 		void insert (iterator position, InputIterator first, InputIterator last,
 			typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type *ptr = NULL)
 		{
 			(void)ptr;
-			_diff = last - first;
-			_size += _diff;
-			if (_size > _capacity)
-				_capacity *= 2;
-			if (_size > _capacity)
-				_capacity = _size;
-			pointer _table3 = _allocator.allocate(_capacity);
-			int o = 0;
-			iterator it(this->begin());
-			for (size_t i = 0; i < _size; i++)
+			_diff = std::distance(this->begin(), position);
+			difference_type n = last - first;
+			if (_capacity == 0)
 			{
-				if (it == position)
-					for (; first != last; first++)
-						_allocator.construct(&_table3[o++], *first);
-				it++;
-				_allocator.construct(&_table3[o++], _table[i]);
+				reserve(n);
+				_size = n;
+				for (size_t i = 0; i < (size_t)n; i++)
+					_allocator.construct(&_table[_diff + i], *(first++));
+				return;
 			}
-			// _allocator.destroy(_table);
-			// _allocator.deallocate(_table, _capacity);
-			// _table = _allocator.allocate(_capacity);
-			_table = _table3;
-			// for (size_t i = 0; i < _size; i++)
-			// 	_allocator.construct(&_table[i], _table2[i]);
-			// _allocator.destroy(_table2);
-			// _allocator.deallocate(_table2, _capacity);
+			else if ((size_t)n > _size)
+				reserve(_size + n);
+			else  
+				reserve(_capacity * 2);
+			for (size_t i = _size; i > (size_t)_diff - 1; i--)
+				_allocator.construct(&_table[i + (size_t)n], _table[i]);
+			for (size_t i = 0; i < (size_t)n; i++)
+				_allocator.construct(&_table[i + _diff], *(first++));
+			_size+= n;
 		}
 		iterator erase (iterator position)
 		{

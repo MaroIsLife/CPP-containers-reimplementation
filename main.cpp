@@ -4,7 +4,7 @@
 #include "type_traits.hpp"
 #include "iterator_traits.hpp"
 #include <memory>
-
+#define EQUAL(x) ((x) ? (std::cout << "\033[1;32mAC\033[0m\n") : (std::cout << "\033[1;31mWA\033[0m\n"))
 
 
 // template<typename Input>
@@ -41,16 +41,18 @@ int main()
 		ft::vector<std::string>::iterator ft_it;
 		std::vector<std::string>::iterator it;
 		bool cond;
+		cond = 1;
 
-
-
-
-
-		std::vector<std::string> v(20, "string");
+			std::vector<std::string> v1(70, "hello");
+			std::vector<std::string> v(20, "string");
 			ft::vector<std::string> ft_v(20, "string");
+			ft::vector<std::string>::iterator valid_it;
 
-			v.insert(v.begin() + 10, 15, "hello");
-			ft_v.insert(ft_v.begin() + 10, 15, "hello");
+			v.reserve(100);
+			ft_v.reserve(100);
+			valid_it = ft_v.begin();
+			v.insert(v.begin() + 15, v1.begin(), v1.end());
+			ft_v.insert(ft_v.begin() + 15, v1.begin(), v1.end());
 
 			str.clear();
 			ft_str.clear();
@@ -62,8 +64,11 @@ int main()
 				str += v[i];
 			for (size_t i = 0; i < ft_v.size(); ++i)
 				ft_str += ft_v[i];
-			cond = (cond && (str == ft_str) && (s == ft_s) && (c == ft_c));
+			cond = (cond && (str == ft_str) && (s == ft_s) && (c == ft_c) && (&(*valid_it) == &(*ft_v.begin())));
 
+
+		// std::cout << "Valid_it add: " << &(*valid_it) << std::endl;
+		// std::cout << "begin add: " << &(*ft_v.begin())<< std::endl;
 		std::cout << "after insert valid_it: " << &v[0] << std::endl;
 		std::cout << "my begin: " << &(*ft_v.begin()) << std::endl;
 		std::cout << "My Size: " << ft_s << std::endl;
@@ -72,10 +77,11 @@ int main()
 		std::cout << "Their capacity: " << c << std::endl;
 		std::cout << "My string: " << ft_str << std::endl;
 		std::cout << "Their string: " << str << std::endl;
+		std::cout << "my string length: " << ft_str.length() << std::endl;
+		std::cout << "Their String length : " << str.length() << std::endl;
 		// std::cout << "My iterator: " << *ft_it << std::endl;
 		// std::cout << "Their iterator: " << *it << std::endl;
 		
-		cond = ((str == ft_str) && (s == ft_s) && (c == ft_c));		
 		std::cout << "cond: " << cond << std::endl;
 		// if ((str == ft_str) && (s == ft_s) && (c == ft_c) && (*it == *ft_it) && (&(*valid_it) == &(*ft_v.begin())))
 		// 	std::cout << "true" << std::endl;
