@@ -311,47 +311,25 @@ namespace ft
 				_allocator.construct(&_table[i + _diff], *(first++));
 			_size+= n;
 		}
+
 		iterator erase (iterator position)
 		{
-			iterator it(this->begin());
+			_diff = std::distance(this->begin(), position);
+			for (size_t i = _diff; i < _size; i++)
+				_allocator.construct(&_table[i], _table[i + 1]);
 			_size--;
-			int o = 0;
-			for(size_t i = 0; i < _size ;i++)
-			{
-				if (it == position)
-					o++;
-				_allocator.construct(&_table[i], _table[o++]);
-				it++;
-			}
-			return (position);
+			return (iterator(&_table[_diff]));
 		}
-		
 		iterator erase (iterator first, iterator last)
 		{
-			_diff = last - first;
-			_table2 = _allocator.allocate(_capacity);
-			iterator it(this->begin());
-			size_t o = 0;
-			for (size_t i = 0; i < _size; i++)
-			{
-				if (it == first)
-					for (;it != last; it++)
-						o++;
-				_allocator.construct(&_table2[i], _table[o++]);
-				it++;
-			}
-			for (size_t i = 0; i < _size; i++)
-				_allocator.destroy(&_table[i]);
-			_allocator.deallocate(_table, _capacity);
-			_size -= _diff;
-			_table = _allocator.allocate(_capacity);
-			for (size_t i = 0; i < _size; i++)
-				_allocator.construct(&_table[i], _table2[i]);
-			for (size_t i = 0; i < _size; i++)
-				_allocator.destroy(&_table2[i]);
-			_allocator.deallocate(_table2, _capacity);
-			return (first);
+			_diff = std::distance(this->begin(), first);
+			difference_type n = last - first;
+			for (size_t i = _diff; i < _size; i++)
+				_allocator.construct(&_table[i], _table[i + n]);
+			_size-= n;
+			return (iterator(&_table[_diff]));
 		}
+
 		void swap (vector& x)
 		{
 			// std::swap(*this,x);

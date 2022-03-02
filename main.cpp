@@ -23,70 +23,68 @@ int main()
 	//! Fix resize
 	
 
-
-
-
 	// std::vector<int> v1(arr,arr+9);
 	// std::vector<int>::reverse_iterator it(v1.rend());
 
 	// std::cout << *it << std::endl;
 
-	std::string arr[9] = {"1","2","3","4","5","6","7","8","9"};
 
-
+	
 		std::string str, ft_str;
 		
 		ft::vector<std::string>::size_type s, ft_s;
 		ft::vector<std::string>::size_type c, ft_c;
-		ft::vector<std::string>::iterator ft_it;
 		std::vector<std::string>::iterator it;
-		bool cond;
-		cond = 1;
+		ft::vector<std::string>::iterator ft_it;
+		
+			bool cond;
+			// cond = 1;
+			std::vector<std::string> v(100, "hello");
+			ft::vector<std::string> ft_v(100, "hello");
 
-			std::vector<std::string> v1(70, "hello");
-			std::vector<std::string> v(20, "string");
-			ft::vector<std::string> ft_v(20, "string");
-			ft::vector<std::string>::iterator valid_it;
+			it = v.erase(v.begin(), v.end());
+			ft_it = ft_v.erase(ft_v.begin(), ft_v.end());
 
-			v.reserve(100);
-			ft_v.reserve(100);
-			valid_it = ft_v.begin();
-			v.insert(v.begin() + 15, v1.begin(), v1.end());
-			ft_v.insert(ft_v.begin() + 15, v1.begin(), v1.end());
-
-			str.clear();
-			ft_str.clear();
 			s = v.size();
 			ft_s = ft_v.size();
-			c = v.capacity();
-			ft_c = ft_v.capacity();
+			c = v.size();
+			ft_c = ft_v.size();
 			for (size_t i = 0; i < v.size(); ++i)
 				str += v[i];
 			for (size_t i = 0; i < ft_v.size(); ++i)
 				ft_str += ft_v[i];
-			cond = (cond && (str == ft_str) && (s == ft_s) && (c == ft_c) && (&(*valid_it) == &(*ft_v.begin())));
+			cond = ((str == ft_str) && (s == ft_s) && (c == ft_c));
+			cond = (cond && (std::distance(v.begin(), it) == std::distance(ft_v.begin(), ft_it)));
 
+
+			std::cout << (std::distance(v.begin(), it)) << std::endl;
+			std::cout << (std::distance(ft_v.begin(), ft_it)) << std::endl;
+			if ((std::distance(v.begin(), it) == std::distance(ft_v.begin(), ft_it)))
+				std::cout << "true" << std::endl;
+			else
+				std::cout << "false" << std::endl;
 
 		// std::cout << "Valid_it add: " << &(*valid_it) << std::endl;
-		// std::cout << "begin add: " << &(*ft_v.begin())<< std::endl;
-		std::cout << "after insert valid_it: " << &v[0] << std::endl;
-		std::cout << "my begin: " << &(*ft_v.begin()) << std::endl;
+		// // std::cout << "begin add: " << &(*ft_v.begin())<< std::endl;
+		// std::cout << "after insert valid_it: " << &v[0] << std::endl;
+		// std::cout << "my begin: " << &(*ft_v.begin()) << std::endl;
 		std::cout << "My Size: " << ft_s << std::endl;
 		std::cout << "Their size: " << s << std::endl;
 		std::cout << "My capacity: " << ft_c << std::endl;
 		std::cout << "Their capacity: " << c << std::endl;
 		std::cout << "My string: " << ft_str << std::endl;
 		std::cout << "Their string: " << str << std::endl;
+		if (ft_str == str)
+			std::cout << "Strings are equal" << std::endl;
+		else
+			std::cout << "Strings are not equal" << std::endl;
 		std::cout << "my string length: " << ft_str.length() << std::endl;
 		std::cout << "Their String length : " << str.length() << std::endl;
 		// std::cout << "My iterator: " << *ft_it << std::endl;
 		// std::cout << "Their iterator: " << *it << std::endl;
 		
 		std::cout << "cond: " << cond << std::endl;
-		// if ((str == ft_str) && (s == ft_s) && (c == ft_c) && (*it == *ft_it) && (&(*valid_it) == &(*ft_v.begin())))
-		// 	std::cout << "true" << std::endl;
-		// else
-		// 	std::cout << "false" << std::endl;
+	
 
 	// for(int i = 0; i < 10; i++)
 	// {
