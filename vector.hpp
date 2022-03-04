@@ -173,7 +173,7 @@ namespace ft
 			{
 				if (n == _size)
 					return;
-				if (n < _size)
+				else if (n < _size)
 				{
 					for (size_t i = n; i < _size; i++)
 						_allocator.destroy(&_table[i]);
@@ -181,28 +181,20 @@ namespace ft
 				}
 				else if (n > _capacity)
 				{
-					size_type new_capacity;
-					if (_capacity * 2 > n)
-						new_capacity = _capacity * 2;
+					if (n > _capacity * 2)
+						reserve(n);
 					else
-						new_capacity = n;
-					pointer _table3 = _allocator.allocate(new_capacity);
-					for (size_t i = 0; i < _size; i++)
-						_allocator.construct(&_table3[i],_table[i]);
-					for (size_t i = 0; i < _capacity; i++)
-						_allocator.destroy(&_table[i]);
-					_allocator.deallocate(_table, _capacity);
-					_table = _table3;
+						reserve(_capacity * 2);
 					for (size_t i = _size; i < n; i++)
-							_allocator.construct(&_table3[i], val);
-					if (_capacity * 2 > n)
-						_capacity = _capacity * 2;
-					else
-						_capacity = n;
-					_size = n;
+						_allocator.construct(&_table[i], val);
 				}
+				else if (n > _size)
+				{
+					for (size_t i = _size; i < n; i++)
+						_allocator.construct(&_table[i], val);
+				}
+				_size = n;
 			}
-
 			//!Modifiers
 			void push_back(T n)
 			{
