@@ -30,39 +30,43 @@ int main()
 
 
 	
+	
 		std::string str, ft_str;
-		
+
 		ft::vector<std::string>::size_type s, ft_s;
 		ft::vector<std::string>::size_type c, ft_c;
-		std::vector<std::string>::iterator it;
-		ft::vector<std::string>::iterator ft_it;
+		ft::vector<std::string>::iterator b1, b2;
 		
-			bool cond;
-			// cond = 1;
-			std::vector<std::string> v(100, "hello");
-			ft::vector<std::string> ft_v(100, "hello");
+		bool cond;
+		
+		std::vector<std::string> v(200, "hello");
+		std::vector<std::string> v1(200, "string");
+		ft::vector<std::string> ft_v(200, "hello");
+		ft::vector<std::string> ft_v1(200, "string");
 
-			it = v.erase(v.begin(), v.end());
-			ft_it = ft_v.erase(ft_v.begin(), ft_v.end());
+		b1 = ft_v.begin();
+		b2 = ft_v1.begin();
+		
+		swap(v, v1);
+		swap(ft_v, ft_v1);
+		// std::cout << "b2 " << (&*b2) << std::endl;
+		// std::cout << "b2 " << (&*(ft_v1.begin())) << std::endl;
 
-			s = v.size();
-			ft_s = ft_v.size();
-			c = v.size();
-			ft_c = ft_v.size();
-			for (size_t i = 0; i < v.size(); ++i)
-				str += v[i];
-			for (size_t i = 0; i < ft_v.size(); ++i)
-				ft_str += ft_v[i];
-			cond = ((str == ft_str) && (s == ft_s) && (c == ft_c));
-			cond = (cond && (std::distance(v.begin(), it) == std::distance(ft_v.begin(), ft_it)));
-
-
-			std::cout << (std::distance(v.begin(), it)) << std::endl;
-			std::cout << (std::distance(ft_v.begin(), ft_it)) << std::endl;
-			if ((std::distance(v.begin(), it) == std::distance(ft_v.begin(), ft_it)))
-				std::cout << "true" << std::endl;
-			else
-				std::cout << "false" << std::endl;
+		s = v.size();
+		ft_s = ft_v.size();
+		c = v.capacity();
+		ft_c = ft_v.capacity();
+		for (size_t i = 0; i < v.size(); ++i)
+			str += v[i];
+		for (size_t i = 0; i < ft_v.size(); ++i)
+			ft_str += ft_v[i];
+		
+		cond = ((str == ft_str) && (s == ft_s) && (c == ft_c));
+		cond = (cond && ((&*b2) == (&(*ft_v.begin()))));
+		std::cout << "cond 1: " << cond << std::endl;
+		cond = (cond && ((&*b1) == (&(*ft_v1.begin()))));
+	
+		// EQUAL(cond);
 
 		// std::cout << "Valid_it add: " << &(*valid_it) << std::endl;
 		// // std::cout << "begin add: " << &(*ft_v.begin())<< std::endl;
@@ -72,8 +76,8 @@ int main()
 		std::cout << "Their size: " << s << std::endl;
 		std::cout << "My capacity: " << ft_c << std::endl;
 		std::cout << "Their capacity: " << c << std::endl;
-		std::cout << "My string: " << ft_str << std::endl;
-		std::cout << "Their string: " << str << std::endl;
+		// std::cout << "My string: " << ft_str << std::endl;
+		// std::cout << "Their string: " << str << std::endl;
 		if (ft_str == str)
 			std::cout << "Strings are equal" << std::endl;
 		else
@@ -83,7 +87,7 @@ int main()
 		// std::cout << "My iterator: " << *ft_it << std::endl;
 		// std::cout << "Their iterator: " << *it << std::endl;
 		
-		std::cout << "cond: " << cond << std::endl;
+		// std::cout << "cond: " << cond << std::endl;
 	
 
 	// for(int i = 0; i < 10; i++)
