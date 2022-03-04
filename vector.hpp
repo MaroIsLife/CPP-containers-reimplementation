@@ -216,7 +216,8 @@ namespace ft
 					_table = _allocator.allocate(_capacity);
 					for (size_t i = 0; i < _size; i++)
 						_allocator.construct(&_table[i],_table2[i]);
-					_allocator.destroy(_table2);
+					for(size_t i = 0; i < _size; i++)
+						_allocator.destroy(_table2);
 					_allocator.deallocate(_table2, _capacity / 2);
 				}
 				_allocator.construct(&_table[_size], n);
@@ -450,7 +451,7 @@ namespace ft
 		return (false);
 	}
 	template <class T, class Alloc>
-  	void swap (const ft::vector<T, Alloc>& x, const ft::vector<T, Alloc>& y)
+  	void swap (vector<T,Alloc>& x, vector<T,Alloc>& y)
 	{
 		x.swap(y);
 	}
