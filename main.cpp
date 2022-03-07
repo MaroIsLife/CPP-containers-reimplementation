@@ -5,17 +5,25 @@
 #include "iterator_traits.hpp"
 #include <memory>
 #define EQUAL(x) ((x) ? (std::cout << "\033[1;32mAC\033[0m\n") : (std::cout << "\033[1;31mWA\033[0m\n"))
-
-
+#include <map>
 
 //! Implement istream iterator with insert range and assign range
 int main()
 {
-	
 
+    std::map<std::string, int> m;
+	std::map<std::string, int>::iterator it;
 
+	// for(int i = 0; i < 10; i++)
+	// {
+	// 	m[std::to_string(i)] = i;
+	// }
+
+	std::cout << m["5"] << std::endl;
 	// system("leaks a.out");
 }
+
+//! step one: implement BST (right child is greater than parentand left child is less than parent right child)
 
 
 //*Iterator Operators
