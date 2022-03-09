@@ -10,17 +10,12 @@
 
 
 
-
-
-
 //! Implement istream iterator with insert range and assign range
 int main()
 {
 
-	int a[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
-	int n = sizeof(a) / sizeof(a[0]);
-
+	
     // std::map<std::string, int> m;
 	// std::map<std::string, int>::iterator it;
 
@@ -34,6 +29,7 @@ int main()
 }
 
 //! step one: implement BST (right child is greater than parentand left child is less than parent right child)
+
 
 
 //*Iterator Operators
@@ -51,8 +47,29 @@ int main()
 //*Const Correctness 
 //https://isocpp.org/wiki/faq/const-correctness#overview-const
 
-//* Istream iterator
+//*Istream iterator
 //https://www.cplusplus.com/reference/iterator/istream_iterator/
 
-//* Destroy vs Deallocate
+//*Destroy vs Deallocate
 //https://stackoverflow.com/questions/26667026/difference-between-destroy-destructor-deallocate-in-stdallocator
+
+//*Introduction to trees
+//https://www.programiz.com/dsa/trees
+//https://www.softwaretestinghelp.com/trees-in-cpp/
+
+//*Avl
+//https://www.guru99.com/avl-tree.html
+//https://simplesnippets.tech/what-is-avl-tree-data-structure-all-avl-operations-with-full-code/
+//https://www.techiedelight.com/inorder-tree-traversal-iterative-recursive/
+//https://www.softwaretestinghelp.com/avl-trees-and-heap-data-structure-in-cpp/
+//https://www.geeksforgeeks.org/avl-trees-containing-a-parent-node-pointer/
+
+//*Avl (Vids)
+//https://www.youtube.com/watch?v=u3OVSkuOdqI (Very Good)
+//https://www.youtube.com/watch?v=vRwi_UcZGjU
+//https://www.youtube.com/watch?v=otiDcwZbCo4
+
+//*Avl Visualizer
+//https://www.cs.usfca.edu/~galles/visualization/AVLtree.html
+
+
