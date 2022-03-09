@@ -29,6 +29,7 @@
 //?Rotations
 //* To make the AVL Tree balance itself, when inserting or deleting a node from the tree, rotations are performed
 //* There are four types of rotations: Left-Left, Left-Right, Right-Right, and Right-Left
+//!https://www.youtube.com/watch?v=u3OVSkuOdqI
 
 //?Left-Left
 //* The left-left rotation is performed when the balance factor of the node is −2
@@ -86,28 +87,96 @@
 //* 2C If BF(node) = -2 and BF(node -> right-child) = 0, perform RR rotation.
 //https://www.guru99.com/images/2/063020_0727_AVLTreesRot10.jpg
 
-
+template <typename T>
 class Node 
 {
-    int data;
-    int height;
-    struct Node *right;
-    struct Node *left;
+	public:
+		T data;
+		int height;
+		Node *right;
+		Node *left;
 
-    Node()
-    {
-        data = 0;
-        height = 0;
-        right = NULL;
-        left = NULL;
-    }
-    Node(int n)
-    {
-        data = n;
-        height = 0;
-        right = NULL;
-        left = NULL;
-    }
+		Node()
+		{
+			data = 0;
+			height = 0;
+			right = NULL;
+			left = NULL;
+		}
+		Node(T n)
+		{
+			height = 0;
+			data = n;
+			right = NULL;
+			left = NULL;
+		}
+};
+
+template <typename T>
+class Avl
+{
+	public:
+		T data;
+		Node<T> *root;
+
+		Avl()
+		{
+			root = NULL;
+		}
+		Avl(T n)
+		{
+			root = new Node<T>(n);
+			root->left = new Node<T>();
+			root->right = new Node<T>();
+
+		}
+		size_t getHeight(Node<T> *r)
+		{
+			size_t rheight;
+			size_t lheight;
+			
+			if (r == NULL)
+				return (-1);
+			else
+			{
+				rheight = getHeight(r->right);
+				lheight = getHeight(r->left);
+			}
+			if (lheight > rheight)
+				return (lheight + 1);
+			else
+				return (rheight + 1);
+		}
+		size_t getRightHeight(Node<T> *r)
+		{
+			size_t rheight;
+
+			if (r == NULL)
+				return (-1);
+			else if (r->right == NULL)
+				return (0);
+			else
+				rheight = getRightHeight(r->right);
+			return (rheight + 1);
+		}
+		size_t getLeftHeight(Node<T> *r)
+		{
+			size_t lheight;
+
+			if (r == NULL)
+				return (-1);
+			else if (r->left == NULL)
+				return (0);
+			else
+				lheight = getLeftHeight(r->left);
+			return (lheight + 1);
+		}
+		size_t getBalance(Node<T> *r)
+		{
+			if (r == NULL)
+				return (-1);
+			return (getLeftHeight(r) - getRightHeight(r));
+		}
 };
 
 
