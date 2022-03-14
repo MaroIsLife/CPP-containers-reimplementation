@@ -10,7 +10,7 @@
 //* Small nodes goes to the left, large or equal nodes goes to the right
 
 //?Heights
-//! Not sure about this!
+//* Height of each tree path,   Root node = 0
 //* No Node = Height = -1
 //* Single node = Height = 0
 //* Two nodes = Height = 1
@@ -18,7 +18,7 @@
 //https://www.guru99.com/images/2/063020_0727_AVLTreesRot3.png
 
 //?Balance factor
-//* The balance factor is known as the difference between the height of the left subtree and the right subtree.
+//* The balance factor is known as the difference between the height of the left subtree and the right subtree. (How many nodes are in each Path)
 //! Balance Factor(n) = H(left subtree) - H(right subtree)
 //* Allowed values of BF are –1, 0, and +1, any values other than these are not allowed (Unbalanced tree)
 //* If the balance factor is 0, it means that the left and right subtrees are of equal height
@@ -112,25 +112,28 @@ class Node
 		}
 };
 
+
+
+
 template <typename T>
 class Avl
 {
 	public:
 		T data;
 		Node<T> *root;
+		typedef Node<T> Node;
 
 		Avl()
 		{
 			root = NULL;
 		}
+
 		Avl(T n)
 		{
-			root = new Node<T>(n);
-			root->left = new Node<T>();
-			root->right = new Node<T>();
-
+			root = new Node(n);
 		}
-		size_t getHeight(Node<T> *r)
+
+		size_t getHeight(Node *r)
 		{
 			size_t rheight;
 			size_t lheight;
@@ -147,7 +150,8 @@ class Avl
 			else
 				return (rheight + 1);
 		}
-		size_t getRightHeight(Node<T> *r)
+
+		size_t getRightHeight(Node *r)
 		{
 			size_t rheight;
 
@@ -159,7 +163,8 @@ class Avl
 				rheight = getRightHeight(r->right);
 			return (rheight + 1);
 		}
-		size_t getLeftHeight(Node<T> *r)
+
+		size_t getLeftHeight(Node *r)
 		{
 			size_t lheight;
 
@@ -171,11 +176,110 @@ class Avl
 				lheight = getLeftHeight(r->left);
 			return (lheight + 1);
 		}
-		size_t getBalance(Node<T> *r)
+
+		size_t getBalance(Node *r)
 		{
 			if (r == NULL)
 				return (-1);
 			return (getLeftHeight(r) - getRightHeight(r));
+		}
+
+		Node *newNode(T data)
+		{
+			return (new Node(data));
+		}
+
+		Node *searchNode(Node *r, T data)
+		{
+			if (r == NULL)
+				return (NULL);
+			if (r->data == data)
+			{
+				std::cout << "Found " << data << std::endl;
+				return (r);
+			}
+			else if (data < r->data)
+				return (searchNode(r->left, data));
+			else
+				return (searchNode(r->right, data));
+		}
+
+		Node *insertNode(Node *r, T data)
+		{
+			if (r == NULL)
+			{
+				r = newNode(data);
+				if (root == NULL)
+					root = r;
+			}
+			else if (data < r->data)
+			{
+				std::cout << "Left" << std::endl;
+				r->left = insertNode(r->left, data);
+			}
+			else if (data >= r->data)
+			{
+				std::cout << "Right" << std::endl;
+				r->right = insertNode(r->right, data);
+			}
+			return (r);
+		}
+
+		//Node *insertNode(Node *r, T data)
+		//{
+		//	if (r == NULL)
+		//	{
+		//		r = newNode(data);
+		//		if (root == NULL)
+		//			root = r;
+		//	}
+		//	else if (data < r->data)
+		//	{
+		//		std::cout << "Left" << std::endl;
+		//		return (insertNode(r->left, data));
+		//	}
+		//	else if (data >= r->data)
+		//	{
+		//		std::cout << "Right" << std::endl;
+		//		return (insertNode(r->right, data));
+		//	}
+		//	return (r);
+		//}
+
+		
+		//Node *insertNode(Node *r, T data)
+		//{
+		//	if (!searchNode(r, data))
+		//	{
+		//		r = newNode(data);
+		//		if (root == NULL)
+		//			root = r;
+		//	}
+		//	else
+		//		r->right = newNode(data);
+		//	return (r);
+		//}
+
+		Node* leftRotation(Node *r) //https://algorithmtutor.com/Data-Structures/Tree/AVL-Trees/
+		{
+		
+			Node *temp2;
+
+			temp2 = r->left;
+			temp2->right = r;
+
+			return (temp2);
+		}
+
+		void printLeft(Node *r)
+		{
+			if (r == NULL)
+			{
+				std::cout << "NULL found" << std::endl;
+				return ;
+			}
+			std::cout << r->data << std::endl;
+			return (printLeft(r->left));
 		}
 };
 

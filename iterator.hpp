@@ -328,7 +328,6 @@ namespace ft
 		private:
 			iterator it;
 	};
-
 	template <typename T>
 	reverse_iterator<T> operator-(const reverse_iterator<T> &it, const int &a)
 	{

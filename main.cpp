@@ -10,20 +10,40 @@
 
 
 
-
 //! Implement istream iterator with insert range and assign range
 int main()
 {
 
-	Avl<int> test(10);
-
-	std::cout << test.getLeftHeight(test.root) << std::endl;
-	std::cout << test.getRightHeight(test.root) << std::endl;
-	std::cout << test.getBalance(test.root) << std::endl;
-
-
+	//Avl<int> test(10);
 
 	
+	//std::cout << test.getLeftHeight(test.root) << std::endl;
+	//std::cout << test.getRightHeight(test.root) << std::endl;
+	//std::cout << test.getBalance(test.root) << std::endl;
+
+	Avl<int> test;
+
+	test.insertNode(test.root, 10);
+	test.insertNode(test.root, 2);	
+	test.insertNode(test.root, 1);
+
+	//std::cout << test.getLeftHeight(test.root) << std::endl;
+
+
+
+
+
+	//test.root->left = new Node<int>(13);
+	//test.insertNode(test.root, 3);
+	//test.insertNode(test.root, 10);
+	//test.insertNode(test.root, 6);
+	//test.searchNode(test.root, 3);
+	test.printLeft(test.root);
+
+
+
+	//std::cout << ab->data << std::endl;
+	//std::cout << std::string::npos << std::endl;
     // std::map<std::string, int> m;
 	// std::map<std::string, int>::iterator it;
 
@@ -64,6 +84,7 @@ int main()
 //*Avl
 //https://www.guru99.com/avl-tree.html (very good)
 //https://simplesnippets.tech/what-is-avl-tree-data-structure-all-avl-operations-with-full-code/ (Very Good)
+//https://algorithmtutor.com/Data-Structures/Tree/AVL-Trees/
 //https://www.techiedelight.com/inorder-tree-traversal-iterative-recursive/
 //https://www.softwaretestinghelp.com/avl-trees-and-heap-data-structure-in-cpp/
 //https://www.geeksforgeeks.org/avl-trees-containing-a-parent-node-pointer/
