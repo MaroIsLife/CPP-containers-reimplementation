@@ -8,6 +8,7 @@
 
 //?Nodes
 //* Small nodes goes to the left, large or equal nodes goes to the right
+//* Leaf Node = a Node with no children
 
 //?Heights
 //* Height of each tree path,   Root node = 0
@@ -195,7 +196,7 @@ class Avl
 				return (NULL);
 			if (r->data == data)
 			{
-				std::cout << "Found " << data << std::endl;
+				//std::cout << "Found " << data << std::endl;
 				return (r);
 			}
 			else if (data < r->data)
@@ -209,7 +210,7 @@ class Avl
 			if (r == NULL)
 			{
 				r = newNode(data);
-				if (root == NULL)
+				if (!root)
 					root = r;
 			}
 			else if (data < r->data)
@@ -225,42 +226,7 @@ class Avl
 			return (r);
 		}
 
-		//Node *insertNode(Node *r, T data)
-		//{
-		//	if (r == NULL)
-		//	{
-		//		r = newNode(data);
-		//		if (root == NULL)
-		//			root = r;
-		//	}
-		//	else if (data < r->data)
-		//	{
-		//		std::cout << "Left" << std::endl;
-		//		return (insertNode(r->left, data));
-		//	}
-		//	else if (data >= r->data)
-		//	{
-		//		std::cout << "Right" << std::endl;
-		//		return (insertNode(r->right, data));
-		//	}
-		//	return (r);
-		//}
-
-		
-		//Node *insertNode(Node *r, T data)
-		//{
-		//	if (!searchNode(r, data))
-		//	{
-		//		r = newNode(data);
-		//		if (root == NULL)
-		//			root = r;
-		//	}
-		//	else
-		//		r->right = newNode(data);
-		//	return (r);
-		//}
-
-		Node* leftRotation(Node *r) //https://algorithmtutor.com/Data-Structures/Tree/AVL-Trees/
+		Node *leftRotation(Node *r) //https://algorithmtutor.com/Data-Structures/Tree/AVL-Trees/
 		{
 		
 			Node *temp2;
@@ -269,6 +235,60 @@ class Avl
 			temp2->right = r;
 
 			return (temp2);
+		}
+
+		Node *deleteNode(Node *r, T data) //https://algorithmtutor.com/Data-Structures/Tree/Binary-Search-Trees/#Deletion
+		{
+			r = searchNode(r, data);
+			std::cout << "R data " << r->data << std::endl;
+			std::cout << "Current address " << &(*r) << std::endl;
+			std::cout << "Left Address " << &(*r->left) << std::endl;
+			if (!r)
+				return (NULL);
+			else if (!r->right && !r->left)
+			{
+				delete r;
+				r = NULL;
+			}
+			else if (r->right && !r->left)
+			{
+				Node *tmp;
+
+				tmp = r;
+				r = r->right;
+				delete tmp;
+			}
+			else if (r->left && !r->right)
+			{
+				Node *tmp;
+
+				tmp = r;
+				r = r->left;
+				delete tmp;
+			}
+			else
+			{
+				Node *tmp;
+
+				tmp = minimumNode(r->right);
+				r->data = tmp->data;
+				r->right = searchNode(r->right, tmp->data);
+			}
+			return (r);
+		}
+
+		Node *minimumNode(Node *r)
+		{
+			while (!r->left)
+				r = r->left;
+			return (r);
+		}
+
+		Node *maximumNode(Node *r)
+		{
+			while (!r->right)
+				r = r->right;
+			return (r);
 		}
 
 		void printLeft(Node *r)
@@ -281,6 +301,7 @@ class Avl
 			std::cout << r->data << std::endl;
 			return (printLeft(r->left));
 		}
+
 };
 
 

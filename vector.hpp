@@ -216,7 +216,7 @@ namespace ft
 					_table = _allocator.allocate(_capacity);
 					for (size_t i = 0; i < _size; i++)
 						_allocator.construct(&_table[i],_table2[i]);
-					for(size_t i = 0; i < _size; i++)
+					for (size_t i = 0; i < _size; i++)
 						_allocator.destroy(_table2);
 					_allocator.deallocate(_table2, _capacity / 2);
 				}
