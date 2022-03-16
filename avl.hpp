@@ -106,7 +106,7 @@ class Node
 		}
 		Node(T n)
 		{
-			height = 0;
+			height = 1;
 			data = n;
 			right = NULL;
 			left = NULL;
@@ -134,55 +134,11 @@ class Avl
 			root = new Node(n);
 		}
 
-		size_t getHeight(Node *r)
-		{
-			size_t rheight;
-			size_t lheight;
-			
-			if (r == NULL)
-				return (-1);
-			else
-			{
-				rheight = getHeight(r->right);
-				lheight = getHeight(r->left);
-			}
-			if (lheight > rheight)
-				return (lheight + 1);
-			else
-				return (rheight + 1);
-		}
-
-		size_t getRightHeight(Node *r)
-		{
-			size_t rheight;
-
-			if (r == NULL)
-				return (-1);
-			else if (r->right == NULL)
-				return (0);
-			else
-				rheight = getRightHeight(r->right);
-			return (rheight + 1);
-		}
-
-		size_t getLeftHeight(Node *r)
-		{
-			size_t lheight;
-
-			if (r == NULL)
-				return (-1);
-			else if (r->left == NULL)
-				return (0);
-			else
-				lheight = getLeftHeight(r->left);
-			return (lheight + 1);
-		}
-
 		size_t getBalance(Node *r)
 		{
 			if (r == NULL)
 				return (-1);
-			return (getLeftHeight(r) - getRightHeight(r));
+			return (getHeight(r->left) - getHeight(r->right));
 		}
 
 		Node *newNode(T data)
@@ -214,7 +170,7 @@ class Avl
 			return (r);
 		}
 
-		Node *insertNode(Node *r, T data)
+		Node *insertNode(Node *r, T data) //https://www.geeksforgeeks.org/avl-tree-set-1-insertion/
 		{
 			if (r == NULL)
 			{
@@ -225,12 +181,12 @@ class Avl
 			else if (data < r->data)
 				r->left = insertNode(r->left, data);
 			else if (data >= r->data)
-				//std::cout << "Right" << std::endl;
 				r->right = insertNode(r->right, data);
+			r->height = std::max(getHeight(r->left), getHeight(r->right)) + 1;
 			return (r);
 		}
 
-		Node *deleteNode(Node *r, T data) //https://www.geeksforgeeks.org/binary-search-tree-set-2-delete/
+		Node *deleteNode(Node *r, T data) //https://www.geeksforgeeks.org/avl-tree-set-2-deletion/?ref=lbp
 		{
 			if (!r)
 				return (NULL);
@@ -267,14 +223,14 @@ class Avl
 					//* Find the smallest node in the right subtree and replace r with it.
 					Node *tmp = minimumNode(r->right);
 					r->data = tmp->data;
-					std::cout << r->data << std::endl;
+					//std::cout << r->data << std::endl;
 					r->right = deleteNode(r->right, tmp->data);
 				}
 			}
 			return (r);
 		}
 
-		Node *rotateLeft(Node *r) ////https://algorithmtutor.com/Data-Structures/Tree/AVL-Trees/
+		Node *rotateLeft(Node *r) //https://algorithmtutor.com/Data-Structures/Tree/AVL-Trees/
 		{
 			Node *tmp;
 
@@ -301,6 +257,14 @@ class Avl
 			tmp = r->right;
 			r->right = rotateRight(tmp);
 			return (rotateLeft(r));
+		}
+
+		int getHeight(Node *r)
+		{
+			if (!r)
+				return (0);
+			else
+				return (r->height);
 		}
 
 		Node *minimumNode(Node *r)

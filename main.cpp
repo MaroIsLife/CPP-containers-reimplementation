@@ -29,11 +29,14 @@ int main()
 	test.insertNode(test.root, 3);
 	test.insertNode(test.root, 1);
 
-	test.deleteNode(test.root, 2);
+	//test.deleteNode(test.root, 2);
 
 	//std::cout << test.getLeftHeight(test.root) << std::endl;
 
+	//! Use geeksforgeeks avl
 	test.searchNode(test.root, 3);
+	std::cout << test.getHeight(test.root) << std::endl;
+	std::cout << test.getBalance(test.root) << std::endl;
 
 	//test.root->left = new Node<int>(13);
 	//test.insertNode(test.root, 3);
