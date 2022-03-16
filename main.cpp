@@ -23,19 +23,17 @@ int main()
 
 	Avl<int> test;
 
-	test.insertNode(test.root, 20);
 	test.insertNode(test.root, 30);
-	test.insertNode(test.root, 2);	
+	test.insertNode(test.root, 20);
+	test.insertNode(test.root, 2);
+	test.insertNode(test.root, 3);
 	test.insertNode(test.root, 1);
 
 	test.deleteNode(test.root, 2);
 
 	//std::cout << test.getLeftHeight(test.root) << std::endl;
 
-	test.searchNode(test.root, 2);
-
-
-
+	test.searchNode(test.root, 3);
 
 	//test.root->left = new Node<int>(13);
 	//test.insertNode(test.root, 3);

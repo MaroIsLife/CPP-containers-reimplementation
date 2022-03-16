@@ -192,17 +192,26 @@ class Avl
 
 		Node *searchNode(Node *r, T data)
 		{
-			if (r == NULL)
+			//std::cout << "R data " << r->data << std::endl;
+			//std::cout << "data " << data << std::endl;
+			if (!r)
 				return (NULL);
 			if (r->data == data)
 			{
-				//std::cout << "Found " << data << std::endl;
+				std::cout << "Found " << data << std::endl;
 				return (r);
 			}
 			else if (data < r->data)
-				return (searchNode(r->left, data));
+			{
+				std::cout << "Left" << std::endl;
+				r->left = searchNode(r->left, data);
+			}
 			else
-				return (searchNode(r->right, data));
+			{
+				std::cout << "Right" << std::endl;
+				r->right = searchNode(r->right, data);
+			}
+			return (r);
 		}
 
 		Node *insertNode(Node *r, T data)
@@ -214,74 +223,92 @@ class Avl
 					root = r;
 			}
 			else if (data < r->data)
-			{
-				std::cout << "Left" << std::endl;
 				r->left = insertNode(r->left, data);
-			}
 			else if (data >= r->data)
-			{
-				std::cout << "Right" << std::endl;
+				//std::cout << "Right" << std::endl;
 				r->right = insertNode(r->right, data);
-			}
 			return (r);
 		}
 
-		Node *leftRotation(Node *r) //https://algorithmtutor.com/Data-Structures/Tree/AVL-Trees/
+		Node *deleteNode(Node *r, T data) //https://www.geeksforgeeks.org/binary-search-tree-set-2-delete/
 		{
-		
-			Node *temp2;
-
-			temp2 = r->left;
-			temp2->right = r;
-
-			return (temp2);
-		}
-
-		Node *deleteNode(Node *r, T data) //https://algorithmtutor.com/Data-Structures/Tree/Binary-Search-Trees/#Deletion
-		{
-			r = searchNode(r, data);
-			std::cout << "R data " << r->data << std::endl;
-			std::cout << "Current address " << &(*r) << std::endl;
-			std::cout << "Left Address " << &(*r->left) << std::endl;
 			if (!r)
 				return (NULL);
-			else if (!r->right && !r->left)
+			else if (data < r->data)
+				r->left = deleteNode(r->left, data);
+			else if (data > r->data)
+				r->right = deleteNode(r->right, data);
+			if (data == r->data)
 			{
-				delete r;
-				r = NULL;
-			}
-			else if (r->right && !r->left)
-			{
-				Node *tmp;
+				if (!r->left && !r->right)
+				{
+					delete r;
+					r = NULL;
+				}
+				else if (!r->left && r->right)
+				{
+					Node *tmp;
 
-				tmp = r;
-				r = r->right;
-				delete tmp;
-			}
-			else if (r->left && !r->right)
-			{
-				Node *tmp;
-
-				tmp = r;
-				r = r->left;
-				delete tmp;
-			}
-			else
-			{
-				Node *tmp;
-
-				tmp = minimumNode(r->right);
-				r->data = tmp->data;
-				r->right = searchNode(r->right, tmp->data);
+					tmp = r->right;
+					delete r;
+					r = tmp;
+				}
+				else if (!r->right && r->left)
+				{
+					Node *tmp;
+ 
+					tmp = r->left;
+					delete r;
+					r = tmp;
+					//std::cout << &(*r) << std::endl;
+				}
+				else if (r->right && r->left) //! In BST Visualization it replaces biggest node and not the way around
+				{
+					//* Find the smallest node in the right subtree and replace r with it.
+					Node *tmp = minimumNode(r->right);
+					r->data = tmp->data;
+					std::cout << r->data << std::endl;
+					r->right = deleteNode(r->right, tmp->data);
+				}
 			}
 			return (r);
+		}
+
+		Node *rotateLeft(Node *r) ////https://algorithmtutor.com/Data-Structures/Tree/AVL-Trees/
+		{
+			Node *tmp;
+
+			tmp = r->right;
+			r->right = tmp->left;
+			tmp->left = r;
+			return (tmp);
+		}
+
+		Node *rotateRight(Node *r)
+		{
+			Node *tmp;
+
+			tmp = r->left;
+			r->left = tmp->right;
+			tmp->right = r;
+			return (tmp);
+		}
+
+		Node *RotateRightLeft(Node *r)
+		{
+			Node *tmp;
+
+			tmp = r->right;
+			r->right = rotateRight(tmp);
+			return (rotateLeft(r));
 		}
 
 		Node *minimumNode(Node *r)
 		{
-			while (!r->left)
-				r = r->left;
-			return (r);
+			if (!r->left)
+				return (r);
+			else
+				return (minimumNode(r->left));
 		}
 
 		Node *maximumNode(Node *r)
@@ -303,5 +330,3 @@ class Avl
 		}
 
 };
-
-
