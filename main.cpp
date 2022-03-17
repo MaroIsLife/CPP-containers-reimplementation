@@ -21,23 +21,28 @@ int main()
 	//std::cout << test.getRightHeight(test.root) << std::endl;
 	//std::cout << test.getBalance(test.root) << std::endl;
 
-	Avl<int> test;
+	Avl<int> test(30);
 
-	test.insertNode(test.root, 30);
-	test.insertNode(test.root, 20);
-	test.insertNode(test.root, 2);
-	test.insertNode(test.root, 3);
-	test.insertNode(test.root, 1);
+	//test.insertNode(test.root, 3);
+	//test.insertNode(test.root, 1);
+
+	//test.insertNode(test.root, 20);
+	test.insertNode(test.root, 40);
+	test.insertNode(test.root, 50);
+
+	//test.insertNode(test.root, 1);
 
 	//test.deleteNode(test.root, 2);
 
 	//std::cout << test.getLeftHeight(test.root) << std::endl;
 
 	//! Use geeksforgeeks avl
-	test.searchNode(test.root, 3);
-	std::cout << test.getHeight(test.root) << std::endl;
-	std::cout << test.getBalance(test.root) << std::endl;
-
+	//test.searchNode(test.root, 10);
+	std::cout << test.root->data << std::endl;
+	
+	
+	//std::cout << test.getHeight(test.root) << std::endl;
+	//std::cout << test.getBalance(test.root) << std::endl;
 	//test.root->left = new Node<int>(13);
 	//test.insertNode(test.root, 3);
 	//test.insertNode(test.root, 10);

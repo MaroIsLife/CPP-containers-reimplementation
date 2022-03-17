@@ -13,7 +13,7 @@
 //?Heights
 //* Height of each tree path,   Root node = 0
 //* No Node = Height = -1
-//* Single node = Height = 0
+//* Single node = Height = 0 (many AVLs count Root node as 1 height)
 //* Two nodes = Height = 1
 //* Three nodes = Height = 2...
 //https://www.guru99.com/images/2/063020_0727_AVLTreesRot3.png
@@ -23,9 +23,10 @@
 //! Balance Factor(n) = H(left subtree) - H(right subtree)
 //* Allowed values of BF are –1, 0, and +1, any values other than these are not allowed (Unbalanced tree)
 //* If the balance factor is 0, it means that the left and right subtrees are of equal height
-//* If the balance factor is +1, it means that the right subtree is taller than the left subtree
-//* If the balance factor is −1, it means that the left subtree is taller than the right subtree
-//* If the balance factor is −2, it means that the left subtree is 2 levels higher than the right subtree
+//* If the balance factor is -1, it means that the right subtree is taller than the left subtree
+//* If the balance factor is +1, it means that the left subtree is taller than the right subtree
+//* If the balance factor is +2, it means that the left subtree is 2 levels higher than the right subtree
+//* If the balance factor is -2, it means that the right subtree is 2 levels higher than the left subtree
 
 //?Rotations
 //* To make the AVL Tree balance itself, when inserting or deleting a node from the tree, rotations are performed
@@ -34,22 +35,18 @@
 
 //?Left-Left
 //* The left-left rotation is performed when the balance factor of the node is −2
-//* This rotation is performed when a new node is inserted at the left child of the left subtree.
 //https://www.guru99.com/images/2/063020_0727_AVLTreesRot4.png
 
 //?Right-Right
 //* The right-right rotation is performed when the balance factor of the node is +2  
-//* This rotation is performed when a new node is inserted at the right child of the right subtree.
 //https://www.guru99.com/images/2/063020_0727_AVLTreesRot5.png
 
 //?Right-Left
 //* The right-left rotation is performed when the balance factor of the node is −1
-//* This rotation is performed when a new node is inserted at the right child of the left subtree.
 //https://www.guru99.com/images/2/063020_0727_AVLTreesRot6.png
 
 //?Left-Right
 //* The left-right rotation is performed when the balance factor of the node is +1
-//* This rotation is performed when a new node is inserted at the left child of the right subtree.
 //https://www.guru99.com/images/2/063020_0727_AVLTreesRot7.png
 
 //?Insertion
@@ -114,8 +111,6 @@ class Node
 };
 
 
-
-
 template <typename T>
 class Avl
 {
@@ -134,9 +129,9 @@ class Avl
 			root = new Node(n);
 		}
 
-		size_t getBalance(Node *r)
+		int getBalance(Node *r)
 		{
-			if (r == NULL)
+			if (!r)
 				return (-1);
 			return (getHeight(r->left) - getHeight(r->right));
 		}
@@ -182,7 +177,13 @@ class Avl
 				r->left = insertNode(r->left, data);
 			else if (data >= r->data)
 				r->right = insertNode(r->right, data);
+			int bf = getBalance(r);
 			r->height = std::max(getHeight(r->left), getHeight(r->right)) + 1;
+			if (bf > 1 && data < r->left->data) // Right Rotate
+				root = rotateRight(r);
+			if (bf < -1 && data > r->right->data) // LeftRotate
+				root = rotateLeft(r);
+			
 			return (r);
 		}
 
@@ -233,36 +234,41 @@ class Avl
 		Node *rotateLeft(Node *r) //https://algorithmtutor.com/Data-Structures/Tree/AVL-Trees/
 		{
 			Node *tmp;
+			Node *tmp2;
 
 			tmp = r->right;
-			r->right = tmp->left;
+			tmp2 = r->left;
+
 			tmp->left = r;
+			r->right = tmp2;
+
+
+			r->height = std::max(getHeight(r->left), getHeight(r->right)) + 1;
+			tmp->height = std::max(getHeight(tmp->left), getHeight(tmp->right)) + 1;
+
 			return (tmp);
 		}
-
 		Node *rotateRight(Node *r)
 		{
 			Node *tmp;
+			Node *tmp2;
+			
 
 			tmp = r->left;
-			r->left = tmp->right;
+			tmp2 = tmp->right;
+
 			tmp->right = r;
+			r->left = tmp2;
+			std::cout << "r left data " << r->left << std::endl;
+
+			r->height = std::max(getHeight(r->left), getHeight(r->right)) + 1;
+			tmp->height = std::max(getHeight(tmp->left), getHeight(tmp->right)) + 1;
 			return (tmp);
 		}
-
-		Node *RotateRightLeft(Node *r)
-		{
-			Node *tmp;
-
-			tmp = r->right;
-			r->right = rotateRight(tmp);
-			return (rotateLeft(r));
-		}
-
 		int getHeight(Node *r)
 		{
 			if (!r)
-				return (0);
+				return (-1);
 			else
 				return (r->height);
 		}
