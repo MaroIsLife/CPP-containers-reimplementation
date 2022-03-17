@@ -179,11 +179,20 @@ class Avl
 				r->right = insertNode(r->right, data);
 			int bf = getBalance(r);
 			r->height = std::max(getHeight(r->left), getHeight(r->right)) + 1;
-			if (bf > 1 && data < r->left->data) // Right Rotate
+			if (bf > 1 && data < r->left->data) //https://www.softwaretestinghelp.com/avl-trees-and-heap-data-structure-in-cpp/
 				root = rotateRight(r);
-			if (bf < -1 && data > r->right->data) // LeftRotate
+			if (bf < -1 && data > r->right->data) 
 				root = rotateLeft(r);
-			
+			if (bf > 1 && data > r->left->data)
+			{
+				r->left = rotateLeft(r->left);
+				root = rotateRight(r);
+			}
+			if (bf < -1 && data < r->right>data)
+			{
+				r->right = rotateRight(r->right);
+				root = rotateLeft(r);
+			}
 			return (r);
 		}
 
@@ -241,7 +250,7 @@ class Avl
 
 			tmp->left = r;
 			r->right = tmp2;
-
+			//std::cout << tmp2 << std::endl;
 
 			r->height = std::max(getHeight(r->left), getHeight(r->right)) + 1;
 			tmp->height = std::max(getHeight(tmp->left), getHeight(tmp->right)) + 1;
@@ -259,7 +268,7 @@ class Avl
 
 			tmp->right = r;
 			r->left = tmp2;
-			std::cout << "r left data " << r->left << std::endl;
+			//std::cout << "r left data " << r->left << std::endl;
 
 			r->height = std::max(getHeight(r->left), getHeight(r->right)) + 1;
 			tmp->height = std::max(getHeight(tmp->left), getHeight(tmp->right)) + 1;
