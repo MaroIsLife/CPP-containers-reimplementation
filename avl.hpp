@@ -165,38 +165,45 @@ class Avl
 			return (r);
 		}
 
-		Node *insertNode(Node *r, T data) //https://www.geeksforgeeks.org/avl-tree-set-1-insertion/
+		Node *insertNode(Node *&r, T data) //https://www.geeksforgeeks.org/avl-tree-set-1-insertion/
 		{
 			if (r == NULL)
 			{
 				r = newNode(data);
-				if (!root)
-					root = r;
 			}
 			else if (data < r->data)
 				r->left = insertNode(r->left, data);
 			else if (data >= r->data)
 				r->right = insertNode(r->right, data);
 			int bf = getBalance(r);
+			//std::cout << "bf " << bf << std::endl;
 			r->height = std::max(getHeight(r->left), getHeight(r->right)) + 1;
-			if (bf > 1 && data < r->left->data) //https://www.softwaretestinghelp.com/avl-trees-and-heap-data-structure-in-cpp/
-				root = rotateRight(r);
-			if (bf < -1 && data > r->right->data) 
-				root = rotateLeft(r);
-			if (bf > 1 && data > r->left->data)
+			if (bf > 1 && r->left && data < r->left->data) //https://www.softwaretestinghelp.com/avl-trees-and-heap-data-structure-in-cpp/
 			{
-				r->left = rotateLeft(r->left);
-				root = rotateRight(r);
+				std::cout << "Rotate Right" << std::endl;
+				r = rotateRight(r);
 			}
-			if (bf < -1 && data < r->right>data)
+			if (bf < -1 && r->right && data > r->right->data) 
 			{
+				std::cout << "Rotate Left" << std::endl;
+				r = rotateLeft(r);
+			}
+			if (bf > 1 && r->left && data > r->left->data)
+			{
+				std::cout << "left right\n";
+				r->left = rotateLeft(r->left);
+				r = rotateRight(r);
+			}
+			if (bf < -1 && r->right && data < r->right->data) //! Segfaults here (when checking r->right->data) when rewiding from recursive last InsertNode
+			{
+				std::cout << "Right Left\n";
 				r->right = rotateRight(r->right);
-				root = rotateLeft(r);
+				r = rotateLeft(r);
 			}
 			return (r);
 		}
 
-		Node *deleteNode(Node *r, T data) //https://www.geeksforgeeks.org/avl-tree-set-2-deletion/?ref=lbp
+		Node *deleteNode(Node *&r, T data) //https://www.geeksforgeeks.org/avl-tree-set-2-deletion/?ref=lbp
 		{
 			if (!r)
 				return (NULL);
@@ -230,12 +237,17 @@ class Avl
 				}
 				else if (r->right && r->left) //! In BST Visualization it replaces biggest node and not the way around
 				{
-					//* Find the smallest node in the right subtree and replace r with it.
+					//* Find the smallest node in the right subtree and replace r with it. (Inorder Successor)
 					Node *tmp = minimumNode(r->right);
 					r->data = tmp->data;
 					//std::cout << r->data << std::endl;
 					r->right = deleteNode(r->right, tmp->data);
 				}
+				root->height = std::max(getHeight(r->left), getHeight(r->right)) + 1;
+				int bf = getBalance(root);
+
+				std::cout << "bf delete " << bf << std::endl;
+
 			}
 			return (r);
 		}
@@ -257,6 +269,7 @@ class Avl
 
 			return (tmp);
 		}
+
 		Node *rotateRight(Node *r)
 		{
 			Node *tmp;
@@ -274,6 +287,7 @@ class Avl
 			tmp->height = std::max(getHeight(tmp->left), getHeight(tmp->right)) + 1;
 			return (tmp);
 		}
+
 		int getHeight(Node *r)
 		{
 			if (!r)
@@ -305,7 +319,7 @@ class Avl
 				return ;
 			}
 			std::cout << r->data << std::endl;
-			return (printLeft(r->left));
+			printLeft(r->left);
 		}
 
 };

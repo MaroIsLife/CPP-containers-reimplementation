@@ -21,14 +21,28 @@ int main()
 	//std::cout << test.getRightHeight(test.root) << std::endl;
 	//std::cout << test.getBalance(test.root) << std::endl;
 
-	Avl<int> test(30);
+	Avl<int> test(10);
 
 	//test.insertNode(test.root, 3);
 	//test.insertNode(test.root, 1);
 
 	//test.insertNode(test.root, 20);
-	test.insertNode(test.root, 40);
-	test.insertNode(test.root, 50);
+	test.insertNode(test.root, 30);
+	//std::cout << "------------" << std::endl;
+	test.insertNode(test.root, 20);
+	//std::cout << "------------" << std::endl;
+	test.insertNode(test.root, 3);
+	//std::cout << "------------" << std::endl;
+	test.insertNode(test.root, 203);
+	//std::cout << "------------" << std::endl;
+	test.insertNode(test.root, 210);
+		test.insertNode(test.root, 1);
+
+	//std::cout << "------------" << std::endl;
+	std::cout << test.getBalance(test.root) << std::endl;
+
+
+	std::cout << test.root->left->right->data << std::endl;
 
 	//test.insertNode(test.root, 1);
 
@@ -38,7 +52,6 @@ int main()
 
 	//! Use geeksforgeeks avl
 	//test.searchNode(test.root, 10);
-	std::cout << test.root->data << std::endl;
 	
 	
 	//std::cout << test.getHeight(test.root) << std::endl;
@@ -90,7 +103,7 @@ int main()
 //https://www.softwaretestinghelp.com/trees-in-cpp/
 
 //*Avl
-//https://www.guru99.com/avl-tree.html (very good)
+//https://www.guru99.com/avl-tree.html (very good to understand rotations)
 //https://simplesnippets.tech/what-is-avl-tree-data-structure-all-avl-operations-with-full-code/ (Very Good)
 //https://algorithmtutor.com/Data-Structures/Tree/AVL-Trees/
 //https://www.techiedelight.com/inorder-tree-traversal-iterative-recursive/
