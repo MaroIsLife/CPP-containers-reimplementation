@@ -36,10 +36,12 @@ int main()
 	test.insertNode(test.root, 203);
 	//std::cout << "------------" << std::endl;
 	test.insertNode(test.root, 210);
-		test.insertNode(test.root, 1);
+	
+	test.insertNode(test.root, 1);
 
 	//std::cout << "------------" << std::endl;
-	std::cout << test.getBalance(test.root) << std::endl;
+	//std::cout << test.getBalance(test.root) << std::endl;
+	test.deleteNode(test.root, 203);
 
 
 	std::cout << test.root->left->right->data << std::endl;

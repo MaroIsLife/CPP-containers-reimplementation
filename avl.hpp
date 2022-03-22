@@ -176,7 +176,6 @@ class Avl
 			else if (data >= r->data)
 				r->right = insertNode(r->right, data);
 			int bf = getBalance(r);
-			//std::cout << "bf " << bf << std::endl;
 			r->height = std::max(getHeight(r->left), getHeight(r->right)) + 1;
 			if (bf > 1 && r->left && data < r->left->data) //https://www.softwaretestinghelp.com/avl-trees-and-heap-data-structure-in-cpp/
 			{
@@ -194,7 +193,7 @@ class Avl
 				r->left = rotateLeft(r->left);
 				r = rotateRight(r);
 			}
-			if (bf < -1 && r->right && data < r->right->data) //! Segfaults here (when checking r->right->data) when rewiding from recursive last InsertNode
+			if (bf < -1 && r->right && data < r->right->data)
 			{
 				std::cout << "Right Left\n";
 				r->right = rotateRight(r->right);
@@ -235,19 +234,42 @@ class Avl
 					r = tmp;
 					//std::cout << &(*r) << std::endl;
 				}
-				else if (r->right && r->left) //! In BST Visualization it replaces biggest node and not the way around
+				else if (r->right && r->left) //! In BST Visualization it replaces biggest node and not the smallest one
 				{
 					//* Find the smallest node in the right subtree and replace r with it. (Inorder Successor)
 					Node *tmp = minimumNode(r->right);
 					r->data = tmp->data;
 					//std::cout << r->data << std::endl;
+					//r->right = NULL;
+					//delete r->right;
 					r->right = deleteNode(r->right, tmp->data);
 				}
-				root->height = std::max(getHeight(r->left), getHeight(r->right)) + 1;
-				int bf = getBalance(root);
-
-				std::cout << "bf delete " << bf << std::endl;
-
+			}
+			if (!r)
+				return (r);
+			r->height = std::max(getHeight(r->left), getHeight(r->right)) + 1;
+			int bf = getBalance(r);
+			if (bf > 1)
+			{
+				int bf2 = getBalance(r->left);
+				if (bf2 >= 0)
+					r = rotateRight(r);
+				else
+				{
+					r->left = rotateLeft(r->left);
+					r = rotateRight(r);
+				}
+			}
+			else if (bf < -1)
+			{
+				int bf2 = getBalance(r->right);
+				if (bf2 <= 0)
+					r = rotateLeft(r->right);
+				else
+				{
+					r->right = rotateRight(r->right);
+					r = rotateLeft(r);
+				}
 			}
 			return (r);
 		}

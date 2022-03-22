@@ -22,7 +22,7 @@ namespace ft
 			typedef T* pointer;
 			typedef const T* const_pointer;
 			typedef ft::myiterator<T> iterator;
-			typedef ft::myiterator<const T>  const_iterator;
+			typedef ft::myiterator<const T> const_iterator;
 			typedef ft::reverse_iterator<iterator> reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 			typedef ptrdiff_t difference_type;
@@ -81,7 +81,7 @@ namespace ft
 				this->_allocator = x._allocator;
 				*this = x;
 			}
-			vector& operator= (const vector& x)
+			vector& operator=(const vector& x)
 			{
 				if (*this != x)
 				{
