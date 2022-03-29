@@ -102,19 +102,13 @@ class Node
 		Node *right;
 		Node *left;
 
-		Node()
+		Node() : data(0), height(0), right(NULL), left(NULL) 
 		{
-			data = 0;
-			height = 0;
-			right = NULL;
-			left = NULL;
+			
 		}
-		Node(T n)
+		Node(T n) : data(n), height(1), right(NULL), left(NULL) 
 		{
-			height = 1;
-			data = n;
-			right = NULL;
-			left = NULL;
+			
 		}
 };
 
@@ -197,7 +191,6 @@ class Avl
 				return (false);
 			else
 				return (true);
-		
 		}
 
 		Node *insertNode(Node *&r, const value_type &data) //https://www.geeksforgeeks.org/avl-tree-set-1-insertion/
@@ -205,9 +198,9 @@ class Avl
 			if (r == NULL)
 				r = newNode(data);
 			else if (data.first < r->data.first)
-				r->left = insertNode(r->left, data.first);
+				r->left = insertNode(r->left, data);
 			else if (data.first > r->data.first)
-				r->right = insertNode(r->right, data.first);
+				r->right = insertNode(r->right, data);
 			else if (data.first == r->data.first)
 				return (NULL);
 			int bf = getBalance(r);

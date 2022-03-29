@@ -25,6 +25,11 @@ namespace ft
 		{
 			
 		}
+
+		pair(const pair& pr) : first(pr.first), second(pr.second)
+		{
+			
+		}
 		
 		pair& operator= (const pair& pr)
 		{
