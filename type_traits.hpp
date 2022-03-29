@@ -36,8 +36,6 @@ namespace ft
 		const static T value = v;
 		typedef T value_type;
 		typedef integral_constant type;
-		typedef integral_constant<bool,true> true_type;
-		typedef integral_constant<bool,false> false_type;
 		integral_constant()
 		{
 			return (v);

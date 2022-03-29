@@ -5,57 +5,46 @@
 #include "iterator_traits.hpp"
 #include <memory>
 #include <map>
-#include "avl.hpp"
+#include "map.hpp"
 #define EQUAL(x) ((x) ? (std::cout << "\033[1;32mAC\033[0m\n") : (std::cout << "\033[1;31mWA\033[0m\n"))
 
 
+
+template <class T>
+int compare(T const &x, T const &y)
+{
+	if (std::less<T>())
+	{
+		std::cout << "Yes" << std::endl;
+	}
+	return (0);
+}
 
 //! Implement istream iterator with insert range and assign range
 int main()
 {
 
-	//Avl<int> test(10);
+	ft::map<int, int> m;
+
+	m.insert(ft::make_pair(1, 2));
+	
 
 	
 	//std::cout << test.getLeftHeight(test.root) << std::endl;
 	//std::cout << test.getRightHeight(test.root) << std::endl;
 	//std::cout << test.getBalance(test.root) << std::endl;
 
-	Avl<int> test(10);
+	//ft::map<int,int> test;
 
-	//test.insertNode(test.root, 3);
-	//test.insertNode(test.root, 1);
-
-	//test.insertNode(test.root, 20);
-	test.insertNode(test.root, 30);
-	//std::cout << "------------" << std::endl;
-	test.insertNode(test.root, 20);
-	//std::cout << "------------" << std::endl;
-	test.insertNode(test.root, 3);
-	//std::cout << "------------" << std::endl;
-	test.insertNode(test.root, 203);
-	//std::cout << "------------" << std::endl;
-	test.insertNode(test.root, 210);
 	
-	test.insertNode(test.root, 1);
-
-	//std::cout << "------------" << std::endl;
-	//std::cout << test.getBalance(test.root) << std::endl;
-	test.deleteNode(test.root, 203);
 
 
-	std::cout << test.root->left->right->data << std::endl;
-
-	//test.insertNode(test.root, 1);
-
-	//test.deleteNode(test.root, 2);
+	//std::cout << ab() << std::endl;
 
 	//std::cout << test.getLeftHeight(test.root) << std::endl;
 
 	//! Use geeksforgeeks avl
 	//test.searchNode(test.root, 10);
-	
-	
 	//std::cout << test.getHeight(test.root) << std::endl;
 	//std::cout << test.getBalance(test.root) << std::endl;
 	//test.root->left = new Node<int>(13);

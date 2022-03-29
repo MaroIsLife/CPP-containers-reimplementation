@@ -85,6 +85,14 @@
 //* 2C If BF(node) = -2 and BF(node -> right-child) = 0, perform RR rotation.
 //https://www.guru99.com/images/2/063020_0727_AVLTreesRot10.jpg
 
+//? Predecessor of a node
+//* Predecessors can be described as the node that would come right before the node you are currently at.
+//* To find the predecessor of the current node, look at the right-most/largest leaf node in the left subtree.
+
+//? Successor of a Node
+//* Successors can be described as the node that would come right after the the current node.
+//* To find the successor of the current node, look at the left-most/smallest leaf node in the right subtree.
+
 template <typename T>
 class Node 
 {
@@ -110,14 +118,18 @@ class Node
 		}
 };
 
-
 template <typename T>
 class Avl
 {
 	public:
 		T data;
-		Node<T> *root;
 		typedef Node<T> Node;
+		Node *root;
+		typedef T value_type;
+		typedef typename T::first_type key_type;
+		typedef typename T::second_type mapped_type;
+
+		
 
 		Avl()
 		{
@@ -129,6 +141,20 @@ class Avl
 			root = new Node(n);
 		}
 
+		~Avl()
+		{
+			destroyAllNodes(root);
+		}
+
+		void destroyAllNodes(Node *r)
+		{
+			if (r)
+			{
+				destroyAllNodes(r->left);
+				destroyAllNodes(r->right);
+				delete r;
+			}
+		}
 		int getBalance(Node *r)
 		{
 			if (!r)
@@ -136,7 +162,7 @@ class Avl
 			return (getHeight(r->left) - getHeight(r->right));
 		}
 
-		Node *newNode(T data)
+		Node *newNode(const value_type &data)
 		{
 			return (new Node(data));
 		}
@@ -149,53 +175,62 @@ class Avl
 				return (NULL);
 			if (r->data == data)
 			{
-				std::cout << "Found " << data << std::endl;
+				std::cout << "Found " << r->data << std::endl;
 				return (r);
 			}
 			else if (data < r->data)
 			{
-				std::cout << "Left" << std::endl;
+				//std::cout << "Left" << std::endl;
 				r->left = searchNode(r->left, data);
 			}
 			else
 			{
-				std::cout << "Right" << std::endl;
+				//std::cout << "Right" << std::endl;
 				r->right = searchNode(r->right, data);
 			}
 			return (r);
 		}
+		
+		bool mapInsert(const value_type &val)
+		{
+			if (!(insertNode(root, val)))
+				return (false);
+			else
+				return (true);
+		
+		}
 
-		Node *insertNode(Node *&r, T data) //https://www.geeksforgeeks.org/avl-tree-set-1-insertion/
+		Node *insertNode(Node *&r, const value_type &data) //https://www.geeksforgeeks.org/avl-tree-set-1-insertion/
 		{
 			if (r == NULL)
-			{
 				r = newNode(data);
-			}
-			else if (data < r->data)
-				r->left = insertNode(r->left, data);
-			else if (data >= r->data)
-				r->right = insertNode(r->right, data);
+			else if (data.first < r->data.first)
+				r->left = insertNode(r->left, data.first);
+			else if (data.first > r->data.first)
+				r->right = insertNode(r->right, data.first);
+			else if (data.first == r->data.first)
+				return (NULL);
 			int bf = getBalance(r);
 			r->height = std::max(getHeight(r->left), getHeight(r->right)) + 1;
-			if (bf > 1 && r->left && data < r->left->data) //https://www.softwaretestinghelp.com/avl-trees-and-heap-data-structure-in-cpp/
+			if (bf > 1 && r->left && data.first < r->left->data.first) //https://www.softwaretestinghelp.com/avl-trees-and-heap-data.first-structure-in-cpp/
 			{
-				std::cout << "Rotate Right" << std::endl;
+				//std::cout << "Rotate Right" << std::endl;
 				r = rotateRight(r);
 			}
-			if (bf < -1 && r->right && data > r->right->data) 
+			if (bf < -1 && r->right && data.first > r->right->data.first) 
 			{
-				std::cout << "Rotate Left" << std::endl;
+				//std::cout << "Rotate Left" << std::endl;
 				r = rotateLeft(r);
 			}
-			if (bf > 1 && r->left && data > r->left->data)
+			if (bf > 1 && r->left && data.first > r->left->data.first)
 			{
-				std::cout << "left right\n";
+				//std::cout << "left right\n";
 				r->left = rotateLeft(r->left);
 				r = rotateRight(r);
 			}
-			if (bf < -1 && r->right && data < r->right->data)
+			if (bf < -1 && r->right && data.first < r->right->data.first)
 			{
-				std::cout << "Right Left\n";
+				//std::cout << "Right Left\n";
 				r->right = rotateRight(r->right);
 				r = rotateLeft(r);
 			}
@@ -234,7 +269,7 @@ class Avl
 					r = tmp;
 					//std::cout << &(*r) << std::endl;
 				}
-				else if (r->right && r->left) //! In BST Visualization it replaces biggest node and not the smallest one
+				else if (r->right && r->left) //! In BST/AVL Visualization it replaces biggest node and not the smallest one
 				{
 					//* Find the smallest node in the right subtree and replace r with it. (Inorder Successor)
 					Node *tmp = minimumNode(r->right);
@@ -333,15 +368,11 @@ class Avl
 			return (r);
 		}
 
-		void printLeft(Node *r)
+		Node* findSmallest(Node *r)
 		{
-			if (r == NULL)
-			{
-				std::cout << "NULL found" << std::endl;
-				return ;
-			}
-			std::cout << r->data << std::endl;
-			printLeft(r->left);
+			if (!r->left)
+				return (r);
+			return (findSmallest(r->left));
 		}
 
 };
