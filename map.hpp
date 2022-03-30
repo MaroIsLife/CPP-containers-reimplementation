@@ -1,9 +1,10 @@
+#pragma once
+
 #include <iostream>
 #include "utility.hpp"
 #include <functional>
 #include "avl.hpp"
 #include "map_iterator.hpp"
-
 namespace ft
 {
 	//* Less(Sorting Map Less or Greater than) https://www.cplusplus.com/reference/functional/less/
@@ -18,8 +19,9 @@ namespace ft
 		public:
 			typedef Key key_type;
 			typedef T mapped_type;
-			typedef ft::pair<const key_type, mapped_type> value_type; //! Switched from const key_type to key_type
-			typedef ft::map_iterator<value_type> iterator;
+			typedef ft::pair<const key_type, mapped_type> value_type;
+			typedef typename ft::map_iterator<value_type> iterator;
+			typedef typename Avl<value_type>::Node Node;
 			typedef Compare key_compare;
 			typedef Alloc allocator_type;
 			typedef size_t size_type;
@@ -96,19 +98,24 @@ namespace ft
 			{
 				return (_size);
 			}
+
 			size_type max_size() const
 			{
 				return (_allocator.max_size());
 			}
-			//pair<iterator,bool> insert (const value_type& val)
-			//{
-			//	_node.insertNode(_node, val);
-			//}
 
-			void insert (const value_type& val) 
+			iterator begin()
 			{
-				//std::cout << val.first << std::endl;
-				_node.mapInsert(val);
+				return (iterator(_node.findSmallest(_node.root)));
+			}
+
+			pair<iterator,bool> insert (const value_type& val) 
+			{
+				Node *r = _node.insertNode(_node.root, val);
+				if (!r)
+					return (make_pair(iterator(&r->data), false));
+				else
+					return (make_pair(iterator(&r->data), true));
 			}
 			
 		private:
@@ -116,9 +123,6 @@ namespace ft
 			value_compare _comp;
 			allocator_type _allocator;
 			Avl<value_type> _node;
-			Avl<value_type> *_root;
-
-
 	};
 }
 

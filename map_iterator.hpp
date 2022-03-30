@@ -6,17 +6,26 @@ namespace ft
 
 template <typename T>
 class map_iterator
-{
-	private:
-		T root;
-		T* current;
+{	
 	public:
 	typedef T value_type;
 	typedef T& reference;
 	typedef T* pointer;
+
 	typedef ptrdiff_t difference_type;
-	map_iterator(T* ptr) : ptr(ptr) {}
-	map_iterator(const map_iterator& it) : ptr(it.ptr) {}
+
+	map_iterator() : ptr(NULL)
+	{
+
+	}
+	map_iterator(T* ptr) : ptr(ptr)
+	{
+
+	}
+	map_iterator(const map_iterator& it) : ptr(it.ptr) 
+	{
+
+	}
 	map_iterator& operator++()
 	{
 		ptr++;
@@ -33,15 +42,15 @@ class map_iterator
 		ptr--;
 		return (*this);
 	}
-	map_iterator operator-(int)
+	map_iterator operator--(int)
 	{
 		map_iterator tmp(*this);
 		--(*this);
 		return (tmp);
 	}
-	reference operator*() const
+	value_type operator*()
 	{
-		return (*ptr);
+		return (ptr->data);
 	}
 	pointer operator->() const
 	{
@@ -84,7 +93,7 @@ class map_iterator
 		return (false);
 	}
 	private:
-	T* ptr;
+	T *ptr;
 };
 
 }

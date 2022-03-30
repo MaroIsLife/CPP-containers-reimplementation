@@ -1,6 +1,8 @@
+#pragma once
+
 #include <iostream>
 
-
+#include "map.hpp"
 //?Difference between Binary Tree, Binary Search Tree and AVL Tree
 //* Binary tree is a tree data structure in which each node has at most two children (It has no rules)
 //* Binary Search Tree is a Binary tree in which the value of each node is greater than or equal to the value of the node to its left and less than or equal to the value of the node to its right.
@@ -97,6 +99,7 @@ template <typename T>
 class Node 
 {
 	public:
+		typedef T value_type;
 		T data;
 		int height;
 		Node *right;
@@ -116,14 +119,12 @@ template <typename T>
 class Avl
 {
 	public:
-		T data;
-		typedef Node<T> Node;
-		Node *root;
 		typedef T value_type;
-		typedef typename T::first_type key_type;
-		typedef typename T::second_type mapped_type;
-
-		
+		//value_type data;
+		typedef Node<value_type> Node;
+		Node *root;
+		typedef typename value_type::first_type key_type;
+		typedef typename value_type::second_type mapped_type;		
 
 		Avl()
 		{
@@ -183,14 +184,6 @@ class Avl
 				r->right = searchNode(r->right, data);
 			}
 			return (r);
-		}
-		
-		bool mapInsert(const value_type &val)
-		{
-			if (!(insertNode(root, val)))
-				return (false);
-			else
-				return (true);
 		}
 
 		Node *insertNode(Node *&r, const value_type &data) //https://www.geeksforgeeks.org/avl-tree-set-1-insertion/
@@ -361,10 +354,10 @@ class Avl
 			return (r);
 		}
 
-		Node* findSmallest(Node *r)
+		value_type *findSmallest(Node *r)
 		{
 			if (!r->left)
-				return (r);
+				return (&r->data);
 			return (findSmallest(r->left));
 		}
 

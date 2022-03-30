@@ -25,8 +25,15 @@ int main()
 {
 
 	ft::map<int, int> m;
+	ft::map<int, int>::iterator it;
+
+
 
 	m.insert(ft::make_pair(1, 2));
+	
+	it = m.begin();
+	std::cout << it->second << std::endl;
+
 	
 
 	
@@ -109,3 +116,7 @@ int main()
 
 //*Avl Visualizer
 //https://www.cs.usfca.edu/~galles/visualization/AVLtree.html
+
+//* Avl Traversal
+//https://www.cs.odu.edu/~zeil/cs361/latest/Public/treetraversal/index.html
+
