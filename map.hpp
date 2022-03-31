@@ -62,6 +62,7 @@ namespace ft
 			{
 				this->comp = comp;
 				this->alloc = alloc;
+				_size = 0;
 				for (; first != last; ++first)
 					insert(*first);
 			}
@@ -90,10 +91,12 @@ namespace ft
 					this->size = x.size;
 				}
 			}
+
 			bool empty() const
 			{
 				return (_size);
 			}
+
 			size_type size() const
 			{
 				return (_size);
@@ -109,20 +112,38 @@ namespace ft
 				return (iterator(_node.findSmallest(_node.root)));
 			}
 
-			pair<iterator,bool> insert (const value_type& val) 
+			iterator begin() const
 			{
-				Node *r = _node.insertNode(_node.root, val);
+				return (iterator(_node.findSmallest(_node.root)));
+			}
+
+			iterator end()
+			{
+				return (iterator(NULL));
+			}
+
+			iterator end() const
+			{
+				return (iterator(NULL));
+			}
+
+			pair<iterator, bool> insert (const value_type& val) 
+			{
+				_size++;
+				_node.insertNode(_node.root, val, _node.root);
+				Node *r = _node.searchNode(_node.root, val.first);	
+				std::cout << "r->data " << &r->data << std::endl;
 				if (!r)
 					return (make_pair(iterator(&r->data), false));
 				else
 					return (make_pair(iterator(&r->data), true));
 			}
 			
+			Avl<value_type> _node;
 		private:
 			size_type _size;
 			value_compare _comp;
 			allocator_type _allocator;
-			Avl<value_type> _node;
 	};
 }
 

@@ -104,12 +104,13 @@ class Node
 		int height;
 		Node *right;
 		Node *left;
+		Node *parent;
 
-		Node() : data(0), height(0), right(NULL), left(NULL) 
+		Node() : data(0), height(0), right(NULL), left(NULL), parent(NULL)
 		{
 			
 		}
-		Node(T n) : data(n), height(1), right(NULL), left(NULL) 
+		Node(T n) : data(n), height(1), right(NULL), left(NULL), parent(NULL)
 		{
 			
 		}
@@ -120,7 +121,6 @@ class Avl
 {
 	public:
 		typedef T value_type;
-		//value_type data;
 		typedef Node<value_type> Node;
 		Node *root;
 		typedef typename value_type::first_type key_type;
@@ -162,40 +162,48 @@ class Avl
 			return (new Node(data));
 		}
 
-		Node *searchNode(Node *r, T data)
+		Node *searchNode(Node *r, const key_type data)
 		{
 			//std::cout << "R data " << r->data << std::endl;
 			//std::cout << "data " << data << std::endl;
 			if (!r)
 				return (NULL);
-			if (r->data == data)
+			if (r->data.first == data)
 			{
-				std::cout << "Found " << r->data << std::endl;
+				//std::cout << "Found " << r->data.first << std::endl;
 				return (r);
 			}
-			else if (data < r->data)
+			else if (data < r->data.first)
 			{
 				//std::cout << "Left" << std::endl;
-				r->left = searchNode(r->left, data);
+				//r->left = searchNode(r->left, data);
+				return (searchNode(r->left, data));
 			}
 			else
 			{
 				//std::cout << "Right" << std::endl;
-				r->right = searchNode(r->right, data);
+				//r->right = searchNode(r->right, data);
+				return (searchNode(r->right, data));
 			}
 			return (r);
 		}
 
-		Node *insertNode(Node *&r, const value_type &data) //https://www.geeksforgeeks.org/avl-tree-set-1-insertion/
-		{
-			if (r == NULL)
+		Node *insertNode(Node *&r, const value_type &data, Node *&parent) //https://www.geeksforgeeks.org/avl-tree-set-1-insertion/
+		{	
+			if (r)
+				r->parent = parent;
+			if (!r)
+			{
 				r = newNode(data);
+			}
 			else if (data.first < r->data.first)
-				r->left = insertNode(r->left, data);
+			{
+				r->left = insertNode(r->left, data, r);
+			}
 			else if (data.first > r->data.first)
-				r->right = insertNode(r->right, data);
-			else if (data.first == r->data.first)
-				return (NULL);
+			{
+				r->right = insertNode(r->right, data, r);
+			}
 			int bf = getBalance(r);
 			r->height = std::max(getHeight(r->left), getHeight(r->right)) + 1;
 			if (bf > 1 && r->left && data.first < r->left->data.first) //https://www.softwaretestinghelp.com/avl-trees-and-heap-data.first-structure-in-cpp/
@@ -220,6 +228,7 @@ class Avl
 				r->right = rotateRight(r->right);
 				r = rotateLeft(r);
 			}
+			//std::cout << &r << std::endl;
 			return (r);
 		}
 
@@ -347,13 +356,6 @@ class Avl
 				return (minimumNode(r->left));
 		}
 
-		Node *maximumNode(Node *r)
-		{
-			while (!r->right)
-				r = r->right;
-			return (r);
-		}
-
 		value_type *findSmallest(Node *r)
 		{
 			if (!r->left)
@@ -361,4 +363,15 @@ class Avl
 			return (findSmallest(r->left));
 		}
 
+		value_type *findLargest(Node *r)
+		{
+			if (!r->right)
+				return (&r->data);
+			return (findLargest(r->right));
+		}
+
+		value_type *getParent(Node *r)
+		{
+			return (r->parent);
+		}
 };

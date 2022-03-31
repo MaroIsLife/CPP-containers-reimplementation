@@ -26,13 +26,18 @@ int main()
 
 	ft::map<int, int> m;
 	ft::map<int, int>::iterator it;
+	ft::pair<ft::map<int, int>::iterator, bool> ret;
 
 
+	ret = m.insert(ft::make_pair(1, 2));
+	ret = m.insert(ft::make_pair(2, 2));
+	it = ret.first;
+	//std::cout << *(ret.first)->first << std::endl;
+	std::cout << it->first << std::endl;
+	//m._node.searchNode(m._node.root, 2);
 
-	m.insert(ft::make_pair(1, 2));
-	
-	it = m.begin();
-	std::cout << it->second << std::endl;
+
+	//it = m.begin();
 
 	
 
