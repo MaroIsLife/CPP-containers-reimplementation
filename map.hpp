@@ -127,16 +127,24 @@ namespace ft
 				return (iterator(NULL));
 			}
 
+			//pair<iterator, bool> insert (const value_type& val) 
+			//{
+			//	_size++;
+			//	Node *r = _node.insertNode(_node.root, val, _node.root); //* Insert node always get the root address so i used search node
+			//	//Node *r = _node.searchNode(_node.root, val.first);	
+			//	if (!r)
+			//		return (make_pair(iterator(&r->data), false));
+			//	else
+			//		return (make_pair(iterator(&r->data), true));
+			//}
+
 			pair<iterator, bool> insert (const value_type& val) 
 			{
 				_size++;
-				_node.insertNode(_node.root, val, _node.root);
-				Node *r = _node.searchNode(_node.root, val.first);	
-				std::cout << "r->data " << &r->data << std::endl;
-				if (!r)
-					return (make_pair(iterator(&r->data), false));
+				if ((_node.insertNode(_node.root, val, _node.root)) == NULL)
+					return (make_pair(iterator(&(_node.searchNode(_node.root, val.first))->data), false));
 				else
-					return (make_pair(iterator(&r->data), true));
+					return (make_pair(iterator(&(_node.searchNode(_node.root, val.first))->data), true));
 			}
 			
 			Avl<value_type> _node;

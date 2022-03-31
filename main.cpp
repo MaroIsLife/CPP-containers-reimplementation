@@ -31,9 +31,10 @@ int main()
 
 	ret = m.insert(ft::make_pair(1, 2));
 	ret = m.insert(ft::make_pair(2, 2));
-	it = ret.first;
 	//std::cout << *(ret.first)->first << std::endl;
 	std::cout << it->first << std::endl;
+	std::cout << ret.second << std::endl;
+
 	//m._node.searchNode(m._node.root, 2);
 
 

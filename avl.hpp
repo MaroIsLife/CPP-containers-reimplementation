@@ -204,6 +204,8 @@ class Avl
 			{
 				r->right = insertNode(r->right, data, r);
 			}
+			else if (data.first == r->data.first)
+				return (NULL);
 			int bf = getBalance(r);
 			r->height = std::max(getHeight(r->left), getHeight(r->right)) + 1;
 			if (bf > 1 && r->left && data.first < r->left->data.first) //https://www.softwaretestinghelp.com/avl-trees-and-heap-data.first-structure-in-cpp/
