@@ -130,18 +130,19 @@ namespace ft
 			//pair<iterator, bool> insert (const value_type& val) 
 			//{
 			//	_size++;
-			//	Node *r = _node.insertNode(_node.root, val, _node.root); //* Insert node always get the root address so i used search node
-			//	//Node *r = _node.searchNode(_node.root, val.first);	
-			//	if (!r)
+			//	Node *n = _node.insertNode(_node.root, val, _node.root); //* Insert node always get the root address so i used search node
+			//	Node *r = _node.searchNode(_node.root, val.first);
+			//	std::cout << &r->parent << std::endl;	
+			//	if (!n)
 			//		return (make_pair(iterator(&r->data), false));
 			//	else
 			//		return (make_pair(iterator(&r->data), true));
 			//}
 
-			pair<iterator, bool> insert (const value_type& val) 
+			pair<iterator, bool> insert(const value_type& val) 
 			{
 				_size++;
-				if ((_node.insertNode(_node.root, val, _node.root)) == NULL)
+				if (!(_node.insertNode(_node.root, val, _node.root)))
 					return (make_pair(iterator(&(_node.searchNode(_node.root, val.first))->data), false));
 				else
 					return (make_pair(iterator(&(_node.searchNode(_node.root, val.first))->data), true));

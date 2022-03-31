@@ -100,7 +100,7 @@ class Node
 {
 	public:
 		typedef T value_type;
-		T data;
+		value_type data;
 		int height;
 		Node *right;
 		Node *left;
@@ -190,11 +190,10 @@ class Avl
 
 		Node *insertNode(Node *&r, const value_type &data, Node *&parent) //https://www.geeksforgeeks.org/avl-tree-set-1-insertion/
 		{	
-			if (r)
-				r->parent = parent;
 			if (!r)
 			{
 				r = newNode(data);
+				r->parent = parent;
 			}
 			else if (data.first < r->data.first)
 			{
@@ -375,5 +374,31 @@ class Avl
 		value_type *getParent(Node *r)
 		{
 			return (r->parent);
+		}
+		
+		value_type *getSuccessor(Node *r)
+		{
+			if (r->right)
+				return (findSmallest(r->right));
+			else
+			{
+				Node *tmp = r;
+				while (tmp->parent && tmp->parent->right == tmp)
+					tmp = tmp->parent;
+				return (&tmp->parent->data);
+			}
+		}
+
+		value_type *getPredecessor(Node *r)
+		{
+			if (r->left)
+				return (findLargest(r->left));
+			else
+			{
+				Node *tmp = r;
+				while (tmp->parent && tmp->parent->left == tmp)
+					tmp = tmp->parent;
+				return (&tmp->parent->data);
+			}
 		}
 };

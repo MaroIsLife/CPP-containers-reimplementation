@@ -20,7 +20,6 @@ class map_iterator
 	}
 	map_iterator(T* ptr) : ptr(ptr)
 	{
-
 	}
 	map_iterator(const map_iterator& it) : ptr(it.ptr) 
 	{
@@ -48,7 +47,7 @@ class map_iterator
 		--(*this);
 		return (tmp);
 	}
-	value_type operator*()
+	value_type& operator*()
 	{
 		return (ptr->data);
 	}
@@ -93,7 +92,7 @@ class map_iterator
 		return (false);
 	}
 	private:
-	T *ptr;
+	value_type *ptr;
 };
 
 }
