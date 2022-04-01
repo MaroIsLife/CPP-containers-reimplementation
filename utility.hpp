@@ -37,6 +37,10 @@ namespace ft
 			second = pr.second;
 			return (*this);
 		}
+		void operator++()
+		{
+			std::cout << "++" << std::endl;
+		}
 
 	};
 	template <class T1, class T2>

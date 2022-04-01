@@ -31,11 +31,11 @@ int main()
 
 	ret = m.insert(ft::make_pair(1, 2));
 	ret = m.insert(ft::make_pair(2, 2));
-	it = ret.first;
+	//it = ret.first;
+	it = m.begin();
+	std::cout << it->first << std::endl;
 	//std::cout << *(ret.first)->first << std::endl;
-	std::cout << it->first << std::endl;
-	it++;
-	std::cout << it->first << std::endl;
+
 	
 
 
@@ -127,4 +127,7 @@ int main()
 
 //* Avl Traversal
 //https://www.cs.odu.edu/~zeil/cs361/latest/Public/treetraversal/index.html
+//https://www.techiedelight.com/inorder-tree-traversal-iterative-recursive/
 
+//* Rebind
+//https://stackoverflow.com/questions/22384231/is-use-of-allocatorrebind-required-by-c-standard

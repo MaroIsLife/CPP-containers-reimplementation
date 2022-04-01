@@ -162,7 +162,7 @@ class Avl
 			return (new Node(data));
 		}
 
-		Node *searchNode(Node *r, const key_type data)
+		Node *searchNode(Node *&r, const key_type data)
 		{
 			//std::cout << "R data " << r->data << std::endl;
 			//std::cout << "data " << data << std::endl;
@@ -357,10 +357,10 @@ class Avl
 				return (minimumNode(r->left));
 		}
 
-		value_type *findSmallest(Node *r)
+		Node *findSmallest(Node *r)
 		{
 			if (!r->left)
-				return (&r->data);
+				return (r);
 			return (findSmallest(r->left));
 		}
 
@@ -400,5 +400,12 @@ class Avl
 					tmp = tmp->parent;
 				return (&tmp->parent->data);
 			}
+		}
+		void inorder(Node *r)
+		{
+			if (!r)
+				return;
+			inorder(r->left);
+			inorder(r->right);
 		}
 };

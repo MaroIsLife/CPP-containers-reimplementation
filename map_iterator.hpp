@@ -2,16 +2,26 @@
 
 namespace ft
 {
+	template <class Category, class T, class Distance = ptrdiff_t,
+			class Pointer = T*, class Reference = T&>
+	struct map_base_iterator 
+	{
+		public:
+			//typedef T			value_type;
+			typedef Distance	difference_type;
+			typedef Pointer		pointer;
+			typedef Reference	reference;
+			typedef Category 	iterator_category;
+	};
 
-
-template <typename T>
-class map_iterator
-{	
+	template <typename T>
+	class map_iterator : public ft::map_base_iterator<std::bidirectional_iterator_tag, T> 
+	{	
 	public:
-	typedef T value_type;
+	typedef T Node;
+	typedef typename T::value_type value_type;
 	typedef T& reference;
 	typedef T* pointer;
-
 	typedef ptrdiff_t difference_type;
 
 	map_iterator() : ptr(NULL)
@@ -20,6 +30,7 @@ class map_iterator
 	}
 	map_iterator(T* ptr) : ptr(ptr)
 	{
+
 	}
 	map_iterator(const map_iterator& it) : ptr(it.ptr) 
 	{
@@ -27,7 +38,7 @@ class map_iterator
 	}
 	map_iterator& operator++()
 	{
-		ptr++;
+		++ptr;
 		return (*this);
 	}
 	map_iterator operator++(int)
@@ -51,9 +62,9 @@ class map_iterator
 	{
 		return (ptr->data);
 	}
-	pointer operator->() const
+	value_type* operator->() const
 	{
-		return (ptr);
+		return (&ptr->data);
 	}
 	bool operator==(const map_iterator& it) const
 	{
@@ -92,7 +103,7 @@ class map_iterator
 		return (false);
 	}
 	private:
-	value_type *ptr;
+	T *ptr;
 };
 
 }

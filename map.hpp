@@ -20,8 +20,8 @@ namespace ft
 			typedef Key key_type;
 			typedef T mapped_type;
 			typedef ft::pair<const key_type, mapped_type> value_type;
-			typedef typename ft::map_iterator<value_type> iterator;
 			typedef typename Avl<value_type>::Node Node;
+			typedef typename ft::map_iterator<Node> iterator;
 			typedef Compare key_compare;
 			typedef Alloc allocator_type;
 			typedef size_t size_type;
@@ -130,7 +130,7 @@ namespace ft
 			//pair<iterator, bool> insert (const value_type& val) 
 			//{
 			//	_size++;
-			//	Node *n = _node.insertNode(_node.root, val, _node.root); //* Insert node always get the root address so i used search node
+			//	Node *n = _node.insertNode(_node.root, val, _node.root);
 			//	Node *r = _node.searchNode(_node.root, val.first);
 			//	std::cout << &r->parent << std::endl;	
 			//	if (!n)
@@ -139,17 +139,17 @@ namespace ft
 			//		return (make_pair(iterator(&r->data), true));
 			//}
 
-			pair<iterator, bool> insert(const value_type& val) 
+			pair<iterator, bool> insert(const value_type& val) 	//* Insert node always get the root address (cuz recursive) so i used search node
 			{
-				_size++;
+				_size++; 
 				if (!(_node.insertNode(_node.root, val, _node.root)))
-					return (make_pair(iterator(&(_node.searchNode(_node.root, val.first))->data), false));
+					return (make_pair(iterator((_node.searchNode(_node.root, val.first))), false));
 				else
-					return (make_pair(iterator(&(_node.searchNode(_node.root, val.first))->data), true));
+					return (make_pair(iterator((_node.searchNode(_node.root, val.first))), true));
 			}
 			
-			Avl<value_type> _node;
 		private:
+			Avl<value_type> _node;
 			size_type _size;
 			value_compare _comp;
 			allocator_type _allocator;
