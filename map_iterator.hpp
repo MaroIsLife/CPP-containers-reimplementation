@@ -38,7 +38,7 @@ namespace ft
 	}
 	map_iterator& operator++()
 	{
-		++ptr;
+		ptr = ptr->getSuccessor(ptr);
 		return (*this);
 	}
 	map_iterator operator++(int)
@@ -49,7 +49,7 @@ namespace ft
 	}
 	map_iterator& operator--()
 	{
-		ptr--;
+		ptr = ptr->getPredecessor(ptr);
 		return (*this);
 	}
 	map_iterator operator--(int)
@@ -103,7 +103,7 @@ namespace ft
 		return (false);
 	}
 	private:
-	T *ptr;
+	Node *ptr;
 };
 
 }

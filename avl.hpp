@@ -114,6 +114,46 @@ class Node
 		{
 			
 		}
+
+		Node *findSmallest(Node *r)
+		{
+			if (!r->left)
+				return (r);
+			return (findSmallest(r->left));
+		}
+
+		Node *findLargest(Node *r)
+		{
+			if (!r->right)
+				return (r);
+			return (findLargest(r->right));
+		}
+
+		Node *getSuccessor(Node *r)
+		{
+			if (r->right)
+				return (findSmallest(r->right));
+			else
+			{
+				Node *tmp = r;
+				while (tmp->parent && tmp->parent->right == tmp)
+					tmp = tmp->parent;
+				return (tmp->parent);
+			}
+		}
+
+		Node *getPredecessor(Node *r)
+		{
+			if (r->left)
+				return (findLargest(r->left));
+			else
+			{
+				Node *tmp = r;
+				while (tmp->parent && tmp->parent->left == tmp)
+					tmp = tmp->parent;
+				return (tmp->parent);
+			}
+		}
 };
 
 template <typename T>
@@ -364,10 +404,10 @@ class Avl
 			return (findSmallest(r->left));
 		}
 
-		value_type *findLargest(Node *r)
+		Node *findLargest(Node *r)
 		{
 			if (!r->right)
-				return (&r->data);
+				return (r);
 			return (findLargest(r->right));
 		}
 

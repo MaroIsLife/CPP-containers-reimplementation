@@ -33,8 +33,8 @@ int main()
 	ret = m.insert(ft::make_pair(2, 2));
 	//it = ret.first;
 	it = m.begin();
+	it++;
 	std::cout << it->first << std::endl;
-	//std::cout << *(ret.first)->first << std::endl;
 
 	
 
