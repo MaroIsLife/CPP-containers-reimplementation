@@ -29,13 +29,20 @@ int main()
 	ft::pair<ft::map<int, int>::iterator, bool> ret;
 
 
-	ret = m.insert(ft::make_pair(1, 2));
-	ret = m.insert(ft::make_pair(2, 2));
-	ret = m.insert(ft::make_pair(3, 2));
-	ret = m.insert(ft::make_pair(4, 2));
+	//ret = m.insert(ft::make_pair(1, 2));
+	//ret = m.insert(ft::make_pair(2, 2));
+	//ret = m.insert(ft::make_pair(3, 2));
+	//ret = m.insert(ft::make_pair(4, 2));
 
 	//it = ret.first;
+
+	m[1] = 2;
+	m[2] = 2;
+	m[3] = 2;
+	m[4] = 2;
+
 	it = m._node.searchNode(m._node.root, 3);
+	it++;
 	std::cout << it->first << std::endl;
 
 	

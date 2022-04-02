@@ -115,7 +115,6 @@ class Node
 			
 		}
 
-
 		Node *inorderSuccessor(Node *r)
 		{
 			if (!r)
@@ -141,6 +140,7 @@ class Node
 			}
 			return (r);
 		}
+
 		Node *findSmallest(Node *r)
 		{
 			if (!r->left)
@@ -415,36 +415,21 @@ class Avl
 		{
 			return (r->parent);
 		}
-		
-		value_type *getSuccessor(Node *r)
-		{
-			if (r->right)
-				return (findSmallest(r->right));
-			else
-			{
-				Node *tmp = r;
-				while (tmp->parent && tmp->parent->right == tmp)
-					tmp = tmp->parent;
-				return (&tmp->parent->data);
-			}
-		}
-
-		value_type *getPredecessor(Node *r)
-		{
-			if (r->left)
-				return (findLargest(r->left));
-			else
-			{
-				Node *tmp = r;
-				while (tmp->parent && tmp->parent->left == tmp)
-					tmp = tmp->parent;
-				return (&tmp->parent->data);
-			}
-		}
+	
 		void inorder(Node *r)
 		{
 			if (!r)
 				return;
+			inorder(r->left);
+			inorder(r->right);
+		}
+
+		void count_key(Node *r, const key_type &k, size_t &count)
+		{
+			if (!r)
+				return;
+			if (r->data.first == k)
+				count++;
 			inorder(r->left);
 			inorder(r->right);
 		}

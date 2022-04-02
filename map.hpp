@@ -22,6 +22,7 @@ namespace ft
 			typedef ft::pair<const key_type, mapped_type> value_type;
 			typedef typename Avl<value_type>::Node Node;
 			typedef typename ft::map_iterator<Node> iterator;
+			typedef typename ft::map_iterator<const Node> const_iterator;
 			typedef Compare key_compare;
 			typedef Alloc allocator_type;
 			typedef size_t size_type;
@@ -126,6 +127,26 @@ namespace ft
 			{
 				return (iterator(NULL));
 			}
+			mapped_type& operator[] (const key_type& k)
+			{
+				iterator it = find(k);
+				//std::cout << it << std::endl;
+				if (it != this->end())
+					return (it->second);
+				else
+				{
+					insert(make_pair(k, mapped_type()));
+					return (find(k)->second);
+				}
+			}
+			iterator find (const key_type& k)
+			{
+				return (iterator(_node.searchNode(_node.root, k)));
+			}
+			const_iterator find(const key_type& k) const
+			{
+				return (const_iterator(_node.searchNode(_node.root, k)));
+			}
 
 			//pair<iterator, bool> insert (const value_type& val) 
 			//{
@@ -146,6 +167,28 @@ namespace ft
 					return (make_pair(iterator((_node.searchNode(_node.root, val.first))), false));
 				else
 					return (make_pair(iterator((_node.searchNode(_node.root, val.first))), true));
+			}
+
+			iterator insert (iterator position, const value_type& val)
+			{
+				_size++;
+				if (!(_node.insertNode(_node.root, val, _node.root)))
+					return (iterator(_node.searchNode(_node.root, val.first)));
+				else
+					return (iterator(_node.searchNode(_node.root, val.first)));
+			}
+
+			template <class InputIterator>
+  			void insert (InputIterator first, InputIterator last)
+			{
+				for (; first != last; ++first)
+					insert(*first);	
+			}
+			size_type count (const key_type& k) const
+			{
+				size_type count = 0;
+				_node.count_key(_node.root, k, count);
+				std::cout << "count " << count << std::endl;
 			}
 			
 			Avl<value_type> _node;
