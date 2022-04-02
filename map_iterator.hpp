@@ -28,17 +28,22 @@ namespace ft
 	{
 
 	}
-	map_iterator(T* ptr) : ptr(ptr)
+	map_iterator(T* ptr) : ptr(ptr), root(ptr)
 	{
 
 	}
-	map_iterator(const map_iterator& it) : ptr(it.ptr) 
+
+	map_iterator(const map_iterator& it) : ptr(it.ptr), root(it.root)
 	{
 
 	}
+
+	
 	map_iterator& operator++()
 	{
-		ptr = ptr->getSuccessor(ptr);
+		//ptr = ptr->getSuccessor(ptr, root);
+		//ptr = ptr->incrementOperator(ptr, root);
+		ptr = ptr->inorderSuccessor(ptr);
 		return (*this);
 	}
 	map_iterator operator++(int)
@@ -49,7 +54,7 @@ namespace ft
 	}
 	map_iterator& operator--()
 	{
-		ptr = ptr->getPredecessor(ptr);
+		ptr = ptr->parent;
 		return (*this);
 	}
 	map_iterator operator--(int)
@@ -104,6 +109,7 @@ namespace ft
 	}
 	private:
 	Node *ptr;
+	Node *root;
 };
 
 }

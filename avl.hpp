@@ -115,6 +115,32 @@ class Node
 			
 		}
 
+
+		Node *inorderSuccessor(Node *r)
+		{
+			if (!r)
+				throw std::underflow_error("NULL node");
+			else
+			{
+				if (r->right)
+				{
+					r = r->right;
+					while (r->left)
+						r = r->left;
+				}
+				else
+				{
+					Node *p = r->parent;
+					while (p && r == p->right)
+					{
+						r = p;
+						p = p->parent;
+					}
+					r = p;
+				}
+			}
+			return (r);
+		}
 		Node *findSmallest(Node *r)
 		{
 			if (!r->left)
@@ -127,32 +153,6 @@ class Node
 			if (!r->right)
 				return (r);
 			return (findLargest(r->right));
-		}
-
-		Node *getSuccessor(Node *r)
-		{
-			if (r->right)
-				return (findSmallest(r->right));
-			else
-			{
-				Node *tmp = r;
-				while (tmp->parent && tmp->parent->right == tmp)
-					tmp = tmp->parent;
-				return (tmp->parent);
-			}
-		}
-
-		Node *getPredecessor(Node *r)
-		{
-			if (r->left)
-				return (findLargest(r->left));
-			else
-			{
-				Node *tmp = r;
-				while (tmp->parent && tmp->parent->left == tmp)
-					tmp = tmp->parent;
-				return (tmp->parent);
-			}
 		}
 };
 

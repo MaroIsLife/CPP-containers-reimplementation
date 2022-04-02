@@ -148,8 +148,8 @@ namespace ft
 					return (make_pair(iterator((_node.searchNode(_node.root, val.first))), true));
 			}
 			
-		private:
 			Avl<value_type> _node;
+		private:
 			size_type _size;
 			value_compare _comp;
 			allocator_type _allocator;
