@@ -24,11 +24,11 @@ namespace ft
 	typedef T* pointer;
 	typedef ptrdiff_t difference_type;
 
-	map_iterator() : ptr(NULL)
+	map_iterator() : ptr(NULL), root(NULL)
 	{
 
 	}
-	map_iterator(T* ptr) : ptr(ptr), root(ptr)
+	map_iterator(T* ptr, T* root) : ptr(ptr), root(root)
 	{
 
 	}
@@ -41,8 +41,6 @@ namespace ft
 	
 	map_iterator& operator++()
 	{
-		//ptr = ptr->getSuccessor(ptr, root);
-		//ptr = ptr->incrementOperator(ptr, root);
 		ptr = ptr->inorderSuccessor(ptr);
 		return (*this);
 	}
@@ -54,13 +52,23 @@ namespace ft
 	}
 	map_iterator& operator--()
 	{
-		ptr = ptr->parent;
+		if (!ptr && root)
+			ptr = root->findLargest(root);
+		else
+			ptr = ptr->parent;
 		return (*this);
 	}
 	map_iterator operator--(int)
 	{
+		//std::cout << "root " << root->data.first << std::endl;
+		//std::cout << "ptr " << ptr << std::endl;
 		map_iterator tmp(*this);
-		--(*this);
+		if (!ptr && root)
+		{
+			ptr = root->findLargest(root);
+		}
+		else
+			--(*this);
 		return (tmp);
 	}
 	value_type& operator*()

@@ -109,25 +109,22 @@ namespace ft
 
 			iterator begin()
 			{
-				return (iterator(_node.findSmallest(_node.root)));
+				return (iterator(_node.findSmallest(_node.root), _node.root));
 			}
 
 			iterator begin() const
 			{
-				return (iterator(_node.findSmallest(_node.root)));
+				return (iterator(_node.findSmallest(_node.root), _node.root));
 			}
 
 			iterator end()
 			{
-				//Node *tmp = _node.findLargest(_node.root);
-				//iterator it(tmp);
-				//return (++it);
-				return (NULL);
+				return (iterator(NULL, _node.root));
 			}
 
 			iterator end() const
 			{
-				return (iterator(NULL));
+				return (iterator(NULL, _node.root));
 			}
 			mapped_type& operator[] (const key_type& k)
 			{
@@ -142,11 +139,11 @@ namespace ft
 			}
 			iterator find (const key_type& k)
 			{
-				return (iterator(_node.searchNode(_node.root, k)));
+				return (iterator(_node.searchNode(_node.root, k),_node.root));
 			}
 			const_iterator find(const key_type& k) const
 			{
-				return (const_iterator(_node.searchNode(_node.root, k)));
+				return (const_iterator(_node.searchNode(_node.root, k),_node.root));
 			}
 
 			//pair<iterator, bool> insert (const value_type& val) 
@@ -165,18 +162,18 @@ namespace ft
 			{
 				_size++; 
 				if (!(_node.insertNode(_node.root, val, _node.root)))
-					return (make_pair(iterator((_node.searchNode(_node.root, val.first))), false));
+					return (make_pair(iterator((_node.searchNode(_node.root, val.first)), _node.root), false));
 				else
-					return (make_pair(iterator((_node.searchNode(_node.root, val.first))), true));
+					return (make_pair(iterator((_node.searchNode(_node.root, val.first)), _node.root), true));
 			}
 
 			iterator insert (iterator position, const value_type& val)
 			{
 				_size++;
 				if (!(_node.insertNode(_node.root, val, _node.root)))
-					return (iterator(_node.searchNode(_node.root, val.first)));
+					return (iterator(_node.searchNode(_node.root, val.first), _node.root));
 				else
-					return (iterator(_node.searchNode(_node.root, val.first)));
+					return (iterator(_node.searchNode(_node.root, val.first), _node.root));
 			}
 
 			template <class InputIterator>
@@ -195,7 +192,7 @@ namespace ft
 
 			iterator lower_bound (const key_type& k)
 			{
-				return (iterator(_node.findSmallest(_node.searchNode(_node.root, k))));
+				return (iterator(_node.findSmallest(_node.searchNode(_node.root, k)), _node.root));
 			}
 			
 			void clear()
