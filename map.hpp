@@ -131,14 +131,13 @@ namespace ft
 			}
 			mapped_type& operator[] (const key_type& k)
 			{
-				iterator it = find(k);
-				//std::cout << it << std::endl;
-				if (it != this->end())
-					return (it->second);
+				Node *tmp = _node.searchNode(_node.root, k);
+				if (tmp)
+					return (tmp->data.second);
 				else
 				{
 					insert(make_pair(k, mapped_type()));
-					return (find(k)->second);
+					return (_node.searchNode(_node.root, k)->data.second);
 				}
 			}
 			iterator find (const key_type& k)

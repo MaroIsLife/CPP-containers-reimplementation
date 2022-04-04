@@ -40,9 +40,9 @@ int main()
 	m[2] = 2;
 	m[3] = 2;
 	m[4] = 2;
-	//m[4] = 3;
+	m[4] = 3;
 
-	m.erase(4);
+	//m.erase(4);
 
 	std::cout << m[4] << std::endl;
 
