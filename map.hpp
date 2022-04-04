@@ -32,7 +32,6 @@ namespace ft
 			typedef value_type& reference;
 			typedef const value_type& const_reference;
 
-
 			//? https://www.cplusplus.com/reference/map/map/value_comp/
 			class value_compare
 			{   // in C++98, it is required to inherit binary_function<value_type,value_type,bool>
@@ -78,14 +77,14 @@ namespace ft
 
 			~map()
 			{
-				//clear();
+				clear();
 			}
 
 			map& operator= (const map& x)
 			{
 				if (this != &x)
 				{
-					//clear();
+					clear();
 					this->comp = x.comp;
 					this->alloc = x.alloc;
 					this->root = x.root;
@@ -95,7 +94,7 @@ namespace ft
 
 			bool empty() const
 			{
-				return (_size);
+				return (_size == 0);
 			}
 
 			size_type size() const
@@ -120,7 +119,10 @@ namespace ft
 
 			iterator end()
 			{
-				return (iterator(NULL));
+				//Node *tmp = _node.findLargest(_node.root);
+				//iterator it(tmp);
+				//return (++it);
+				return (NULL);
 			}
 
 			iterator end() const
@@ -184,11 +186,56 @@ namespace ft
 				for (; first != last; ++first)
 					insert(*first);	
 			}
+
 			size_type count (const key_type& k) const
 			{
 				size_type count = 0;
-				_node.count_key(_node.root, k, count);
-				std::cout << "count " << count << std::endl;
+				_node.count_key(_node.root, k, count); //* Count will always be either 1 or 0 hint key fl map is unique
+				return (count);
+			}
+
+			iterator lower_bound (const key_type& k)
+			{
+				return (iterator(_node.findSmallest(_node.searchNode(_node.root, k))));
+			}
+			
+			void clear()
+			{
+				_node.destroyAllNodes(_node.root);
+				_size = 0;
+			}
+
+			void swap (map& x)
+			{
+				std::swap(this->comp, x.comp);
+				std::swap(this->alloc, x.alloc);
+				std::swap(this->root, x.root);
+				std::swap(this->size, x.size);
+			}
+			void erase (iterator position)
+			{
+				if (!(empty()) && _node.searchNode(_node.root, position.ptr->first))
+				{			
+					_node.deleteNode(position.ptr);
+					_size--;
+				}
+			}
+			size_type erase (const key_type& k)
+			{
+				size_type count = 0;
+				Node *tmp = _node.searchNode(_node.root, k);
+				if (!(empty()) && tmp)
+				{
+					_node.deleteNode(_node.root, k);
+					_size--;
+					count++;
+				}
+				return (count);
+			}
+			void erase (iterator first, iterator last)
+			{
+				for (; first != last; first++)
+					erase(first);
 			}
 			
 			Avl<value_type> _node;

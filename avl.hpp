@@ -105,6 +105,7 @@ class Node
 		Node *right;
 		Node *left;
 		Node *parent;
+		Node *last_node;
 
 		Node() : data(0), height(0), right(NULL), left(NULL), parent(NULL)
 		{
@@ -164,7 +165,10 @@ class Avl
 		typedef Node<value_type> Node;
 		Node *root;
 		typedef typename value_type::first_type key_type;
-		typedef typename value_type::second_type mapped_type;		
+		typedef typename value_type::second_type mapped_type;
+		typedef std::allocator<ft::pair<const key_type, mapped_type> > Alloc;
+		typedef typename Alloc::template rebind<Node>::other  alloc_type;
+		alloc_type alloc;
 
 		Avl()
 		{
@@ -173,12 +177,14 @@ class Avl
 
 		Avl(T n)
 		{
-			root = new Node(n);
+			//root = new Node(n);
+			root = alloc.allocate(1);
+			alloc.construct(root, Node(n));
 		}
 
 		~Avl()
 		{
-			destroyAllNodes(root);
+			//destroyAllNodes(root);
 		}
 
 		void destroyAllNodes(Node *r)
@@ -187,7 +193,9 @@ class Avl
 			{
 				destroyAllNodes(r->left);
 				destroyAllNodes(r->right);
-				delete r;
+				//delete r;
+				alloc.destroy(r);
+				alloc.deallocate(r, 1);
 			}
 		}
 		int getBalance(Node *r)
@@ -232,7 +240,9 @@ class Avl
 		{	
 			if (!r)
 			{
-				r = newNode(data);
+				//r = newNode(data);
+				r = alloc.allocate(1);
+				alloc.construct(r, Node(data));
 				r->parent = parent;
 			}
 			else if (data.first < r->data.first)
@@ -269,23 +279,29 @@ class Avl
 				r->right = rotateRight(r->right);
 				r = rotateLeft(r);
 			}
-			//std::cout << &r << std::endl;
+			if (r->left)
+				r->left->parent = r;
+			if (r->right)
+				r->right->parent = r;
+			//r->last_node->parent = inorderPredecessor(r);
 			return (r);
 		}
 
-		Node *deleteNode(Node *&r, T data) //https://www.geeksforgeeks.org/avl-tree-set-2-deletion/?ref=lbp
+		Node *deleteNode(Node *r, const key_type &data) //https://www.geeksforgeeks.org/avl-tree-set-2-deletion/?ref=lbp
 		{
 			if (!r)
 				return (NULL);
-			else if (data < r->data)
+			else if (data < r->data.first)
 				r->left = deleteNode(r->left, data);
-			else if (data > r->data)
+			else if (data > r->data.first)
 				r->right = deleteNode(r->right, data);
-			if (data == r->data)
+			if (data == r->data.first)
 			{
 				if (!r->left && !r->right)
 				{
 					delete r;
+					//alloc.destroy(r);
+					//alloc.deallocate(r, 1);
 					r = NULL;
 				}
 				else if (!r->left && r->right)
@@ -293,7 +309,9 @@ class Avl
 					Node *tmp;
 
 					tmp = r->right;
-					delete r;
+					//delete r;
+					alloc.destroy(r);
+					alloc.deallocate(r, 1);
 					r = tmp;
 				}
 				else if (!r->right && r->left)
@@ -301,7 +319,9 @@ class Avl
 					Node *tmp;
  
 					tmp = r->left;
-					delete r;
+					//delete r;
+					alloc.destroy(r);
+					alloc.deallocate(r, 1);
 					r = tmp;
 					//std::cout << &(*r) << std::endl;
 				}
@@ -309,11 +329,10 @@ class Avl
 				{
 					//* Find the smallest node in the right subtree and replace r with it. (Inorder Successor)
 					Node *tmp = minimumNode(r->right);
-					r->data = tmp->data;
-					//std::cout << r->data << std::endl;
-					//r->right = NULL;
-					//delete r->right;
-					r->right = deleteNode(r->right, tmp->data);
+					//r->data = tmp->data;
+					alloc.construct(r, Node(tmp->data));
+					//r->parent = tmp->parent;
+					r->right = deleteNode(r->right, tmp->data.first);
 				}
 			}
 			if (!r)
@@ -342,6 +361,11 @@ class Avl
 					r = rotateLeft(r);
 				}
 			}
+		
+			if (r->left)
+				r->left->parent = r;
+			if (r->right)
+				r->right->parent = r;
 			return (r);
 		}
 
@@ -424,13 +448,23 @@ class Avl
 			inorder(r->right);
 		}
 
-		void count_key(Node *r, const key_type &k, size_t &count)
+
+		Node *inorderPredecessor(Node *r)
+		{
+			if (r->left)
+				return (findLargest(r->left));
+			else
+				return (r->parent);
+		}
+					
+
+		void count_key(Node *r, const key_type &k, size_t &count) const
 		{
 			if (!r)
 				return;
 			if (r->data.first == k)
 				count++;
-			inorder(r->left);
-			inorder(r->right);
+			count_key(r->left, k, count);
+			count_key(r->right, k, count);
 		}
 };

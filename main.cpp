@@ -25,7 +25,7 @@ int main()
 {
 
 	ft::map<int, int> m;
-	ft::map<int, int>::iterator it;
+	//ft::map<int, int>::iterator it;
 	ft::pair<ft::map<int, int>::iterator, bool> ret;
 
 
@@ -40,10 +40,16 @@ int main()
 	m[2] = 2;
 	m[3] = 2;
 	m[4] = 2;
+	//m[4] = 3;
 
-	it = m._node.searchNode(m._node.root, 3);
-	it++;
-	std::cout << it->first << std::endl;
+	m.erase(4);
+
+	std::cout << m[4] << std::endl;
+
+	//! Test End()
+	//it = m._node.searchNode(m._node.root, 3);
+	//it++;
+	//std::cout << it->first << std::endl;
 
 	
 
