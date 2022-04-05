@@ -9,7 +9,6 @@
 #define EQUAL(x) ((x) ? (std::cout << "\033[1;32mAC\033[0m\n") : (std::cout << "\033[1;31mWA\033[0m\n"))
 
 
-
 template <class T>
 int compare(T const &x, T const &y)
 {
@@ -28,7 +27,8 @@ int main()
 	ft::map<int, int>::iterator it;
 	ft::pair<ft::map<int, int>::iterator, bool> ret;
 
-
+	
+	
 	//ret = m.insert(ft::make_pair(1, 2));
 	//ret = m.insert(ft::make_pair(2, 2));
 	//ret = m.insert(ft::make_pair(3, 2));
@@ -42,15 +42,15 @@ int main()
 	m[4] = 2;
 	m[4] = 3;
 
-	//m.erase(4);
+	m.erase(4);
 
 	//std::cout << m[4] << std::endl;
 
-	it = m.begin();
-	it++;
-	it++;
-	it--;
-	std::cout << it->first << std::endl;
+	//it = m.begin();
+	//it++;
+	//it++;
+	//it--;
+	//std::cout << it->first << std::endl;
 
 	//! Test End()
 	//it = m._node.searchNode(m._node.root, 3);

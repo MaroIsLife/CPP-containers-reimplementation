@@ -23,6 +23,8 @@ namespace ft
 			typedef typename Avl<value_type>::Node Node;
 			typedef typename ft::map_iterator<Node> iterator;
 			typedef typename ft::map_iterator<const Node> const_iterator;
+			typedef typename ft::reverse_map_iterator<iterator> reverse_iterator;
+			typedef typename ft::reverse_map_iterator<const_iterator> const_reverse_iterator;
 			typedef Compare key_compare;
 			typedef Alloc allocator_type;
 			typedef size_t size_type;
@@ -125,6 +127,22 @@ namespace ft
 			iterator end() const
 			{
 				return (iterator(NULL, _node.root));
+			}
+			reverse_iterator rbegin()
+			{
+				return (reverse_iterator(end()));
+			}
+			const_reverse_iterator rbegin() const
+			{
+				return (const_reverse_iterator(end()));
+			}
+			reverse_iterator rend()
+			{
+				return (reverse_iterator(begin()));
+			}
+			const_reverse_iterator rend() const
+			{
+				return (const_reverse_iterator(begin()));
 			}
 			mapped_type& operator[] (const key_type& k)
 			{
@@ -233,14 +251,29 @@ namespace ft
 				for (; first != last; first++)
 					erase(first);
 			}
+
+			key_compare key_comp() const
+			{
+				key_compare _key_comp;
+				return (_key_comp);
+			}
+
+			value_compare value_comp() const
+			{
+				value_compare _value_comp;
+				return (_value_comp);
+			}
+
+			allocator_type get_allocator() const
+			{
+				return (_allocator);
+			}
 			
 			Avl<value_type> _node;
 		private:
 			size_type _size;
-			value_compare _comp;
 			allocator_type _allocator;
+			value_compare _comp;
 	};
 }
-
-
 

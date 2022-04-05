@@ -38,6 +38,10 @@ namespace ft
 
 	}
 
+	map_iterator base() const
+	{
+		return (ptr);
+	}
 	
 	map_iterator& operator++()
 	{
@@ -60,13 +64,9 @@ namespace ft
 	}
 	map_iterator operator--(int)
 	{
-		//std::cout << "root " << root->data.first << std::endl;
-		//std::cout << "ptr " << ptr << std::endl;
 		map_iterator tmp(*this);
 		if (!ptr && root)
-		{
 			ptr = root->findLargest(root);
-		}
 		else
 			--(*this);
 		return (tmp);
@@ -118,6 +118,113 @@ namespace ft
 	private:
 	Node *ptr;
 	Node *root;
+};
+
+
+
+
+
+
+	template <typename iterator>
+	class reverse_map_iterator
+	{	
+	public:
+	typedef typename iterator::Node Node;
+	typedef typename iterator::value_type value_type;
+	typedef typename iterator::reference reference;
+	typedef typename iterator::pointer pointer;
+	typedef ptrdiff_t difference_type;
+
+	reverse_map_iterator() : ptr(NULL), root(NULL)
+	{
+
+	}
+	reverse_map_iterator(iterator ptr, iterator root) : ptr(ptr), root(root)
+	{
+
+	}
+
+	reverse_map_iterator(const reverse_map_iterator& it) : ptr(it.ptr), root(it.root)
+	{
+
+	}
+
+	
+	reverse_map_iterator& operator--()
+	{
+		ptr = ptr->inorderSuccessor(ptr);
+		return (*this);
+	}
+	reverse_map_iterator operator--(int)
+	{
+		reverse_map_iterator tmp(*this);
+		++(*this);
+		return (tmp);
+	}
+	reverse_map_iterator& operator++()
+	{
+		if (!ptr && root)
+			ptr = root->findLargest(root);
+		else
+			ptr = ptr->parent;
+		return (*this);
+	}
+	reverse_map_iterator operator++(int)
+	{
+		reverse_map_iterator tmp(*this);
+		if (!ptr && root)
+			ptr = root->findLargest(root);
+		else
+			--(*this);
+		return (tmp);
+	}
+	value_type& operator*()
+	{
+		return (ptr->data);
+	}
+	value_type* operator->() const
+	{
+		return (&ptr->data);
+	}
+	bool operator==(const reverse_map_iterator& it) const
+	{
+		if (ptr == it.ptr)
+			return (true);
+		return (false);
+	}
+	bool operator!=(const reverse_map_iterator& it) const
+	{
+		if (ptr != it.ptr)
+			return (true);
+		return (false);
+	}
+	bool operator>(const reverse_map_iterator& it) const
+	{
+		if (ptr > it.ptr)
+			return (true);
+		return (false);
+	}
+	bool operator<(const reverse_map_iterator& it) const
+	{
+		if (ptr < it.ptr)
+			return (true);
+		return (false);
+	}
+	bool operator<=(const reverse_map_iterator& it) const
+	{
+		if (ptr <= it.ptr)
+			return (true);
+		return (false);
+	}
+	bool operator>=(const reverse_map_iterator& it) const
+	{
+		if (ptr >= it.ptr)
+			return (true);
+		return (false);
+	}
+	private:
+	iterator *ptr;
+	iterator *root;
 };
 
 }

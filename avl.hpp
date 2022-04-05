@@ -361,7 +361,6 @@ class Avl
 					r = rotateLeft(r);
 				}
 			}
-		
 			if (r->left)
 				r->left->parent = r;
 			if (r->right)
