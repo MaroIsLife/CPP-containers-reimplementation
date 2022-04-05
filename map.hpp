@@ -184,9 +184,9 @@ namespace ft
 				else
 					return (make_pair(iterator((_node.searchNode(_node.root, val.first)), _node.root), true));
 			}
-
 			iterator insert (iterator position, const value_type& val)
 			{
+				(void)position;
 				_size++;
 				if (!(_node.insertNode(_node.root, val, _node.root)))
 					return (iterator(_node.searchNode(_node.root, val.first), _node.root));

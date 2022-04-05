@@ -28,7 +28,13 @@ namespace ft
 	{
 
 	}
-	map_iterator(T* ptr, T* root) : ptr(ptr), root(root)
+
+	map_iterator(const T* ptr) : ptr(ptr), root(ptr)
+	{
+
+	}
+
+	map_iterator(const T* ptr, const T* root) : ptr(ptr), root(root)
 	{
 
 	}
@@ -42,7 +48,13 @@ namespace ft
 	{
 		return (ptr);
 	}
-	
+
+	map_iterator& operator=(const map_iterator& it)
+	{
+		ptr = it.ptr;
+		root = it.root;
+		return (*this);
+	}
 	map_iterator& operator++()
 	{
 		ptr = ptr->inorderSuccessor(ptr);
