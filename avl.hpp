@@ -283,7 +283,6 @@ class Avl
 				r->left->parent = r;
 			if (r->right)
 				r->right->parent = r;
-			//r->last_node->parent = inorderPredecessor(r);
 			return (r);
 		}
 
@@ -299,9 +298,9 @@ class Avl
 			{
 				if (!r->left && !r->right)
 				{
-					delete r;
-					//alloc.destroy(r);
-					//alloc.deallocate(r, 1);
+					//delete r;
+					alloc.destroy(r);
+					alloc.deallocate(r, 1);
 					r = NULL;
 				}
 				else if (!r->left && r->right)

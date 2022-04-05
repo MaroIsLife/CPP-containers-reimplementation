@@ -207,11 +207,6 @@ namespace ft
 				_node.count_key(_node.root, k, count); //* Count will always be either 1 or 0 hint key fl map is unique
 				return (count);
 			}
-
-			iterator lower_bound (const key_type& k)
-			{
-				return (iterator(_node.findSmallest(_node.searchNode(_node.root, k)), _node.root));
-			}
 			
 			void clear()
 			{
@@ -268,7 +263,22 @@ namespace ft
 			{
 				return (_allocator);
 			}
-			
+			iterator lower_bound (const key_type& k)
+			{
+				Node *tmp = _node.findSmallest(_node.root);
+				std::cout << "tmp " << _node.root->data.first << std::endl;
+
+				while (tmp)
+				{
+					std::cout << "Data first " << tmp->data.first << std::endl;
+					if (tmp->right && tmp->data.first < k)
+						tmp = tmp->right;
+					else
+						return (iterator(tmp, _node.root));
+				}
+				return (iterator(tmp, _node.root));
+			}
+				
 			Avl<value_type> _node;
 		private:
 			size_type _size;

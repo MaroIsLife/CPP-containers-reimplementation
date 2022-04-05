@@ -23,6 +23,7 @@ namespace ft
 	typedef T& reference;
 	typedef T* pointer;
 	typedef ptrdiff_t difference_type;
+	typedef map_iterator<const T> const_map_iterator;
 
 	map_iterator() : ptr(NULL), root(NULL)
 	{
@@ -34,7 +35,7 @@ namespace ft
 
 	}
 
-	map_iterator(const T* ptr, const T* root) : ptr(ptr), root(root)
+	map_iterator(T* ptr, T* root) : ptr(ptr), root(root)
 	{
 
 	}
@@ -44,10 +45,15 @@ namespace ft
 
 	}
 
-	map_iterator base() const
+	operator const_map_iterator() //Explicit conversion to const iterator
 	{
-		return (ptr);
-	}
+		return const_map_iterator(ptr, root);
+	} 
+
+	//pointer base() const
+	//{
+	//	return (ptr);
+	//}
 
 	map_iterator& operator=(const map_iterator& it)
 	{
@@ -55,6 +61,8 @@ namespace ft
 		root = it.root;
 		return (*this);
 	}
+
+
 	map_iterator& operator++()
 	{
 		ptr = ptr->inorderSuccessor(ptr);
