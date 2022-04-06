@@ -40,7 +40,7 @@ int main()
 	m[250] = 2;
 	m[30] = 2;
 	m[47] = 2;
-	it = m.lower_bound(48);
+	it = m.lower_bound(201);
 	std::cout << it->first << std::endl;
 	//m.erase(4);
 

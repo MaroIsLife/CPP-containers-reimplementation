@@ -5,6 +5,7 @@
 #include <functional>
 #include "avl.hpp"
 #include "map_iterator.hpp"
+#include "algorithm.hpp"
 namespace ft
 {
 	//* Less(Sorting Map Less or Greater than) https://www.cplusplus.com/reference/functional/less/
@@ -54,16 +55,14 @@ namespace ft
 			//*Empty Constructor
 			explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _comp(comp)
 			{
-				this->_comp = comp;
-				this->_allocator = alloc;
+	
 				_size = 0;
 			}
 
 			template <class InputIterator>
-			map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
+			map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _comp(comp)
 			{
-				this->comp = comp;
-				this->alloc = alloc;
+				
 				_size = 0;
 				for (; first != last; ++first)
 					insert(*first);
@@ -71,10 +70,10 @@ namespace ft
 
 			map (const map& x)
 			{
-				this->comp = x.comp;
-				this->alloc = x.alloc;
-				this->root = x.root;
-				this->size = x.size;
+				this->_comp = x._comp;
+				this->_allocator = x._allocator;
+				this->_node = x._node;
+				this->_size = x._size;
 			}
 
 			~map()
@@ -87,10 +86,10 @@ namespace ft
 				if (this != &x)
 				{
 					clear();
-					this->comp = x.comp;
-					this->alloc = x.alloc;
-					this->root = x.root;
-					this->size = x.size;
+					this->_comp = x._comp;
+					this->_allocator = x._allocator;
+					this->_node = x._node;
+					this->_size = x._size;
 				}
 			}
 
@@ -217,7 +216,7 @@ namespace ft
 			void swap (map& x)
 			{
 				std::swap(this->comp, x.comp);
-				std::swap(this->alloc, x.alloc);
+				std::swap(this->_allocator, x._allocator);
 				std::swap(this->root, x.root);
 				std::swap(this->size, x.size);
 			}
@@ -265,18 +264,36 @@ namespace ft
 			}
 			iterator lower_bound (const key_type& k)
 			{
-				Node *tmp = _node.findSmallest(_node.root);
-				std::cout << "tmp " << _node.root->data.first << std::endl;
-
-				while (tmp)
+				iterator it = begin();
+				iterator end = this->end();
+				--end;
+				if (k > end->first)
+					return (iterator());
+				end = this->end();
+				while (it != end)
 				{
-					std::cout << "Data first " << tmp->data.first << std::endl;
-					if (tmp->right && tmp->data.first < k)
-						tmp = tmp->right;
-					else
-						return (iterator(tmp, _node.root));
+					if (it->first >= k)
+						return (it);
+					it++;
 				}
-				return (iterator(tmp, _node.root));
+				return (it);
+			}
+
+			const_iterator lower_bound (const key_type& k) const
+			{
+				const_iterator it = begin();
+				const_iterator end = this->end();
+				--end;
+				if (k > end->first)
+					return (const_iterator());
+				end = this->end();
+				while (it != end)
+				{
+					if (it->first >= k)
+						return (it);
+					it++;
+				}
+				return (it);
 			}
 				
 			Avl<value_type> _node;
@@ -285,5 +302,46 @@ namespace ft
 			allocator_type _allocator;
 			value_compare _comp;
 	};
+
+	template <class Key, class T, class Compare, class Alloc>
+  	bool operator== ( const map<Key,T,Compare,Alloc>& lhs,
+                    const map<Key,T,Compare,Alloc>& rhs )
+	{
+		return (lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+  	bool operator!= ( const map<Key,T,Compare,Alloc>& lhs,
+                    const map<Key,T,Compare,Alloc>& rhs )
+	{
+		return (!(lhs == rhs));
+	}
+	template <class Key, class T, class Compare, class Alloc>
+  	bool operator<  ( const map<Key,T,Compare,Alloc>& lhs,
+                    const map<Key,T,Compare,Alloc>& rhs )
+	{
+		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+  	bool operator>  ( const map<Key,T,Compare,Alloc>& lhs,
+                    const map<Key,T,Compare,Alloc>& rhs )
+	{
+		return (ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end()));
+	}
+	template <class Key, class T, class Compare, class Alloc>
+  	bool operator<= ( const map<Key,T,Compare,Alloc>& lhs,
+                    const map<Key,T,Compare,Alloc>& rhs )
+	{
+
+		return (!(rhs < lhs));
+	}
+	template <class Key, class T, class Compare, class Alloc>
+  	bool operator>= ( const map<Key,T,Compare,Alloc>& lhs,
+                    const map<Key,T,Compare,Alloc>& rhs )
+	{
+		return (!(lhs < rhs));
+	}
+
 }
 
