@@ -446,21 +446,6 @@ class Avl
 			inorder(r->right);
 		}
 
-
-		Node *lowerBound(Node *r, key_type key, Node *parent)
-		{
-			if (!r)
-				return (NULL);
-			if (r->data.first >= key)
-				return (parent);
-			parent = r;
-			lowerBound(r->left, key, parent);
-			lowerBound(r->right, key, parent);
-			return (r);
-		}
-		
-
-
 		Node *inorderPredecessor(Node *r)
 		{
 			if (r->left)

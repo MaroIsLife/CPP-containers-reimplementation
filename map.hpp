@@ -295,6 +295,54 @@ namespace ft
 				}
 				return (it);
 			}
+
+			iterator upper_bound(const key_type& k)
+			{
+				iterator it = begin();
+				iterator end = this->end();
+				--end;
+				if (k > end->first)
+					return (iterator());
+				end = this->end();
+				while (it != end)
+				{
+					if (it->first > k)
+						return (it);
+					else if (it->first == k)
+						return (++it);
+					it++;
+				}
+				return (it);
+			}
+
+			const_iterator upper_bound(const key_type& k) const
+			{
+				const_iterator it = begin();
+				const_iterator end = this->end();
+				--end;
+				if (k > end->first)
+					return (const_iterator());
+				end = this->end();
+				while (it != end)
+				{
+					if (it->first > k)
+						return (it);
+					else if (it->first == k)
+						return (++it);
+					it++;
+				}
+				return (it);
+			}
+
+			pair<iterator,iterator> equal_range (const key_type& k)
+			{
+				return (make_pair(lower_bound(k), upper_bound(k)));
+			}
+			
+			pair<const_iterator,const_iterator> equal_range (const key_type& k) const
+			{
+				return (make_pair(lower_bound(k), upper_bound(k)));
+			}
 				
 			Avl<value_type> _node;
 		private:

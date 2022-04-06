@@ -27,6 +27,7 @@ int main()
 	ft::map<int, int>::iterator it;
 	//ft::pair<ft::map<int, int>::iterator, bool> ret;
 	ft::map<int, int>::const_iterator c_ob(it);
+	ft::pair<ft::map<int, int>::iterator, ft::map<int, int>::iterator>  ret;
 	
 	
 	//ret = m.insert(ft::make_pair(1, 2));
@@ -40,8 +41,8 @@ int main()
 	m[250] = 2;
 	m[30] = 2;
 	m[47] = 2;
-	it = m.lower_bound(201);
-	std::cout << it->first << std::endl;
+	ret = m.equal_range(100);
+	std::cout << ret.first->first << std::endl;
 	//m.erase(4);
 
 	//std::cout << m[4] << std::endl;
