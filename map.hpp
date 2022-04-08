@@ -6,6 +6,7 @@
 #include "avl.hpp"
 #include "map_iterator.hpp"
 #include "algorithm.hpp"
+#include "reverse_iterator.hpp"
 namespace ft
 {
 	//* Less(Sorting Map Less or Greater than) https://www.cplusplus.com/reference/functional/less/
@@ -22,10 +23,11 @@ namespace ft
 			typedef T mapped_type;
 			typedef ft::pair<const key_type, mapped_type> value_type;
 			typedef typename Avl<value_type>::Node Node;
-			typedef typename ft::map_iterator<Node> iterator;
-			typedef typename ft::map_iterator<const Node> const_iterator;
-			typedef typename ft::reverse_map_iterator<iterator> reverse_iterator;
-			typedef typename ft::reverse_map_iterator<const_iterator> const_reverse_iterator;
+			typedef typename Avl<const value_type>::Node const_Node;
+			typedef typename ft::map_iterator<Node, value_type> iterator;
+			typedef typename ft::map_iterator<Node, const value_type> const_iterator;
+			typedef typename ft::reverse_iterator<iterator> reverse_iterator;
+			typedef typename ft::reverse_iterator<const_iterator> const_reverse_iterator;
 			typedef Compare key_compare;
 			typedef Alloc allocator_type;
 			typedef size_t size_type;
@@ -55,22 +57,22 @@ namespace ft
 			//*Empty Constructor
 			explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _comp(comp)
 			{
-	
+				(void)alloc;
 				_size = 0;
 			}
 
 			template <class InputIterator>
 			map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _comp(comp)
 			{
-				
+				(void)alloc;
 				_size = 0;
-				for (; first != last; ++first)
-					insert(*first);
+				//for (; first != last; ++first)
+				//	this->insert(*first);
+				insert(first, last);
 			}
 
-			map (const map& x)
+			map (const map& x) : _comp(x._comp)
 			{
-				this->_comp = x._comp;
 				this->_allocator = x._allocator;
 				this->_node = x._node;
 				this->_size = x._size;
@@ -78,7 +80,7 @@ namespace ft
 
 			~map()
 			{
-				clear();
+				//clear();
 			}
 
 			map& operator= (const map& x)
@@ -91,6 +93,7 @@ namespace ft
 					this->_node = x._node;
 					this->_size = x._size;
 				}
+				return (*this);
 			}
 
 			bool empty() const
@@ -113,9 +116,9 @@ namespace ft
 				return (iterator(_node.findSmallest(_node.root), _node.root));
 			}
 
-			iterator begin() const
+			const_iterator begin() const
 			{
-				return (iterator(_node.findSmallest(_node.root), _node.root));
+				return (const_iterator(_node.findSmallest(_node.root), _node.root));
 			}
 
 			iterator end()
@@ -123,9 +126,9 @@ namespace ft
 				return (iterator(NULL, _node.root));
 			}
 
-			iterator end() const
+			const_iterator end() const
 			{
-				return (iterator(NULL, _node.root));
+				return (const_iterator(NULL, _node.root));
 			}
 			reverse_iterator rbegin()
 			{
@@ -183,6 +186,7 @@ namespace ft
 				else
 					return (make_pair(iterator((_node.searchNode(_node.root, val.first)), _node.root), true));
 			}
+
 			iterator insert (iterator position, const value_type& val)
 			{
 				(void)position;
@@ -197,7 +201,7 @@ namespace ft
   			void insert (InputIterator first, InputIterator last)
 			{
 				for (; first != last; ++first)
-					insert(*first);	
+					this->insert(*first);	
 			}
 
 			size_type count (const key_type& k) const
@@ -220,7 +224,7 @@ namespace ft
 				std::swap(this->root, x.root);
 				std::swap(this->size, x.size);
 			}
-			void erase (iterator position)
+			void erase (iterator position) //! Fix this
 			{
 				if (!(empty()) && _node.searchNode(_node.root, position.ptr->first))
 				{			
@@ -338,7 +342,7 @@ namespace ft
 			{
 				return (make_pair(lower_bound(k), upper_bound(k)));
 			}
-			
+
 			pair<const_iterator,const_iterator> equal_range (const key_type& k) const
 			{
 				return (make_pair(lower_bound(k), upper_bound(k)));
@@ -391,5 +395,10 @@ namespace ft
 		return (!(lhs < rhs));
 	}
 
+	template <class Key, class T, class Compare, class Alloc>
+ 	void swap (map<Key,T,Compare,Alloc>& x, map<Key,T,Compare,Alloc>& y)
+ 	{
+		 x.swap(y);
+ 	}
 }
 

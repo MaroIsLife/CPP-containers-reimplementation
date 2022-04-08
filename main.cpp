@@ -23,11 +23,38 @@ int compare(T const &x, T const &y)
 int main()
 {
 
-	ft::map<int, int> m;
-	ft::map<int, int>::iterator it;
-	//ft::pair<ft::map<int, int>::iterator, bool> ret;
-	ft::map<int, int>::const_iterator c_ob(it);
-	ft::pair<ft::map<int, int>::iterator, ft::map<int, int>::iterator>  ret;
+
+
+	ft::map<int, char> my_m;
+        for (int i = 0; i < 1e2; i++)
+            my_m.insert(ft::make_pair(i, 'A'));
+
+        ft::map<int, char>::reverse_iterator my_rit2(my_m.end());
+        ft::map<int, char>::const_reverse_iterator c_it, c_ob(my_m.end());
+        c_it = my_rit2;
+        EQUAL(my_rit2->first == c_it->first && my_rit2->first == c_ob->first);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//ft::map<int, int> m;
+	//ft::map<int, int>::iterator it;
+	////ft::pair<ft::map<int, int>::iterator, bool> ret;
+	//ft::map<int, int>::const_iterator c_ob(it);
+	//ft::pair<ft::map<int, int>::iterator, ft::map<int, int>::iterator>  ret;
 	
 	
 	//ret = m.insert(ft::make_pair(1, 2));
@@ -37,12 +64,14 @@ int main()
 
 	//it = ret.first;
 
-	m[100] = 2;
-	m[250] = 2;
-	m[30] = 2;
-	m[47] = 2;
-	ret = m.equal_range(100);
-	std::cout << ret.first->first << std::endl;
+	//m[100] = 2;
+	//m[250] = 2;
+	//m[30] = 2;
+	//m[47] = 2;
+
+	//it = m.begin();
+	//it++;
+	//std::cout << "it->first = " << it->first << std::endl;
 	//m.erase(4);
 
 	//std::cout << m[4] << std::endl;

@@ -17,6 +17,7 @@ namespace ft
 		T2 second;
 		pair() : first(), second() {}
 		
+		operator pair<const T1, const T2> () const { return pair<const T1, const T2> (first, second); }
 		template<class U, class V> 
 		pair (const pair<U,V>& pr) : first(pr.first), second(pr.second)
 		{

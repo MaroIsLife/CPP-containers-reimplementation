@@ -100,12 +100,12 @@ class Node
 {
 	public:
 		typedef T value_type;
+		typedef const T const_value_type;
 		value_type data;
 		int height;
 		Node *right;
 		Node *left;
 		Node *parent;
-		Node *last_node;
 
 		Node() : data(0), height(0), right(NULL), left(NULL), parent(NULL)
 		{
@@ -115,6 +115,11 @@ class Node
 		{
 			
 		}
+
+		operator const_value_type() //Explicit conversion to const iterator
+		{	
+			return const_value_type();
+		} 
 
 		Node *inorderSuccessor(Node *r)
 		{
@@ -142,6 +147,32 @@ class Node
 			return (r);
 		}
 
+		const Node *inorderSuccessor(const Node *r) const
+		{
+			if (!r)
+				throw std::underflow_error("NULL node");
+			else
+			{
+				if (r->right)
+				{
+					r = r->right;
+					while (r->left)
+						r = r->left;
+				}
+				else
+				{
+					const Node *p = r->parent;
+					while (p && r == p->right)
+					{
+						r = p;
+						p = p->parent;
+					}
+					r = p;
+				}
+			}
+			return (r);
+		}
+
 		Node *findSmallest(Node *r)
 		{
 			if (!r->left)
@@ -150,6 +181,20 @@ class Node
 		}
 
 		Node *findLargest(Node *r)
+		{
+			if (!r->right)
+				return (r);
+			return (findLargest(r->right));
+		}
+
+		const Node *findSmallest(const Node *r) const
+		{
+			if (!r->left)
+				return (r);
+			return (findSmallest(r->left));
+		}
+
+		const Node *findLargest(const Node *r) const
 		{
 			if (!r->right)
 				return (r);
@@ -427,6 +472,20 @@ class Avl
 		}
 
 		Node *findLargest(Node *r)
+		{
+			if (!r->right)
+				return (r);
+			return (findLargest(r->right));
+		}
+
+		Node *findSmallest(Node *r) const
+		{
+			if (!r->left)
+				return (r);
+			return (findSmallest(r->left));
+		}
+
+		Node *findLargest(Node *r) const
 		{
 			if (!r->right)
 				return (r);

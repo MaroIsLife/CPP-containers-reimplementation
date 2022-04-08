@@ -14,23 +14,24 @@ namespace ft
 			typedef Category 	iterator_category;
 	};
 
-	template <typename T>
+	template <typename T, typename V>
 	class map_iterator : public ft::map_base_iterator<std::bidirectional_iterator_tag, T> 
 	{	
 	public:
 	typedef T Node;
-	typedef typename T::value_type value_type;
-	typedef T& reference;
-	typedef T* pointer;
+	typedef V value_type;
+	typedef value_type& reference;
+	typedef value_type* pointer;
 	typedef ptrdiff_t difference_type;
-	typedef map_iterator<const T> const_map_iterator;
+	typedef map_iterator<T, const V> const_map_iterator;
+	typedef std::bidirectional_iterator_tag iterator_category;
 
 	map_iterator() : ptr(NULL), root(NULL)
 	{
 
 	}
 
-	map_iterator(const T* ptr) : ptr(ptr), root(ptr)
+	map_iterator(T* ptr) : ptr(ptr), root(ptr)
 	{
 
 	}
@@ -45,15 +46,12 @@ namespace ft
 
 	}
 
+	~map_iterator(){}
+
 	operator const_map_iterator() //Explicit conversion to const iterator
 	{
 		return const_map_iterator(ptr, root);
 	} 
-
-	//pointer base() const
-	//{
-	//	return (ptr);
-	//}
 
 	map_iterator& operator=(const map_iterator& it)
 	{
@@ -68,6 +66,7 @@ namespace ft
 		ptr = ptr->inorderSuccessor(ptr);
 		return (*this);
 	}
+	
 	map_iterator operator++(int)
 	{
 		map_iterator tmp(*this);
@@ -91,14 +90,17 @@ namespace ft
 			--(*this);
 		return (tmp);
 	}
-	value_type& operator*()
+
+	value_type& operator*() const
 	{
 		return (ptr->data);
 	}
+
 	value_type* operator->() const
 	{
-		return (&ptr->data);
+		return (&operator*());
 	}
+
 	bool operator==(const map_iterator& it) const
 	{
 		if (ptr == it.ptr)
@@ -138,108 +140,6 @@ namespace ft
 	private:
 	Node *ptr;
 	Node *root;
-};
-
-	template <typename iterator>
-	class reverse_map_iterator
-	{	
-	public:
-	typedef typename iterator::Node Node;
-	typedef typename iterator::value_type value_type;
-	typedef typename iterator::reference reference;
-	typedef typename iterator::pointer pointer;
-	typedef ptrdiff_t difference_type;
-
-	reverse_map_iterator() : ptr(NULL), root(NULL)
-	{
-
-	}
-	reverse_map_iterator(iterator ptr, iterator root) : ptr(ptr), root(root)
-	{
-
-	}
-
-	reverse_map_iterator(const reverse_map_iterator& it) : ptr(it.ptr), root(it.root)
-	{
-
-	}
-
-	
-	reverse_map_iterator& operator--()
-	{
-		ptr = ptr->inorderSuccessor(ptr);
-		return (*this);
-	}
-	reverse_map_iterator operator--(int)
-	{
-		reverse_map_iterator tmp(*this);
-		++(*this);
-		return (tmp);
-	}
-	reverse_map_iterator& operator++()
-	{
-		if (!ptr && root)
-			ptr = root->findLargest(root);
-		else
-			ptr = ptr->parent;
-		return (*this);
-	}
-	reverse_map_iterator operator++(int)
-	{
-		reverse_map_iterator tmp(*this);
-		if (!ptr && root)
-			ptr = root->findLargest(root);
-		else
-			--(*this);
-		return (tmp);
-	}
-	value_type& operator*()
-	{
-		return (ptr->data);
-	}
-	value_type* operator->() const
-	{
-		return (&ptr->data);
-	}
-	bool operator==(const reverse_map_iterator& it) const
-	{
-		if (ptr == it.ptr)
-			return (true);
-		return (false);
-	}
-	bool operator!=(const reverse_map_iterator& it) const
-	{
-		if (ptr != it.ptr)
-			return (true);
-		return (false);
-	}
-	bool operator>(const reverse_map_iterator& it) const
-	{
-		if (ptr > it.ptr)
-			return (true);
-		return (false);
-	}
-	bool operator<(const reverse_map_iterator& it) const
-	{
-		if (ptr < it.ptr)
-			return (true);
-		return (false);
-	}
-	bool operator<=(const reverse_map_iterator& it) const
-	{
-		if (ptr <= it.ptr)
-			return (true);
-		return (false);
-	}
-	bool operator>=(const reverse_map_iterator& it) const
-	{
-		if (ptr >= it.ptr)
-			return (true);
-		return (false);
-	}
-	private:
-	iterator *ptr;
-	iterator *root;
 };
 
 }
