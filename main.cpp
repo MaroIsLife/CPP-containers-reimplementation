@@ -56,9 +56,9 @@ int main()
 
 
 
-	ft::map<int, int> m;
-	ft::map<int, int>::iterator it;
-	ft::map<int, int>::Node *tmp;
+	std::map<int, int> m;
+	std::map<int, int>::iterator it;
+	//std::map<int, int>::Node *tmp;
 	////ft::pair<ft::map<int, int>::iterator, bool> ret;
 	//ft::map<int, int>::const_iterator c_ob(it);
 	//ft::pair<ft::map<int, int>::iterator, ft::map<int, int>::iterator>  ret;
@@ -75,8 +75,10 @@ int main()
 //! Root Node changes when Left right rotation happens 
 //! Problem in END()
 
+//! Fix Predecessor in --it
+
 	m[100] = 2;
-	m[87] = 2;
+	//m[87] = 2;
 	m[30] = 2;
 	m[47] = 2;
 	m[1] = 2;
@@ -87,17 +89,24 @@ int main()
 	m[6] = 2;
 
 	//m._node.root = _node.root->parent;
-	it = m.begin();
-	for (int i = 0; i < m.size(); i++)
+	it = m.end();
+	--it;
+	//for (int i = 0; i < m.size(); i++)
+	//{
+	//	std::cout << it->first << std::endl;
+	//	++it;
+	//}
+
+	for (;it != m.begin(); --it)
 	{
 		std::cout << it->first << std::endl;
-		++it;
+		//++it;
 	}
 
 	//tmp = m._node.searchNode(m._node.root, 30);
 
 	//tmp = m._node.root;
-	//std::cout << tmp->left->left->left->data.first << std::endl;
+	//std::cout << tmp->parent->data.first << std::endl;
 	//std::cout << "it->first = " << it->first << std::endl;
 	//m.erase(4);
 

@@ -53,6 +53,12 @@ namespace ft
 
 	map_iterator& operator++()
 	{
+
+		if (ptr == ptr->findLargest(root))
+		{
+			ptr = NULL;
+			return (*this);
+		}
 		if (ptr->right)
 		{
 			ptr = ptr->right;
@@ -81,10 +87,17 @@ namespace ft
 	}
 	map_iterator& operator--()
 	{
+		if (ptr && ptr == ptr->findSmallest(root))
+		{
+			ptr = NULL;
+			return (*this);
+		}
 		if (!ptr && root)
 			ptr = root->findLargest(root);
 		else
-			ptr = ptr->parent;
+			ptr = ptr->inorderPredecessor(ptr);
+
+			//ptr = ptr->parent;
 		return (*this);
 	}
 	map_iterator operator--(int)
