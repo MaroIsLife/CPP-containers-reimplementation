@@ -159,9 +159,9 @@ namespace ft
 					//	std::cout << "Made it here\n";
 					//std::cout << _node.root->data.first << std::endl;
 					//std::cout << "Mapped " << _node.searchNode(_node.root, k) << std::endl;
-					//return (_node.searchNode(_node.root, k)->data.second);
-					int *a = new int(12);
-					return (*a);
+					return (_node.searchNode(_node.root, k)->data.second);
+					//int *a = new int(12);
+					//return (*a);
 				}
 			}
 		

@@ -78,7 +78,7 @@ int main()
 //! Fix Predecessor in --it
 
 	m[100] = 2;
-	//m[87] = 2;
+	m[87] = 2;
 	m[30] = 2;
 	m[47] = 2;
 	m[1] = 2;
@@ -88,20 +88,8 @@ int main()
 	m[5] = 2;
 	m[6] = 2;
 
-	//m._node.root = _node.root->parent;
-	it = m.end();
-	--it;
-	//for (int i = 0; i < m.size(); i++)
-	//{
-	//	std::cout << it->first << std::endl;
-	//	++it;
-	//}
 
-	for (;it != m.begin(); --it)
-	{
-		std::cout << it->first << std::endl;
-		//++it;
-	}
+
 
 	//tmp = m._node.searchNode(m._node.root, 30);
 

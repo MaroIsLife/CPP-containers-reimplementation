@@ -75,7 +75,6 @@ namespace ft
 			}
 			ptr = tmp;
 		}
-		//ptr = ptr->inorderSuccessor(ptr);
 		return (*this);
 	}
 	
@@ -85,6 +84,7 @@ namespace ft
 		++(*this);
 		return (tmp);
 	}
+
 	map_iterator& operator--()
 	{
 		if (ptr && ptr == ptr->findSmallest(root))
@@ -97,16 +97,13 @@ namespace ft
 		else
 			ptr = ptr->inorderPredecessor(ptr);
 
-			//ptr = ptr->parent;
 		return (*this);
 	}
+
 	map_iterator operator--(int)
 	{
 		map_iterator tmp(*this);
-		if (!ptr && root)
-			ptr = root->findLargest(root);
-		else
-			--(*this);
+		--(*this);
 		return (tmp);
 	}
 

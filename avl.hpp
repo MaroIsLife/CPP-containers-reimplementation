@@ -241,7 +241,6 @@ class Avl
 	public:
 		typedef T value_type;
 		typedef Node<value_type> Node;
-		Node *last_node;
 		Node *root;
 		typedef typename value_type::first_type key_type;
 		typedef typename value_type::second_type mapped_type;
@@ -252,21 +251,18 @@ class Avl
 		Avl()
 		{
 			root = NULL;
-			//last_node = alloc.allocate(1);
 		}
 
 		Avl(T n)
 		{
 			//root = new Node(n);
 			root = alloc.allocate(1);
-			//last_node = alloc.allocate(1);
 			alloc.construct(root, Node(n));
 		}
 
 		~Avl()
 		{
 			//destroyAllNodes(root);
-			alloc.deallocate(last_node, 1);
 
 		}
 
@@ -366,30 +362,28 @@ class Avl
 			else if (data.first == r->data.first)
 				return (NULL);
 			int bf = getBalance(r);
-			//std::cout << "bf " << bf << std::endl;
 			r->height = std::max(getHeight(r->left), getHeight(r->right)) + 1;
-			//r->height = fixHeight(r);
-				//std::cout << "bf " << bf << std::endl;
+		
 			if (bf > 1 && r->left && data.first < r->left->data.first) //https://www.softwaretestinghelp.com/avl-trees-and-heap-data.first-structure-in-cpp/
 			{
-				std::cout << "Rotate Right" << std::endl;
+				//std::cout << "Rotate Right" << std::endl;
 				r = rotateRight(r);
 			}
 			else if (bf < -1 && r->right && data.first > r->right->data.first) 
 			{
-				std::cout << "Rotate Left" << std::endl;
+				//std::cout << "Rotate Left" << std::endl;
 				r = rotateLeft(r);
 			}
 			else if (bf > 1 && r->left && data.first > r->left->data.first)
 			{
 				//std::cout << "bf " << bf << std::endl;
-				std::cout << "left right\n";
+				//std::cout << "left right\n";
 				r->left = rotateLeft(r->left);
 				r = rotateRight(r);
 			}
 			else if (bf < -1 && r->right && data.first < r->right->data.first)
 			{
-				std::cout << "Right Left\n";
+				//std::cout << "Right Left\n";
 				r->right = rotateRight(r->right);
 				r = rotateLeft(r);
 			}
@@ -398,7 +392,6 @@ class Avl
 				r->left->parent = r;
 			if (r->right)
 				r->right->parent = r;
-			//this->last_node->parent = inorderPredecessor(r);
 			return (r);
 		}
 
@@ -446,7 +439,6 @@ class Avl
 					Node *tmp = minimumNode(r->right);
 					//r->data = tmp->data;
 					alloc.construct(r, Node(tmp->data));
-					//r->parent = tmp->parent;
 					r->right = deleteNode(r->right, tmp->data.first);
 				}
 			}
@@ -481,24 +473,6 @@ class Avl
 			if (r->right)
 				r->right->parent = r;
 			return (r);
-		}
-
-		int fixHeight(Node *r)
-		{
-			if (r->right && r->left)
-			{
-				if (r->left->height < r->right->height)
-					return r->right->height  + 1;
-				else
-					return r->left->height + 1;
-			}
-			else if(r->right && r->left == NULL)
-			{
-					return r->right->height + 1;
-			}
-			else if (r->right == NULL && r->left)
-				return r->left->height + 1;
-			return (1);
 		}
 
 		Node *rotateLeft(Node *r) //https://algorithmtutor.com/Data-Structures/Tree/AVL-Trees/
