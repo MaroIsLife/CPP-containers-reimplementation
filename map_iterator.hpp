@@ -26,25 +26,15 @@ namespace ft
 	typedef map_iterator<T, const V> const_map_iterator;
 	typedef std::bidirectional_iterator_tag iterator_category;
 
-	map_iterator() : ptr(NULL), root(NULL)
-	{
+	map_iterator() : ptr(NULL), root(NULL) {}
 
-	}
+	map_iterator(T* ptr) : ptr(ptr), root(ptr) {}
 
-	map_iterator(T* ptr) : ptr(ptr), root(ptr)
-	{
 
-	}
+	map_iterator(T* ptr, T* root) : ptr(ptr), root(root) {}
+	
 
-	map_iterator(T* ptr, T* root) : ptr(ptr), root(root)
-	{
-
-	}
-
-	map_iterator(const map_iterator& it) : ptr(it.ptr), root(it.root)
-	{
-
-	}
+	map_iterator(const map_iterator& it) : ptr(it.ptr), root(it.root) {}
 
 	~map_iterator(){}
 
@@ -63,7 +53,23 @@ namespace ft
 
 	map_iterator& operator++()
 	{
-		ptr = ptr->inorderSuccessor(ptr);
+		if (ptr->right)
+		{
+			ptr = ptr->right;
+			while (ptr->left)
+				ptr = ptr->left;
+		}
+		else
+		{
+			Node *tmp = ptr->parent;
+			while (tmp && tmp->right == ptr)
+			{
+				ptr = tmp;
+				tmp = tmp->parent;
+			}
+			ptr = tmp;
+		}
+		//ptr = ptr->inorderSuccessor(ptr);
 		return (*this);
 	}
 	

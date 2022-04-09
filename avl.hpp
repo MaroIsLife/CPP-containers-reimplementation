@@ -107,7 +107,7 @@ class Node
 		Node *left;
 		Node *parent;
 
-		Node() : data(0), height(0), right(NULL), left(NULL), parent(NULL)
+		Node() : data(0), height(1), right(NULL), left(NULL), parent(NULL)
 		{
 			
 		}
@@ -124,7 +124,7 @@ class Node
 		Node *inorderSuccessor(Node *r)
 		{
 			if (!r)
-				throw std::underflow_error("NULL node");
+				return (r);
 			else
 			{
 				if (r->right)
@@ -150,7 +150,7 @@ class Node
 		const Node *inorderSuccessor(const Node *r) const
 		{
 			if (!r)
-				throw std::underflow_error("NULL node");
+				return (r);
 			else
 			{
 				if (r->right)
@@ -163,6 +163,32 @@ class Node
 				{
 					const Node *p = r->parent;
 					while (p && r == p->right)
+					{
+						r = p;
+						p = p->parent;
+					}
+					r = p;
+				}
+			}
+			return (r);
+		}
+
+		Node *inorderPredecessor(Node *r)
+		{
+			if (!r)
+				return (r);
+			else
+			{
+				if (r->left)
+				{
+					r = r->left;
+					while (r->right)
+						r = r->right;
+				}
+				else
+				{
+					Node *p = r->parent;
+					while (p && r == p->left)
 					{
 						r = p;
 						p = p->parent;
@@ -200,6 +226,13 @@ class Node
 				return (r);
 			return (findLargest(r->right));
 		}
+
+	Node *inorder_succ(Node *r)
+	{
+		while (!r->left)
+			r = r->left;
+		return r;
+	}
 };
 
 template <typename T>
@@ -208,6 +241,7 @@ class Avl
 	public:
 		typedef T value_type;
 		typedef Node<value_type> Node;
+		Node *last_node;
 		Node *root;
 		typedef typename value_type::first_type key_type;
 		typedef typename value_type::second_type mapped_type;
@@ -218,18 +252,22 @@ class Avl
 		Avl()
 		{
 			root = NULL;
+			//last_node = alloc.allocate(1);
 		}
 
 		Avl(T n)
 		{
 			//root = new Node(n);
 			root = alloc.allocate(1);
+			//last_node = alloc.allocate(1);
 			alloc.construct(root, Node(n));
 		}
 
 		~Avl()
 		{
 			//destroyAllNodes(root);
+			alloc.deallocate(last_node, 1);
+
 		}
 
 		void destroyAllNodes(Node *r)
@@ -243,19 +281,39 @@ class Avl
 				alloc.deallocate(r, 1);
 			}
 		}
+
+		void parent_correction(Node *&n, Node *p)
+		{
+			if (!n)
+				return ;
+			parent_correction(n->right, n);
+			n->parent = p;
+			parent_correction(n->left, n);
+		}
+		
 		int getBalance(Node *r)
 		{
 			if (!r)
-				return (-1);
+				return (0);
 			return (getHeight(r->left) - getHeight(r->right));
 		}
+		//int getBalance(Node *&r)
+		//{
+		//	if (r->right && r->left)
+		//		return (r->left->height - r->right->height);
+		//	else if (!r->right && r->left)
+		//		return (r->left->height);
+		//	else if (r->right && !r->left)
+		//		return -(r->right->height);
+		//	return (1);
+		//}
 
 		Node *newNode(const value_type &data)
 		{
 			return (new Node(data));
 		}
 
-		Node *searchNode(Node *&r, const key_type data)
+		Node *searchNode(Node *r, const key_type data)
 		{
 			//std::cout << "R data " << r->data << std::endl;
 			//std::cout << "data " << data << std::endl;
@@ -281,53 +339,66 @@ class Avl
 			return (r);
 		}
 
-		Node *insertNode(Node *&r, const value_type &data, Node *&parent) //https://www.geeksforgeeks.org/avl-tree-set-1-insertion/
+		Node *insertNode(Node *&r, const value_type &data, Node *parent) //https://www.geeksforgeeks.org/avl-tree-set-1-insertion/
 		{	
+			Node *tmp;
 			if (!r)
 			{
-				//r = newNode(data);
 				r = alloc.allocate(1);
 				alloc.construct(r, Node(data));
 				r->parent = parent;
+				tmp = r;
+				//root = getHeadNode(r);
+				return (r);
+				//return (tmp);
 			}
 			else if (data.first < r->data.first)
 			{
 				r->left = insertNode(r->left, data, r);
+				//tmp = insertNode(r->left, data, r);
 			}
 			else if (data.first > r->data.first)
 			{
 				r->right = insertNode(r->right, data, r);
+				//tmp = insertNode(r->right, data, r);
+
 			}
 			else if (data.first == r->data.first)
 				return (NULL);
 			int bf = getBalance(r);
+			//std::cout << "bf " << bf << std::endl;
 			r->height = std::max(getHeight(r->left), getHeight(r->right)) + 1;
+			//r->height = fixHeight(r);
+				//std::cout << "bf " << bf << std::endl;
 			if (bf > 1 && r->left && data.first < r->left->data.first) //https://www.softwaretestinghelp.com/avl-trees-and-heap-data.first-structure-in-cpp/
 			{
-				//std::cout << "Rotate Right" << std::endl;
+				std::cout << "Rotate Right" << std::endl;
 				r = rotateRight(r);
 			}
-			if (bf < -1 && r->right && data.first > r->right->data.first) 
+			else if (bf < -1 && r->right && data.first > r->right->data.first) 
 			{
-				//std::cout << "Rotate Left" << std::endl;
+				std::cout << "Rotate Left" << std::endl;
 				r = rotateLeft(r);
 			}
-			if (bf > 1 && r->left && data.first > r->left->data.first)
+			else if (bf > 1 && r->left && data.first > r->left->data.first)
 			{
-				//std::cout << "left right\n";
+				//std::cout << "bf " << bf << std::endl;
+				std::cout << "left right\n";
 				r->left = rotateLeft(r->left);
 				r = rotateRight(r);
 			}
-			if (bf < -1 && r->right && data.first < r->right->data.first)
+			else if (bf < -1 && r->right && data.first < r->right->data.first)
 			{
-				//std::cout << "Right Left\n";
+				std::cout << "Right Left\n";
 				r->right = rotateRight(r->right);
 				r = rotateLeft(r);
 			}
+
 			if (r->left)
 				r->left->parent = r;
 			if (r->right)
 				r->right->parent = r;
+			//this->last_node->parent = inorderPredecessor(r);
 			return (r);
 		}
 
@@ -412,24 +483,54 @@ class Avl
 			return (r);
 		}
 
+		int fixHeight(Node *r)
+		{
+			if (r->right && r->left)
+			{
+				if (r->left->height < r->right->height)
+					return r->right->height  + 1;
+				else
+					return r->left->height + 1;
+			}
+			else if(r->right && r->left == NULL)
+			{
+					return r->right->height + 1;
+			}
+			else if (r->right == NULL && r->left)
+				return r->left->height + 1;
+			return (1);
+		}
+
 		Node *rotateLeft(Node *r) //https://algorithmtutor.com/Data-Structures/Tree/AVL-Trees/
 		{
-			Node *tmp;
-			Node *tmp2;
-
-			tmp = r->right;
-			tmp2 = r->left;
+			Node *tmp = r->right;
+			Node *tmp2 = tmp->left;
 
 			tmp->left = r;
 			r->right = tmp2;
 			//std::cout << tmp2 << std::endl;
 
+			parent_correction(tmp, r->parent);
+
 			r->height = std::max(getHeight(r->left), getHeight(r->right)) + 1;
 			tmp->height = std::max(getHeight(tmp->left), getHeight(tmp->right)) + 1;
+
+			if (tmp->left)
+				tmp->left->height = std::max(getHeight(tmp->left->left), getHeight(tmp->left->right)) + 1;
+			if (tmp->right)
+				tmp->right->height = std::max(getHeight(tmp->right->left), getHeight(tmp->right->right)) + 1;
+
+
+			//if (tmp->left)
+			//	tmp->left->height = fixHeight(tmp->left);
+			//if (tmp->right)
+			//	tmp->right->height = fixHeight(tmp->right);
+			//tmp->height = fixHeight(tmp);
 
 			return (tmp);
 		}
 
+	
 		Node *rotateRight(Node *r)
 		{
 			Node *tmp;
@@ -442,16 +543,28 @@ class Avl
 			tmp->right = r;
 			r->left = tmp2;
 			//std::cout << "r left data " << r->left << std::endl;
+			parent_correction(r, tmp->parent);
+
 
 			r->height = std::max(getHeight(r->left), getHeight(r->right)) + 1;
 			tmp->height = std::max(getHeight(tmp->left), getHeight(tmp->right)) + 1;
+			if (tmp->right)
+				tmp->right->height = std::max(getHeight(tmp->right->left), getHeight(tmp->right->right)) + 1;
+			if (tmp->left)
+				tmp->left->height = std::max(getHeight(tmp->left->left), getHeight(tmp->left->right)) + 1;
+
+			//if (tmp->right)
+			//	tmp->right->height = fixHeight(tmp->right);
+			//if (tmp->left)
+			//	tmp->left->height = fixHeight(tmp->left);
+			//tmp->height = fixHeight(tmp);
 			return (tmp);
 		}
 
 		int getHeight(Node *r)
 		{
 			if (!r)
-				return (-1);
+				return (0);
 			else
 				return (r->height);
 		}
@@ -505,13 +618,13 @@ class Avl
 			inorder(r->right);
 		}
 
-		Node *inorderPredecessor(Node *r)
-		{
-			if (r->left)
-				return (findLargest(r->left));
-			else
-				return (r->parent);
-		}
+		//Node *inorderPredecessor(Node *r)
+		//{
+		//	if (r->left)
+		//		return (findLargest(r->left));
+		//	else
+		//		return (r->parent);
+		//}
 					
 
 		void count_key(Node *r, const key_type &k, size_t &count) const
@@ -523,4 +636,43 @@ class Avl
 			count_key(r->left, k, count);
 			count_key(r->right, k, count);
 		}
+
+		Node *inorderPredecessor(Node *r)
+		{
+			if (!r)
+				return (r);
+			else
+			{
+				if (r->left)
+				{
+					r = r->left;
+					while (r->right)
+						r = r->right;
+				}
+				else
+				{
+					Node *p = r->parent;
+					while (p && r == p->left)
+					{
+						r = p;
+						p = p->parent;
+					}
+					r = p;
+				}
+			}
+			return (r);
+		}
+
+		Node *getHeadNode(Node *r)
+        {
+        	Node *tmp = r;
+
+			while (1) 
+			{
+                if (!tmp || !tmp->parent)
+                    return (tmp);
+				tmp = tmp->parent;
+			}
+			return (tmp);
+        }
 };

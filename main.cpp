@@ -24,24 +24,22 @@ int main()
 {
 
 
+//! Check Rotations, Heights and End()
 
-	ft::map<int, char> my_m;
-        for (int i = 0; i < 1e2; i++)
-            my_m.insert(ft::make_pair(i, 'A'));
+            //std::map<int, std::string> m;
+            //ft::map<int, std::string> ft_m;
+            //for (size_t i = 0; i < 3; ++i)
+            //{
+            //    m.insert(std::make_pair(i, "value"));
+            //    ft_m.insert(ft::make_pair(i, "value"));
+            //}
+            ////for (std::map<int, std::string>::iterator it = m.begin(); it != m.end(); ++it)
+            ////    ;
 
-        ft::map<int, char>::reverse_iterator my_rit2(my_m.end());
-        ft::map<int, char>::const_reverse_iterator c_it, c_ob(my_m.end());
-        c_it = my_rit2;
-        EQUAL(my_rit2->first == c_it->first && my_rit2->first == c_ob->first);
-
-
-
-
-
-
-
-
-
+            //for (ft::map<int, std::string>::iterator it = ft_m.begin(); it != ft_m.end(); ++it)
+            //  {
+			//	  std::cout << it->first << std::endl;
+			//  }
 
 
 
@@ -50,8 +48,17 @@ int main()
 
 
 
-	//ft::map<int, int> m;
-	//ft::map<int, int>::iterator it;
+
+
+
+
+
+
+
+
+	ft::map<int, int> m;
+	ft::map<int, int>::iterator it;
+	ft::map<int, int>::Node *tmp;
 	////ft::pair<ft::map<int, int>::iterator, bool> ret;
 	//ft::map<int, int>::const_iterator c_ob(it);
 	//ft::pair<ft::map<int, int>::iterator, ft::map<int, int>::iterator>  ret;
@@ -64,13 +71,33 @@ int main()
 
 	//it = ret.first;
 
-	//m[100] = 2;
-	//m[250] = 2;
-	//m[30] = 2;
-	//m[47] = 2;
+//! Problem in parents (Parent of FIRST NODE EQUALS PARENTS OF LEFT NODE)
+//! Root Node changes when Left right rotation happens 
+//! Problem in END()
 
-	//it = m.begin();
-	//it++;
+	m[100] = 2;
+	m[87] = 2;
+	m[30] = 2;
+	m[47] = 2;
+	m[1] = 2;
+	m[2] = 2;
+	m[3] = 2;
+	m[4] = 2;
+	m[5] = 2;
+	m[6] = 2;
+
+	//m._node.root = _node.root->parent;
+	it = m.begin();
+	for (int i = 0; i < m.size(); i++)
+	{
+		std::cout << it->first << std::endl;
+		++it;
+	}
+
+	//tmp = m._node.searchNode(m._node.root, 30);
+
+	//tmp = m._node.root;
+	//std::cout << tmp->left->left->left->data.first << std::endl;
 	//std::cout << "it->first = " << it->first << std::endl;
 	//m.erase(4);
 

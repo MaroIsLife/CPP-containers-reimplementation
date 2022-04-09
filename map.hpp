@@ -23,7 +23,6 @@ namespace ft
 			typedef T mapped_type;
 			typedef ft::pair<const key_type, mapped_type> value_type;
 			typedef typename Avl<value_type>::Node Node;
-			typedef typename Avl<const value_type>::Node const_Node;
 			typedef typename ft::map_iterator<Node, value_type> iterator;
 			typedef typename ft::map_iterator<Node, const value_type> const_iterator;
 			typedef typename ft::reverse_iterator<iterator> reverse_iterator;
@@ -146,17 +145,26 @@ namespace ft
 			{
 				return (const_reverse_iterator(begin()));
 			}
+
 			mapped_type& operator[] (const key_type& k)
 			{
+				
 				Node *tmp = _node.searchNode(_node.root, k);
 				if (tmp)
 					return (tmp->data.second);
 				else
 				{
-					insert(make_pair(k, mapped_type()));
-					return (_node.searchNode(_node.root, k)->data.second);
+					insert(ft::make_pair(k, mapped_type()));
+					//if (k == 47)
+					//	std::cout << "Made it here\n";
+					//std::cout << _node.root->data.first << std::endl;
+					//std::cout << "Mapped " << _node.searchNode(_node.root, k) << std::endl;
+					//return (_node.searchNode(_node.root, k)->data.second);
+					int *a = new int(12);
+					return (*a);
 				}
 			}
+		
 			iterator find (const key_type& k)
 			{
 				return (iterator(_node.searchNode(_node.root, k),_node.root));
@@ -181,17 +189,19 @@ namespace ft
 			pair<iterator, bool> insert(const value_type& val) 	//* Insert node always get the root address (cuz recursive) so i used search node
 			{
 				_size++; 
-				if (!(_node.insertNode(_node.root, val, _node.root)))
-					return (make_pair(iterator((_node.searchNode(_node.root, val.first)), _node.root), false));
+				if (!(_node.insertNode(_node.root, val, NULL)))
+					return (ft::make_pair(iterator((_node.searchNode(_node.root, val.first)), _node.root), false));
 				else
-					return (make_pair(iterator((_node.searchNode(_node.root, val.first)), _node.root), true));
+					return (ft::make_pair(iterator((_node.searchNode(_node.root, val.first)), _node.root), true));
 			}
+
+	
 
 			iterator insert (iterator position, const value_type& val)
 			{
 				(void)position;
 				_size++;
-				if (!(_node.insertNode(_node.root, val, _node.root)))
+				if (!(_node.insertNode(_node.root, val, NULL)))
 					return (iterator(_node.searchNode(_node.root, val.first), _node.root));
 				else
 					return (iterator(_node.searchNode(_node.root, val.first), _node.root));
@@ -219,19 +229,18 @@ namespace ft
 
 			void swap (map& x)
 			{
-				std::swap(this->comp, x.comp);
+				std::swap(this->_comp, x._comp);
 				std::swap(this->_allocator, x._allocator);
-				std::swap(this->root, x.root);
-				std::swap(this->size, x.size);
+				std::swap(this->_node, x._node);
+				std::swap(this->_size, x._size);
 			}
-			void erase (iterator position) //! Fix this
+			
+			void erase (iterator position)
 			{
-				if (!(empty()) && _node.searchNode(_node.root, position.ptr->first))
-				{			
-					_node.deleteNode(position.ptr);
-					_size--;
-				}
+				_node.deleteNode(_node.root, position->first);
+				_size--;
 			}
+
 			size_type erase (const key_type& k)
 			{
 				size_type count = 0;
@@ -258,7 +267,7 @@ namespace ft
 
 			value_compare value_comp() const
 			{
-				value_compare _value_comp;
+				value_compare _value_comp(key_comp());
 				return (_value_comp);
 			}
 
@@ -340,12 +349,12 @@ namespace ft
 
 			pair<iterator,iterator> equal_range (const key_type& k)
 			{
-				return (make_pair(lower_bound(k), upper_bound(k)));
+				return (ft::make_pair(lower_bound(k), upper_bound(k)));
 			}
 
 			pair<const_iterator,const_iterator> equal_range (const key_type& k) const
 			{
-				return (make_pair(lower_bound(k), upper_bound(k)));
+				return (ft::make_pair(lower_bound(k), upper_bound(k)));
 			}
 				
 			Avl<value_type> _node;
