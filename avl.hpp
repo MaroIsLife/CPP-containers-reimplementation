@@ -111,6 +111,7 @@ class Node
 		{
 			
 		}
+
 		Node(T n) : data(n), height(1), right(NULL), left(NULL), parent(NULL)
 		{
 			
@@ -235,13 +236,14 @@ class Node
 	}
 };
 
-template <typename T>
+template <typename T, typename comp>
 class Avl
 {
 	public:
 		typedef T value_type;
 		typedef Node<value_type> Node;
 		Node *root;
+		comp comp_;
 		typedef typename value_type::first_type key_type;
 		typedef typename value_type::second_type mapped_type;
 		typedef std::allocator<ft::pair<const key_type, mapped_type> > Alloc;
@@ -268,14 +270,14 @@ class Avl
 
 		void destroyAllNodes(Node *r)
 		{
-			if (r)
-			{
+			if (!r)
+				return ;
 				destroyAllNodes(r->left);
 				destroyAllNodes(r->right);
 				//delete r;
 				alloc.destroy(r);
 				alloc.deallocate(r, 1);
-			}
+				r = NULL;
 		}
 
 		void parent_correction(Node *&n, Node *p)
@@ -316,72 +318,59 @@ class Avl
 			if (!r)
 				return (NULL);
 			if (r->data.first == data)
-			{
-				//std::cout << "Found " << r->data.first << std::endl;
 				return (r);
-			}
-			else if (data < r->data.first)
-			{
-				//std::cout << "Left" << std::endl;
-				//r->left = searchNode(r->left, data);
+			else if (comp_(data, r->data.first)) // data < r->data.first
 				return (searchNode(r->left, data));
-			}
 			else
-			{
-				//std::cout << "Right" << std::endl;
-				//r->right = searchNode(r->right, data);
 				return (searchNode(r->right, data));
-			}
 			return (r);
 		}
 
 		Node *insertNode(Node *&r, const value_type &data, Node *parent) //https://www.geeksforgeeks.org/avl-tree-set-1-insertion/
 		{	
-			Node *tmp;
 			if (!r)
 			{
 				r = alloc.allocate(1);
 				alloc.construct(r, Node(data));
 				r->parent = parent;
-				tmp = r;
 				//root = getHeadNode(r);
 				return (r);
 				//return (tmp);
 			}
-			else if (data.first < r->data.first)
+			else if (data.first == r->data.first)
+				return (NULL);
+			else if (comp_(data.first, r->data.first)) //(data.first < r->data.first) 
 			{
 				r->left = insertNode(r->left, data, r);
 				//tmp = insertNode(r->left, data, r);
 			}
-			else if (data.first > r->data.first)
+			else if (comp_(r->data.first, data.first)) //(data.first > r->data.first)
 			{
 				r->right = insertNode(r->right, data, r);
 				//tmp = insertNode(r->right, data, r);
 
 			}
-			else if (data.first == r->data.first)
-				return (NULL);
 			int bf = getBalance(r);
 			r->height = std::max(getHeight(r->left), getHeight(r->right)) + 1;
 		
-			if (bf > 1 && r->left && data.first < r->left->data.first) //https://www.softwaretestinghelp.com/avl-trees-and-heap-data.first-structure-in-cpp/
+			if (bf > 1 && r->left && comp_(data.first, r->left->data.first))   // data.first < r->left->data.first https://www.softwaretestinghelp.com/avl-trees-and-heap-data.first-structure-in-cpp/
 			{
 				//std::cout << "Rotate Right" << std::endl;
 				r = rotateRight(r);
 			}
-			else if (bf < -1 && r->right && data.first > r->right->data.first) 
+			else if (bf < -1 && r->right && comp_(r->right->data.first, data.first)) //data.first > r->right->data.first
 			{
 				//std::cout << "Rotate Left" << std::endl;
 				r = rotateLeft(r);
 			}
-			else if (bf > 1 && r->left && data.first > r->left->data.first)
+			else if (bf > 1 && r->left && comp_(r->left->data.first, data.first)) // Data.first > r->left->data.first
 			{
 				//std::cout << "bf " << bf << std::endl;
 				//std::cout << "left right\n";
 				r->left = rotateLeft(r->left);
 				r = rotateRight(r);
 			}
-			else if (bf < -1 && r->right && data.first < r->right->data.first)
+			else if (bf < -1 && r->right && comp_(data.first, r->right->data.first)) // data.first < r->right->data.first
 			{
 				//std::cout << "Right Left\n";
 				r->right = rotateRight(r->right);
@@ -395,15 +384,15 @@ class Avl
 			return (r);
 		}
 
-		Node *deleteNode(Node *r, const key_type &data) //https://www.geeksforgeeks.org/avl-tree-set-2-deletion/?ref=lbp
+		Node *deleteNode(Node *&r, const key_type &data) //https://www.geeksforgeeks.org/avl-tree-set-2-deletion/?ref=lbp
 		{
 			if (!r)
 				return (NULL);
-			else if (data < r->data.first)
+			else if (comp_(data, r->data.first)) //Data < r->data.first
 				r->left = deleteNode(r->left, data);
-			else if (data > r->data.first)
+			else if (comp_(r->data.first, data)) //Data > r->data.first
 				r->right = deleteNode(r->right, data);
-			if (data == r->data.first)
+			else //* Changed from else if r->first == data to else since it access a deleted node in recursivity which results in a heap use after free 
 			{
 				if (!r->left && !r->right)
 				{
@@ -417,6 +406,7 @@ class Avl
 					Node *tmp;
 
 					tmp = r->right;
+					
 					//delete r;
 					alloc.destroy(r);
 					alloc.deallocate(r, 1);
@@ -425,20 +415,42 @@ class Avl
 				else if (!r->right && r->left)
 				{
 					Node *tmp;
- 
+
+					//std::cout << "MADE IT\n";
 					tmp = r->left;
-					//delete r;
+
+					//std::swap(r->data, tmp->data);
+					
+
+					//r->left = tmp->left;
+					//r->right = tmp->right;
+					//r->height = tmp->height;
+
+
+
 					alloc.destroy(r);
 					alloc.deallocate(r, 1);
+					//r = alloc.allocate(1);
+					//alloc.construct(r, Node(tmp->data));
+					//r->left = tmp->left;
+					//r->right = tmp->right;
+					//r->height = tmp->height;
 					r = tmp;
-					//std::cout << &(*r) << std::endl;
 				}
 				else if (r->right && r->left) //! In BST/AVL Visualization it replaces biggest node and not the smallest one
 				{
 					//* Find the smallest node in the right subtree and replace r with it. (Inorder Successor)
 					Node *tmp = minimumNode(r->right);
 					//r->data = tmp->data;
-					alloc.construct(r, Node(tmp->data));
+					//alloc.destroy(r->data);
+					//alloc.deallocate(r, 1);
+					//r = alloc.allocate(1);
+					//alloc.construct(r, Node(tmp->data));
+
+					
+					std::swap(r->data, tmp->data);
+
+					//r->data = ft::make_pair(tmp->data.first, tmp->data.second);
 					r->right = deleteNode(r->right, tmp->data.first);
 				}
 			}
@@ -553,28 +565,36 @@ class Avl
 
 		Node *findSmallest(Node *r)
 		{
-			if (!r->left)
+			if (!r)
+				return (r);
+			else if (!r->left)
 				return (r);
 			return (findSmallest(r->left));
 		}
 
 		Node *findLargest(Node *r)
 		{
-			if (!r->right)
+			if (!r)
+				return (r);
+			else if (!r->right)
 				return (r);
 			return (findLargest(r->right));
 		}
 
 		Node *findSmallest(Node *r) const
 		{
-			if (!r->left)
+			if (!r)
+				return (r);
+			else if (!r->left) 
 				return (r);
 			return (findSmallest(r->left));
 		}
 
 		Node *findLargest(Node *r) const
 		{
-			if (!r->right)
+			if (!r)
+				return (r);
+			else if (!r->right)
 				return (r);
 			return (findLargest(r->right));
 		}

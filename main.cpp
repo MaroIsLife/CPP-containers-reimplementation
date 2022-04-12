@@ -6,17 +6,29 @@
 #include <memory>
 #include <map>
 #include "map.hpp"
+#define TIME_FAC 5
+#include <iomanip>
+#include <sys/time.h>
+#include <unistd.h>
 #define EQUAL(x) ((x) ? (std::cout << "\033[1;32mAC\033[0m\n") : (std::cout << "\033[1;31mWA\033[0m\n"))
 
 
-template <class T>
-int compare(T const &x, T const &y)
+time_t get_time(void)
 {
-	if (std::less<T>())
-	{
-		std::cout << "Yes" << std::endl;
-	}
-	return (0);
+    struct timeval time_now;
+
+    gettimeofday(&time_now, NULL);
+    time_t msecs_time = (time_now.tv_sec * 1e3) + (time_now.tv_usec / 1e3);
+    return (msecs_time);
+}
+
+template <typename Iter1, typename Iter2>
+bool comparemaps(Iter1 first1, Iter1 last1, Iter2 first2, Iter2 last2)
+{
+    for (; (first1 != last1) && (first2 != last2); ++first1, ++first2)
+        if (first1->first != first2->first || first1->second != first2->second)
+            return false;
+    return true;
 }
 
 //! Implement istream iterator with insert range and assign range
@@ -24,22 +36,8 @@ int main()
 {
 
 
-//! Check Rotations, Heights and End()
-
-            //std::map<int, std::string> m;
-            //ft::map<int, std::string> ft_m;
-            //for (size_t i = 0; i < 3; ++i)
-            //{
-            //    m.insert(std::make_pair(i, "value"));
-            //    ft_m.insert(ft::make_pair(i, "value"));
-            //}
-            ////for (std::map<int, std::string>::iterator it = m.begin(); it != m.end(); ++it)
-            ////    ;
-
-            //for (ft::map<int, std::string>::iterator it = ft_m.begin(); it != ft_m.end(); ++it)
-            //  {
-			//	  std::cout << it->first << std::endl;
-			//  }
+//! Find a way to swap min node with current node in delete with both children (CONST PROBLEM)
+      
 
 
 
@@ -49,6 +47,89 @@ int main()
 
 
 
+        bool cond(false);
+
+std::map<char, int> m;
+        ft::map<char, int> ft_m;
+        std::map<char, int>::iterator it;
+        ft::map<char, int>::iterator ft_it;
+
+        // insert some values:
+        ft_m['a'] = 10;
+        ft_m['b'] = 20;
+        ft_m['c'] = 30;
+        ft_m['d'] = 40;
+        ft_m['e'] = 50;
+        ft_m['f'] = 60;
+
+        m['a'] = 10;
+        m['b'] = 20;
+        m['c'] = 30;
+        m['d'] = 40;
+        m['e'] = 50;
+        m['f'] = 60;
+
+        cond = m.size() == ft_m.size() && comparemaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
+
+        it = m.find('b');
+        ft_it = ft_m.find('b');
+        cond = cond && (it->first == ft_it->first) && (it->second == ft_it->second);
+        m.erase(it);       // erasing by iterator
+        ft_m.erase(ft_it); // erasing by iterator
+
+        cond = cond && comparemaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
+		for (ft_it = ft_m.begin(); ft_it != ft_m.end(); ++ft_it)
+		{
+			std::cout << ft_it->first << std::endl;
+		}
+		std::cout << "-----------------------" << std::endl;
+		for (it = m.begin(); it != m.end(); ++it)
+		{
+			std::cout << it->first << std::endl;
+		}
+		std::cout << "cond: " << cond << std::endl;
+
+        int ret = m.erase('c');       // erasing by key
+        int ft_ret = ft_m.erase('c'); // erasing by key
+
+        cond = cond && ret == ft_ret && comparemaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
+
+        it = m.find('e');
+        ft_it = ft_m.find('e');
+
+        cond = cond && (it->first == ft_it->first) && (it->second == ft_it->second) && m.size() == ft_m.size();
+
+        m.erase(it, m.end());          // erasing by range
+        ft_m.erase(ft_it, ft_m.end()); // erasing by range
+
+        cond = cond && m.empty() == ft_m.empty() && comparemaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
+
+        /* ---------- Testing some edge cases ---------- */
+
+        std::map<int, std::string> m2;
+        ft::map<int, std::string> ft_m2;
+
+        for (size_t i = 0; i < 1e5; i++)
+        {
+            m2.insert(std::make_pair(i, "string1"));
+            ft_m2.insert(ft::make_pair(i, "string1"));
+        }
+
+        std::map<int, std::string>::reverse_iterator it2 = m2.rbegin();
+        ft::map<int, std::string>::reverse_iterator ft_it2 = ft_m2.rbegin();
+
+        m2.erase(m2.begin());
+        ft_m2.erase(ft_m2.begin());
+
+        cond = cond && m2.size() == ft_m2.size() && comparemaps(m2.begin(), m2.end(), ft_m2.begin(), ft_m2.end());
+
+        m2.erase(it2->first);
+        ft_m2.erase(ft_it2->first);
+
+        cond = cond && m2.size() == ft_m2.size() && comparemaps(m2.begin(), m2.end(), ft_m2.begin(), ft_m2.end());
+
+
+        EQUAL(cond);
 
 
 
@@ -56,37 +137,14 @@ int main()
 
 
 
-	std::map<int, int> m;
-	std::map<int, int>::iterator it;
-	//std::map<int, int>::Node *tmp;
-	////ft::pair<ft::map<int, int>::iterator, bool> ret;
-	//ft::map<int, int>::const_iterator c_ob(it);
-	//ft::pair<ft::map<int, int>::iterator, ft::map<int, int>::iterator>  ret;
-	
-	
-	//ret = m.insert(ft::make_pair(1, 2));
-	//ret = m.insert(ft::make_pair(2, 2));
-	//ret = m.insert(ft::make_pair(3, 2));
-	//ret = m.insert(ft::make_pair(4, 2));
 
-	//it = ret.first;
 
-//! Problem in parents (Parent of FIRST NODE EQUALS PARENTS OF LEFT NODE)
-//! Root Node changes when Left right rotation happens 
-//! Problem in END()
 
-//! Fix Predecessor in --it
 
-	m[100] = 2;
-	m[87] = 2;
-	m[30] = 2;
-	m[47] = 2;
-	m[1] = 2;
-	m[2] = 2;
-	m[3] = 2;
-	m[4] = 2;
-	m[5] = 2;
-	m[6] = 2;
+
+
+
+
 
 
 
@@ -106,7 +164,6 @@ int main()
 	//it--;
 	//std::cout << it->first << std::endl;
 
-	//! Test End()
 	//it = m._node.searchNode(m._node.root, 3);
 	//it++;
 	//std::cout << it->first << std::endl;

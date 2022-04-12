@@ -54,12 +54,12 @@ namespace ft
 	map_iterator& operator++()
 	{
 
-		if (ptr == ptr->findLargest(root))
+		if (ptr == ptr->findLargest(root)) //* Last Node protection
 		{
 			ptr = NULL;
 			return (*this);
 		}
-		if (ptr->right)
+		if (ptr->right) //* If it has a right node find the inorder successsor
 		{
 			ptr = ptr->right;
 			while (ptr->left)
@@ -67,7 +67,7 @@ namespace ft
 		}
 		else
 		{
-			Node *tmp = ptr->parent;
+			Node *tmp = ptr->parent; //* If it has no right node travel to parent then find the inorder predecessor
 			while (tmp && tmp->right == ptr)
 			{
 				ptr = tmp;
@@ -87,12 +87,12 @@ namespace ft
 
 	map_iterator& operator--()
 	{
-		if (ptr && ptr == ptr->findSmallest(root))
+		if (ptr && ptr == ptr->findSmallest(root)) //* First node protection
 		{
 			ptr = NULL;
 			return (*this);
 		}
-		if (!ptr && root)
+		if (!ptr && root) //* If decrementing from the end of the map (3ndi 2 pointers ptr and root, ptr is NULL and root has the first node if it came from end)
 			ptr = root->findLargest(root);
 		else
 			ptr = ptr->inorderPredecessor(ptr);
@@ -154,8 +154,8 @@ namespace ft
 		return (false);
 	}
 	private:
-	Node *ptr;
-	Node *root;
+	Node *ptr; //* Equals to Null if contrustor is called from map end()
+	Node *root; //* Always equals to root node even if it's called from map end()
 };
 
 }

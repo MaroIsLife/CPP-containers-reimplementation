@@ -7,6 +7,7 @@
 #include "map_iterator.hpp"
 #include "algorithm.hpp"
 #include "reverse_iterator.hpp"
+#include "vector.hpp"
 namespace ft
 {
 	//* Less(Sorting Map Less or Greater than) https://www.cplusplus.com/reference/functional/less/
@@ -22,7 +23,7 @@ namespace ft
 			typedef Key key_type;
 			typedef T mapped_type;
 			typedef ft::pair<const key_type, mapped_type> value_type;
-			typedef typename Avl<value_type>::Node Node;
+			typedef typename Avl<value_type, Compare>::Node Node;
 			typedef typename ft::map_iterator<Node, value_type> iterator;
 			typedef typename ft::map_iterator<Node, const value_type> const_iterator;
 			typedef typename ft::reverse_iterator<iterator> reverse_iterator;
@@ -65,34 +66,29 @@ namespace ft
 			{
 				(void)alloc;
 				_size = 0;
-				//for (; first != last; ++first)
-				//	this->insert(*first);
 				insert(first, last);
 			}
 
 			map (const map& x) : _comp(x._comp)
 			{
-				this->_allocator = x._allocator;
-				this->_node = x._node;
-				this->_size = x._size;
+				*this = x;
 			}
 
 			~map()
 			{
-				//clear();
+				clear();
 			}
 
 			map& operator= (const map& x)
 			{
-				if (this != &x)
-				{
-					clear();
-					this->_comp = x._comp;
-					this->_allocator = x._allocator;
-					this->_node = x._node;
-					this->_size = x._size;
-				}
-				return (*this);
+				_allocator = x._allocator;
+				_comp = x._comp;
+				//_node.root = x._node.root;
+				_node.destroyAllNodes(_node.root);
+				_node.root = NULL;
+				this->insert(x.begin(), x.end());
+				this->_size = x._size;
+				return (*(this));
 			}
 
 			bool empty() const
@@ -148,30 +144,29 @@ namespace ft
 
 			mapped_type& operator[] (const key_type& k)
 			{
-				
 				Node *tmp = _node.searchNode(_node.root, k);
 				if (tmp)
 					return (tmp->data.second);
 				else
 				{
 					insert(ft::make_pair(k, mapped_type()));
-					//if (k == 47)
-					//	std::cout << "Made it here\n";
-					//std::cout << _node.root->data.first << std::endl;
-					//std::cout << "Mapped " << _node.searchNode(_node.root, k) << std::endl;
 					return (_node.searchNode(_node.root, k)->data.second);
-					//int *a = new int(12);
-					//return (*a);
 				}
 			}
 		
 			iterator find (const key_type& k)
 			{
-				return (iterator(_node.searchNode(_node.root, k),_node.root));
+				Node *n = _node.searchNode(_node.root, k);
+				if (n)
+					return (iterator(n, _node.root));
+				return (this->end());
 			}
 			const_iterator find(const key_type& k) const
 			{
-				return (const_iterator(_node.searchNode(_node.root, k),_node.root));
+				Node *n = _node.searchNode(_node.root, k);
+				if (n)
+					return (const_iterator(n, _node.root));
+				return (this->end());
 			}
 
 			//pair<iterator, bool> insert (const value_type& val) 
@@ -188,23 +183,21 @@ namespace ft
 
 			pair<iterator, bool> insert(const value_type& val) 	//* Insert node always get the root address (cuz recursive) so i used search node
 			{
-				_size++; 
-				if (!(_node.insertNode(_node.root, val, NULL)))
+				
+				if ((_node.searchNode(_node.root, val.first)))
 					return (ft::make_pair(iterator((_node.searchNode(_node.root, val.first)), _node.root), false));
 				else
+				{
+					_node.insertNode(_node.root, val, NULL);
+					_size++;
 					return (ft::make_pair(iterator((_node.searchNode(_node.root, val.first)), _node.root), true));
+				}
 			}
-
-	
 
 			iterator insert (iterator position, const value_type& val)
 			{
 				(void)position;
-				_size++;
-				if (!(_node.insertNode(_node.root, val, NULL)))
-					return (iterator(_node.searchNode(_node.root, val.first), _node.root));
-				else
-					return (iterator(_node.searchNode(_node.root, val.first), _node.root));
+				return (this->insert(val).first);
 			}
 
 			template <class InputIterator>
@@ -229,16 +222,33 @@ namespace ft
 
 			void swap (map& x)
 			{
-				std::swap(this->_comp, x._comp);
-				std::swap(this->_allocator, x._allocator);
-				std::swap(this->_node, x._node);
-				std::swap(this->_size, x._size);
+				
+
+				key_compare tmp_key_comp = this->_comp;
+				size_type size_tmp = this->_size;
+				allocator_type tmp_allocator = this->_allocator;
+				Avl<value_type, key_compare> tmp_node = this->_node;
+
+				this->_comp = x._comp;
+				this->_size = x._size;
+				this->_allocator = x._allocator;
+				this->_node = x._node;
+
+				x._comp = tmp_key_comp;
+				x._size = size_tmp;
+				x._allocator = tmp_allocator;
+				x._node = tmp_node;
 			}
 			
 			void erase (iterator position)
 			{
-				_node.deleteNode(_node.root, position->first);
-				_size--;
+				this->erase(position->first);
+
+				//if (this->find(position->first) != this->end())
+				//{
+				//	_node.deleteNode(_node.root, position->first);
+				//	_size--;
+				//}
 			}
 
 			size_type erase (const key_type& k)
@@ -255,14 +265,18 @@ namespace ft
 			}
 			void erase (iterator first, iterator last)
 			{
-				for (; first != last; first++)
-					erase(first);
+				//for (; first != last; first++)
+				//	erase(first);
+				ft::vector<Key> v; //! TEST IT WITH MAMOUSA'S TEST
+				for (; first != last; first++) //* Heap use after free
+					v.push_back(first->first);
+				for (size_t i = 0; i < v.size(); i++)
+					this->erase(v[i]);
 			}
 
 			key_compare key_comp() const
 			{
-				key_compare _key_comp;
-				return (_key_comp);
+				return (key_compare(_comp));
 			}
 
 			value_compare value_comp() const
@@ -357,11 +371,11 @@ namespace ft
 				return (ft::make_pair(lower_bound(k), upper_bound(k)));
 			}
 				
-			Avl<value_type> _node;
 		private:
 			size_type _size;
 			allocator_type _allocator;
-			value_compare _comp;
+			key_compare _comp;
+			Avl<value_type, key_compare> _node;
 	};
 
 	template <class Key, class T, class Compare, class Alloc>
