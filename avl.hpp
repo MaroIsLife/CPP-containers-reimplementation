@@ -335,6 +335,43 @@ class Avl
 			return (r);
 		}
 
+		Node *searchNode(Node *r, const key_type data) const
+		{
+			if (!r)
+				return (NULL);
+			if (r->data.first == data)
+				return (r);
+			if (comp_(data, r->data.first)) // data < r->data.first
+				return (searchNode(r->left, data));
+			else
+				return (searchNode(r->right, data));
+			return (r);
+		}
+
+		Node *avlBound(Node *r, const key_type &k)
+        {
+        	Node *tmp = minimumNode(r);
+			while (tmp)
+			{
+				if (comp_(k, tmp->data.first))  //* if key < r->data.first
+                    return (tmp);
+				tmp = tmp->inorderSuccessor(tmp); //* ++
+			}
+			return (NULL);
+        }
+
+		Node *avlBound(Node *r, const key_type &k) const
+        {
+        	Node *tmp = minimumNode(r);
+			while (tmp)
+			{
+				if (comp_(k, tmp->data.first)) 
+                    return (tmp);
+				tmp = tmp->inorderSuccessor(tmp); 
+			}
+			return (NULL);
+        }
+
 		Node *insertNode(Node *&r, const value_type &data, Node *parent) //https://www.geeksforgeeks.org/avl-tree-set-1-insertion/
 		{	
 			if (!r)
@@ -342,23 +379,14 @@ class Avl
 				r = alloc.allocate(1);
 				alloc.construct(r, Node(data));
 				r->parent = parent;
-				//root = getHeadNode(r);
 				return (r);
-				//return (tmp);
 			}
 			else if (data.first == r->data.first)
 				return (NULL);
 			else if (comp_(data.first, r->data.first)) //(data.first < r->data.first) 
-			{
 				r->left = insertNode(r->left, data, r);
-				//tmp = insertNode(r->left, data, r);
-			}
 			else if (comp_(r->data.first, data.first)) //(data.first > r->data.first)
-			{
 				r->right = insertNode(r->right, data, r);
-				//tmp = insertNode(r->right, data, r);
-
-			}
 			int bf = getBalance(r);
 			r->height = std::max(getHeight(r->left), getHeight(r->right)) + 1;
 		
@@ -405,7 +433,6 @@ class Avl
 			{
 				if (!r->left && !r->right)
 				{
-					//delete r;
 					alloc.destroy(r);
 					alloc.deallocate(r, 1);
 					r = NULL;
@@ -416,7 +443,6 @@ class Avl
 
 					tmp = r->right;
 					
-					//delete r;
 					alloc.destroy(r);
 					alloc.deallocate(r, 1);
 					r = tmp;
@@ -425,7 +451,6 @@ class Avl
 				{
 					Node *tmp;
 
-					//std::cout << "MADE IT\n";
 					tmp = r->left;
 
 					//std::swap(r->data, tmp->data);
@@ -469,28 +494,23 @@ class Avl
 				return (r);
 			r->height = std::max(getHeight(r->left), getHeight(r->right)) + 1;
 			int bf = getBalance(r);
-			if (bf > 1)
+
+			if (bf > 1 && getBalance(r->left) >= 0)
+				r = rotateRight(r);
+			if (bf < -1 && getBalance(r->right) <= 0)
+				r = rotateLeft(r);
+			if (bf > 1 && getBalance(r->left) < 0)
 			{
-				int bf2 = getBalance(r->left);
-				if (bf2 >= 0)
-					r = rotateRight(r);
-				else
-				{
-					r->left = rotateLeft(r->left);
-					r = rotateRight(r);
-				}
+				r->left = rotateLeft(r->left);
+				r = rotateRight(r);
 			}
-			else if (bf < -1)
+			if (bf < -1 && getBalance(r->right) > 0)
 			{
-				int bf2 = getBalance(r->right);
-				if (bf2 <= 0)
-					r = rotateLeft(r->right);
-				else
-				{
-					r->right = rotateRight(r->right);
-					r = rotateLeft(r);
-				}
+				r->right = rotateRight(r->right);
+				r = rotateLeft(r);
 			}
+
+            
 			if (r->left)
 				r->left->parent = r;
 			if (r->right)
@@ -581,6 +601,14 @@ class Avl
         }
 
 		Node *minimumNode(Node *r)
+		{
+			if (!r->left)
+				return (r);
+			else
+				return (minimumNode(r->left));
+		}
+
+		Node *minimumNode(Node *r) const
 		{
 			if (!r->left)
 				return (r);
@@ -681,17 +709,4 @@ class Avl
 			}
 			return (r);
 		}
-
-		Node *getHeadNode(Node *r)
-        {
-        	Node *tmp = r;
-
-			while (1) 
-			{
-                if (!tmp || !tmp->parent)
-                    return (tmp);
-				tmp = tmp->parent;
-			}
-			return (tmp);
-        }
 };

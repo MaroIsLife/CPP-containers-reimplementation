@@ -142,7 +142,7 @@ namespace ft
 				return (const_reverse_iterator(begin()));
 			}
 
-			mapped_type& operator[] (const key_type& k)
+			mapped_type& operator[] (const key_type& k) //* returned reference to default constructor mapped type (0)
 			{
 				Node *tmp = _node.searchNode(_node.root, k);
 				if (tmp)
@@ -168,18 +168,6 @@ namespace ft
 					return (const_iterator(n, _node.root));
 				return (this->end());
 			}
-
-			//pair<iterator, bool> insert (const value_type& val) 
-			//{
-			//	_size++;
-			//	Node *n = _node.insertNode(_node.root, val, _node.root);
-			//	Node *r = _node.searchNode(_node.root, val.first);
-			//	std::cout << &r->parent << std::endl;	
-			//	if (!n)
-			//		return (make_pair(iterator(&r->data), false));
-			//	else
-			//		return (make_pair(iterator(&r->data), true));
-			//}
 
 			pair<iterator, bool> insert(const value_type& val) 	//* Insert node always get the root address (cuz recursive) so i used search node
 			{
@@ -208,9 +196,9 @@ namespace ft
 
 			size_type count (const key_type& k) const
 			{
-				size_type count = 0;
-				_node.count_key(_node.root, k, count); //* Count will always be either 1 or 0 hint key fl map is unique
-				return (count);
+				if (find(k) == this->end())
+					return (0);
+				return (1);
 			}
 			
 			void clear()
@@ -245,7 +233,6 @@ namespace ft
 					return ;
 				this->erase(position->first);
 			}
-
 			size_type erase (const key_type& k)
 			{
 				size_type count = 0;
@@ -255,13 +242,13 @@ namespace ft
 					_node.deleteNode(_node.root, k);
 					this->_size--;
 					count++;
-					
 				}
 				return (count);
 			}
+
 			void erase (iterator first, iterator last)
 			{
-				//for (; first != last; first++) //* Heap use after free after Rotation and swaps
+				//for (; first != last; first++) //* Heap use after free because of rotations and swaps?
 					//erase(first);
 				if (!empty())
 				{
@@ -272,6 +259,7 @@ namespace ft
 					{
 						this->erase(v[i]);
 					}
+					
 				}
 			}
 
@@ -290,79 +278,38 @@ namespace ft
 			{
 				return (_allocator);
 			}
+
 			iterator lower_bound (const key_type& k)
 			{
-				iterator it = begin();
-				iterator end = this->end();
-				--end;
-				if (k > end->first)
-					return (iterator());
-				end = this->end();
-				while (it != end)
-				{
-					if (it->first >= k)
-						return (it);
-					it++;
-				}
-				return (it);
+				iterator it = find(k);
+				if (it != this->end())
+					return (it);
+				Node *tmp = _node.avlBound(_node.root, k);
+				return (iterator(tmp, tmp));
 			}
-
+	
 			const_iterator lower_bound (const key_type& k) const
 			{
-				const_iterator it = begin();
-				const_iterator end = this->end();
-				--end;
-				if (k > end->first)
-					return (const_iterator());
-				end = this->end();
-				while (it != end)
-				{
-					if (it->first >= k)
-						return (it);
-					it++;
-				}
-				return (it);
+				const_iterator it = find(k);
+				if (it != this->end())
+					return (it);
+				Node *tmp = _node.avlBound(_node.root, k);
+				return (const_iterator(tmp, tmp));
 			}
 
 			iterator upper_bound(const key_type& k)
 			{
-				iterator it = begin();
-				iterator end = this->end();
-				--end;
-				if (k > end->first)
-					return (iterator());
-				end = this->end();
-				while (it != end)
-				{
-					if (it->first > k)
-						return (it);
-					else if (it->first == k)
-						return (++it);
-					it++;
-				}
-				return (it);
+				Node *tmp = _node.avlBound(_node.root, k);
+				return (iterator(tmp, tmp));
 			}
 
 			const_iterator upper_bound(const key_type& k) const
 			{
-				const_iterator it = begin();
-				const_iterator end = this->end();
-				--end;
-				if (k > end->first)
-					return (const_iterator());
-				end = this->end();
-				while (it != end)
-				{
-					if (it->first > k)
-						return (it);
-					else if (it->first == k)
-						return (++it);
-					it++;
-				}
-				return (it);
+				Node *tmp = _node.avlBound(_node.root, k);
+				return (const_iterator(tmp, tmp));
 			}
 
-			pair<iterator,iterator> equal_range (const key_type& k)
+			pair<iterator,iterator> equal_range (const key_type& k) //* Works only with higher * 10 time Factor
 			{
 				return (ft::make_pair(lower_bound(k), upper_bound(k)));
 			}
@@ -372,11 +319,11 @@ namespace ft
 				return (ft::make_pair(lower_bound(k), upper_bound(k)));
 			}
 				
+			Avl<value_type, key_compare> _node;
 		private:
 			size_type _size;
 			allocator_type _allocator;
 			key_compare _comp;
-			Avl<value_type, key_compare> _node;
 	};
 
 	template <class Key, class T, class Compare, class Alloc>

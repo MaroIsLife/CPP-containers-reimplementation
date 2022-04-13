@@ -120,7 +120,6 @@ bool cond(false);
 			ft_m3.erase(ft_m3.begin(), ft_m3.end());
 		}
 		cond = cond && (m3.size() == ft_m3.size() && comparemaps(m3.begin(), m3.end(), ft_m3.begin(), ft_m3.end()));
-		std::cout << cond << std::endl;
 		std::cout << "m3 size " << m3.size() << std::endl;
 		std::cout << "ft_m3 size " << ft_m3.size() << std::endl;
 
