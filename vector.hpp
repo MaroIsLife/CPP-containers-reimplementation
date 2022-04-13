@@ -383,7 +383,7 @@ namespace ft
 		reference at (size_type n)
 		{
 			if (n >= _size)
-				throw std::out_of_range("ft_vector.at is out of range");
+				throw std::out_of_range("ft_vector is out of range");
 			return(_table[n]);
 		}
 		const_reference at (size_type n) const
