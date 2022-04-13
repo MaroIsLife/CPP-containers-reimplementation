@@ -306,16 +306,6 @@ class Avl
 				return (0);
 			return (getHeight(r->left) - getHeight(r->right));
 		}
-		//int getBalance(Node *&r)
-		//{
-		//	if (r->right && r->left)
-		//		return (r->left->height - r->right->height);
-		//	else if (!r->right && r->left)
-		//		return (r->left->height);
-		//	else if (r->right && !r->left)
-		//		return -(r->right->height);
-		//	return (1);
-		//}
 
 		Node *newNode(const value_type &data)
 		{
@@ -453,22 +443,10 @@ class Avl
 
 					tmp = r->left;
 
-					//std::swap(r->data, tmp->data);
-					
-
-					//r->left = tmp->left;
-					//r->right = tmp->right;
-					//r->height = tmp->height;
-
 
 
 					alloc.destroy(r);
 					alloc.deallocate(r, 1);
-					//r = alloc.allocate(1);
-					//alloc.construct(r, Node(tmp->data));
-					//r->left = tmp->left;
-					//r->right = tmp->right;
-					//r->height = tmp->height;
 
 					r = tmp;
 				}
@@ -482,11 +460,7 @@ class Avl
 					//r = alloc.allocate(1);
 					//alloc.construct(r, Node(tmp->data, tmp->height, tmp->right, tmp->left, tmp->parent));
 
-					
 					std::swap(r->data, tmp->data);
-
-
-					//r->data = ft::make_pair(tmp->data.first, tmp->data.second);
 					r->right = deleteNode(r->right, tmp->data.first);
 				}
 			}
@@ -537,13 +511,6 @@ class Avl
 			if (tmp->right)
 				tmp->right->height = std::max(getHeight(tmp->right->left), getHeight(tmp->right->right)) + 1;
 
-
-			//if (tmp->left)
-			//	tmp->left->height = fixHeight(tmp->left);
-			//if (tmp->right)
-			//	tmp->right->height = fixHeight(tmp->right);
-			//tmp->height = fixHeight(tmp);
-
 			return (tmp);
 		}
 
@@ -570,11 +537,6 @@ class Avl
 			if (tmp->left)
 				tmp->left->height = std::max(getHeight(tmp->left->left), getHeight(tmp->left->right)) + 1;
 
-			//if (tmp->right)
-			//	tmp->right->height = fixHeight(tmp->right);
-			//if (tmp->left)
-			//	tmp->left->height = fixHeight(tmp->left);
-			//tmp->height = fixHeight(tmp);
 			return (tmp);
 		}
 
@@ -585,20 +547,6 @@ class Avl
 			else
 				return (r->height);
 		}
-
-		 Node *find(Node *r, key_type k) const
-        {
-            Node *tmp;
-
-            if (r == NULL)
-                return (NULL);
-            tmp = r;
-            if (comp_(r->data.first, k))
-                tmp = find(r->right, k);
-            else if (comp_(k, r->data.first))
-                tmp = find(r->left, k);
-            return (tmp);
-        }
 
 		Node *minimumNode(Node *r)
 		{
@@ -664,14 +612,6 @@ class Avl
 			inorder(r->left);
 			inorder(r->right);
 		}
-
-		//Node *inorderPredecessor(Node *r)
-		//{
-		//	if (r->left)
-		//		return (findLargest(r->left));
-		//	else
-		//		return (r->parent);
-		//}
 					
 
 		void count_key(Node *r, const key_type &k, size_t &count) const
