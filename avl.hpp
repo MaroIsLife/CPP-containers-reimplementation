@@ -117,6 +117,16 @@ class Node
 			
 		}
 
+		Node(value_type data,
+		int height,
+		Node *right,
+		Node *left,
+		Node *parent) : data(data), height(height), right(right), left(left), parent(parent)
+		{
+			
+		}
+		
+
 		operator const_value_type() //Explicit conversion to const iterator
 		{	
 			return const_value_type();
@@ -244,6 +254,7 @@ class Avl
 		typedef Node<value_type> Node;
 		Node *root;
 		comp comp_;
+		bool deleted;
 		typedef typename value_type::first_type key_type;
 		typedef typename value_type::second_type mapped_type;
 		typedef std::allocator<ft::pair<const key_type, mapped_type> > Alloc;
@@ -275,7 +286,7 @@ class Avl
 				destroyAllNodes(r->left);
 				destroyAllNodes(r->right);
 				//delete r;
-				alloc.destroy(r);
+				//alloc.destroy(r);
 				alloc.deallocate(r, 1);
 				r = NULL;
 		}
@@ -313,13 +324,11 @@ class Avl
 
 		Node *searchNode(Node *r, const key_type data)
 		{
-			//std::cout << "R data " << r->data << std::endl;
-			//std::cout << "data " << data << std::endl;
 			if (!r)
 				return (NULL);
 			if (r->data.first == data)
 				return (r);
-			else if (comp_(data, r->data.first)) // data < r->data.first
+			if (comp_(data, r->data.first)) // data < r->data.first
 				return (searchNode(r->left, data));
 			else
 				return (searchNode(r->right, data));
@@ -435,6 +444,7 @@ class Avl
 					//r->left = tmp->left;
 					//r->right = tmp->right;
 					//r->height = tmp->height;
+
 					r = tmp;
 				}
 				else if (r->right && r->left) //! In BST/AVL Visualization it replaces biggest node and not the smallest one
@@ -442,13 +452,14 @@ class Avl
 					//* Find the smallest node in the right subtree and replace r with it. (Inorder Successor)
 					Node *tmp = minimumNode(r->right);
 					//r->data = tmp->data;
-					//alloc.destroy(r->data);
+					//alloc.destroy(r);
 					//alloc.deallocate(r, 1);
 					//r = alloc.allocate(1);
-					//alloc.construct(r, Node(tmp->data));
+					//alloc.construct(r, Node(tmp->data, tmp->height, tmp->right, tmp->left, tmp->parent));
 
 					
 					std::swap(r->data, tmp->data);
+
 
 					//r->data = ft::make_pair(tmp->data.first, tmp->data.second);
 					r->right = deleteNode(r->right, tmp->data.first);
@@ -554,6 +565,20 @@ class Avl
 			else
 				return (r->height);
 		}
+
+		 Node *find(Node *r, key_type k) const
+        {
+            Node *tmp;
+
+            if (r == NULL)
+                return (NULL);
+            tmp = r;
+            if (comp_(r->data.first, k))
+                tmp = find(r->right, k);
+            else if (comp_(k, r->data.first))
+                tmp = find(r->left, k);
+            return (tmp);
+        }
 
 		Node *minimumNode(Node *r)
 		{

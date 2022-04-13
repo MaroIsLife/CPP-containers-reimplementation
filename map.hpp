@@ -22,7 +22,7 @@ namespace ft
 		public:
 			typedef Key key_type;
 			typedef T mapped_type;
-			typedef ft::pair<const key_type, mapped_type> value_type;
+			typedef ft::pair<key_type, mapped_type> value_type;
 			typedef typename Avl<value_type, Compare>::Node Node;
 			typedef typename ft::map_iterator<Node, value_type> iterator;
 			typedef typename ft::map_iterator<Node, const value_type> const_iterator;
@@ -183,13 +183,12 @@ namespace ft
 
 			pair<iterator, bool> insert(const value_type& val) 	//* Insert node always get the root address (cuz recursive) so i used search node
 			{
-				
 				if ((_node.searchNode(_node.root, val.first)))
 					return (ft::make_pair(iterator((_node.searchNode(_node.root, val.first)), _node.root), false));
 				else
 				{
-					_node.insertNode(_node.root, val, NULL);
 					_size++;
+					_node.insertNode(_node.root, val, NULL);
 					return (ft::make_pair(iterator((_node.searchNode(_node.root, val.first)), _node.root), true));
 				}
 			}
@@ -216,8 +215,7 @@ namespace ft
 			
 			void clear()
 			{
-				_node.destroyAllNodes(_node.root);
-				_size = 0;
+				this->erase(begin(), end());
 			}
 
 			void swap (map& x)
@@ -242,36 +240,39 @@ namespace ft
 			
 			void erase (iterator position)
 			{
-				this->erase(position->first);
 
-				//if (this->find(position->first) != this->end())
-				//{
-				//	_node.deleteNode(_node.root, position->first);
-				//	_size--;
-				//}
+				if (position == this->end())
+					return ;
+				this->erase(position->first);
 			}
 
 			size_type erase (const key_type& k)
 			{
 				size_type count = 0;
 				Node *tmp = _node.searchNode(_node.root, k);
-				if (!(empty()) && tmp)
+				if (_size && tmp)
 				{
 					_node.deleteNode(_node.root, k);
-					_size--;
+					this->_size--;
 					count++;
+					
 				}
 				return (count);
 			}
 			void erase (iterator first, iterator last)
 			{
-				//for (; first != last; first++)
-				//	erase(first);
-				ft::vector<Key> v; //! TEST IT WITH MAMOUSA'S TEST
-				for (; first != last; first++) //* Heap use after free
-					v.push_back(first->first);
-				for (size_t i = 0; i < v.size(); i++)
-					this->erase(v[i]);
+				//for (; first != last; first++) //* Heap use after free after Rotation and swaps
+					//erase(first);
+				if (!empty())
+				{
+					ft::vector<Key> v; //! TEST IT WITH MAMOUSA'S TEST
+					for (; first != last; first++) 
+						v.push_back(first->first);
+					for (size_t i = 0; i < v.size(); i++)
+					{
+						this->erase(v[i]);
+					}
+				}
 			}
 
 			key_compare key_comp() const
