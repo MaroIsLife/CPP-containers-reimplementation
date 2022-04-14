@@ -132,3 +132,52 @@ int main()
 	std::cout << std::endl;
 	return (0);
 }
+
+//*Iterator Operators
+//https://docs.microsostd.com/en-us/cpp/standard-library/iterator-operators?view=msvc-170
+
+//*ptrdiff_t
+//https://stackoverflow.com/questions/4377308/c-size-t-or-ptrdiff-t
+
+//*Red Black Tree
+//http://staff.ustc.edu.cn/~csli/graduate/algorithms/book6/chap14.htm
+
+//*AVL trees
+//https://www.youtube.com/watch?v=-9sHvAnLN_w
+
+//*Const Correctness 
+//https://isocpp.org/wiki/faq/const-correctness#overview-const
+
+//*Istream iterator
+//https://www.cplusplus.com/reference/iterator/istream_iterator/
+
+//*Destroy vs Deallocate
+//https://stackoverflow.com/questions/26667026/difference-between-destroy-destructor-deallocate-in-stdallocator
+
+//*Introduction to trees
+//https://www.programiz.com/dsa/trees
+//https://www.softwaretestinghelp.com/trees-in-cpp/
+
+//*Avl
+//https://www.guru99.com/avl-tree.html (very good to understand rotations)
+//https://simplesnippets.tech/what-is-avl-tree-data-structure-all-avl-operations-with-full-code/ (Very Good)
+//https://algorithmtutor.com/Data-Structures/Tree/AVL-Trees/
+//https://www.techiedelight.com/inorder-tree-traversal-iterative-recursive/
+//https://www.softwaretestinghelp.com/avl-trees-and-heap-data-structure-in-cpp/
+//https://www.geeksforgeeks.org/avl-trees-containing-a-parent-node-pointer/
+
+//*Avl (Vids)
+//https://www.youtube.com/watch?v=vRwi_UcZGjU
+//https://www.youtube.com/watch?v=otiDcwZbCo4
+//https://www.youtube.com/watch?v=u3OVSkuOdqI (Very Good)
+//https://www.youtube.com/watch?v=otiDcwZbCo4
+
+//*Avl Visualizer
+//https://www.cs.usfca.edu/~galles/visualization/AVLtree.html
+
+//* Avl Traversal
+//https://www.cs.odu.edu/~zeil/cs361/latest/Public/treetraversal/index.html
+//https://www.techiedelight.com/inorder-tree-traversal-iterative-recursive/
+
+//* Rebind
+//https://stackoverflow.com/questions/22384231/is-use-of-allocatorrebind-required-by-c-standard

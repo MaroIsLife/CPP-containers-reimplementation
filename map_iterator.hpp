@@ -117,37 +117,43 @@ namespace ft
 		return (&operator*());
 	}
 
-	bool operator==(const map_iterator& it) const
+	template <typename S>
+	bool operator==(const map_iterator<S>& it) const
 	{
 		if (ptr == it.ptr)
 			return (true);
 		return (false);
 	}
-	bool operator!=(const map_iterator& it) const
+	template <typename S>
+	bool operator!=(const map_iterator<S>& it) const
 	{
 		if (ptr != it.ptr)
 			return (true);
 		return (false);
 	}
-	bool operator>(const map_iterator& it) const
+	template <typename S>
+	bool operator>(const map_iterator<S>& it) const
 	{
 		if (ptr > it.ptr)
 			return (true);
 		return (false);
 	}
-	bool operator<(const map_iterator& it) const
+	template <typename S>
+	bool operator<(const map_iterator<S>& it) const
 	{
 		if (ptr < it.ptr)
 			return (true);
 		return (false);
 	}
-	bool operator<=(const map_iterator& it) const
+	template <typename S>
+	bool operator<=(const map_iterator<S>& it) const
 	{
 		if (ptr <= it.ptr)
 			return (true);
 		return (false);
 	}
-	bool operator>=(const map_iterator& it) const
+	template <typename S>
+	bool operator>=(const map_iterator<S>& it) const
 	{
 		if (ptr >= it.ptr)
 			return (true);

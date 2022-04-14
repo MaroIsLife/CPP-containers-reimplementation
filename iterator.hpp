@@ -106,7 +106,8 @@ namespace ft
 					it._ptr++;
 				return (it);
 			}
-			difference_type operator-(const myiterator &first)
+			template <typename S>
+			difference_type operator-(const myiterator<S> &first)
 			{
 				return (this->_ptr - first._ptr);
 			}
@@ -114,37 +115,45 @@ namespace ft
 			{
 				return _ptr[a];
 			}
-			bool operator==(const myiterator& a)
-			{ 
-				if (this->_ptr == a._ptr)
-					return (true);
-				return (false);
+			template <typename S>
+			bool operator==(const myiterator<S> &it) const
+			{
+				return (this->_ptr == it.base());
 			}
-			bool operator!=(const myiterator& a)
+
+			template <typename S>
+			bool operator!=(const myiterator<S>& a)
 			{ 
 				if (this->_ptr != a._ptr)
 					return (true);
 				return (false);
 			}
-			bool operator>(const myiterator& a)
+			template <typename S>
+			bool operator>(const myiterator<S>& a)
 			{ 
 				if (this->_ptr > a._ptr)
 					return (true);
 				return (false);
 			}
-			bool operator<(const myiterator& a)
+
+			template <typename S>
+			bool operator<(const myiterator<S>& a)
 			{ 
 				if (this->_ptr < a._ptr)
 					return (true);
 				return (false);
 			}
-			bool operator<=(const myiterator& a)
+
+			template <typename S>
+			bool operator<=(const myiterator<S>& a)
 			{ 
 				if (this->_ptr <= a._ptr)
 					return (true);
 				return (false);
 			}
-			bool operator>=(const myiterator& a)
+
+			template <typename S>
+			bool operator>=(const myiterator<S>& a)
 			{ 
 				if (this->_ptr >= a._ptr)
 					return (true);
