@@ -8,24 +8,7 @@
 
 #include <memory>
 
-int search(std::vector<int>& nums, int target) 
-{
-        
-        int high = nums.size();
-        int low = 0;
-        int mid;
-        while (low < high)
-        {
-			mid = (low + high) / 2;
-            if (mid == target)
-				return (mid);
-			if (target > mid)
-				low = mid + 1;
-			if (target < mid)
-				high = mid - 1;	
-        }
-        return (-1);
-}
+
 
 int main()
 {
@@ -36,6 +19,11 @@ int main()
 
 
 	ft::map<int, int> m;
+	ft::map<int, int>::iterator it;
+	ft::map<int, int>::const_iterator cit;
+
+	if (it == cit)
+		std::cout << "BRRR" << std::endl;
 
 	m[1] = 2;
 	m[2] = 3;
@@ -57,7 +45,7 @@ int main()
 	//{
 	//	std::cout << it->first << std::endl;
 	//}
-	std::cout << m.size() << std::endl;
+	//std::cout << m.size() << std::endl;
 
 	return (0);
 }

@@ -43,6 +43,11 @@ namespace ft
 		return const_map_iterator(ptr, root);
 	} 
 
+	Node *base() const
+	{
+		return (ptr);
+	}
+
 	map_iterator& operator=(const map_iterator& it)
 	{
 		ptr = it.ptr;
@@ -117,45 +122,45 @@ namespace ft
 		return (&operator*());
 	}
 
-	template <typename S>
-	bool operator==(const map_iterator<S>& it) const
+	template <typename S, typename B>
+	bool operator==(map_iterator<S, B>& it) const
 	{
-		if (ptr == it.ptr)
+		if (ptr == it.base())
 			return (true);
 		return (false);
 	}
-	template <typename S>
-	bool operator!=(const map_iterator<S>& it) const
+	template <typename S,typename B>
+	bool operator!=(const map_iterator<S, B>& it) const
 	{
-		if (ptr != it.ptr)
+		if (ptr != it.base())
 			return (true);
 		return (false);
 	}
-	template <typename S>
-	bool operator>(const map_iterator<S>& it) const
+	template <typename S,typename B>
+	bool operator>(const map_iterator<S, B>& it) const
 	{
-		if (ptr > it.ptr)
+		if (ptr > it.base())
 			return (true);
 		return (false);
 	}
-	template <typename S>
-	bool operator<(const map_iterator<S>& it) const
+	template <typename S,typename B>
+	bool operator<(const map_iterator<S, B>& it) const
 	{
-		if (ptr < it.ptr)
+		if (ptr < it.base())
 			return (true);
 		return (false);
 	}
-	template <typename S>
-	bool operator<=(const map_iterator<S>& it) const
+	template <typename S,typename B>
+	bool operator<=(const map_iterator<S, B>& it) const
 	{
-		if (ptr <= it.ptr)
+		if (ptr <= it.base())
 			return (true);
 		return (false);
 	}
-	template <typename S>
-	bool operator>=(const map_iterator<S>& it) const
+	template <typename S,typename B>
+	bool operator>=(const map_iterator<S, B>& it) const
 	{
-		if (ptr >= it.ptr)
+		if (ptr >= it.base())
 			return (true);
 		return (false);
 	}

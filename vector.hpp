@@ -56,6 +56,7 @@ namespace ft
 			void rangeContructor(InputIterator first, InputIterator last, std::random_access_iterator_tag)
 			{
 				_diff = std::distance(first, last);
+				//_diff = last - first;
 				if (_diff < 0)
 					_diff = _diff * -1;
 				_size = _diff;
@@ -269,6 +270,7 @@ namespace ft
 		iterator insert (iterator position, const value_type& val)
 		{
 			_diff = std::distance(this->begin(), position);
+			//_diff = position - this->begin();
 			_size++;
 			if (_capacity == 0)
 			{
@@ -285,7 +287,9 @@ namespace ft
 		}
 		void insert (iterator position, size_type n, const value_type& val)
 		{
+
 			_diff = std::distance(this->begin(), position);
+			//_diff = position - this->begin();
 			if (_capacity == 0)
 			{
 				reserve(n);
@@ -333,6 +337,7 @@ namespace ft
 
 		iterator erase (iterator position)
 		{
+	
 			_diff = std::distance(this->begin(), position);
 			for (size_t i = _diff; i < _size; i++)
 				_allocator.construct(&_table[i], _table[i + 1]);
@@ -341,8 +346,10 @@ namespace ft
 		}
 		iterator erase (iterator first, iterator last)
 		{
+
 			_diff = std::distance(this->begin(), first);
 			difference_type n = last - first;
+			//difference_type n = std::distance(first, last);
 			for (size_t i = _diff; i < _size; i++)
 				_allocator.construct(&_table[i], _table[i + n]);
 			_size-= n;
