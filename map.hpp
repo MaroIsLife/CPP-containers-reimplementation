@@ -248,7 +248,7 @@ namespace ft
 
 			void erase (iterator first, iterator last)
 			{
-				//for (; first != last; first++) //* Heap use after free because of rotations and swaps?
+				//for (; first != last; first++) //* Heap use after free because of rotations and swaps
 					//erase(first);
 				if (!empty())
 				{
@@ -319,8 +319,8 @@ namespace ft
 				return (ft::make_pair(lower_bound(k), upper_bound(k)));
 			}
 				
-			Avl<value_type, key_compare> _node;
 		private:
+			Avl<value_type, key_compare> _node;
 			size_type _size;
 			allocator_type _allocator;
 			key_compare _comp;

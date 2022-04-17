@@ -17,20 +17,9 @@ int main()
 	//s.insert("hello");
 	//std::cout << *(s.find("hello")) << std::endl;
 
+	ft::vector<int> myv(10,3);
+	
 
-	//ft::map<int, int> m;
-	//m[0] = 1;
-	//ft::map<int, int>::iterator it = m.begin();
-	//ft::map<int, int>::const_iterator cit = m.end();
-
-	//if (it == cit)
-	//	std::cout << "BRRR" << std::endl;
-
-	std::vector<int> m;
-	//m[0] = true;
-	std::vector<int>::iterator it = m.begin();
-
-	std::cout << *it << std::endl;
 
 
 	//std::cout << m._node.root->left->data.first << std::cout << std::endl;

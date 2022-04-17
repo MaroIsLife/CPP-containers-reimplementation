@@ -122,13 +122,6 @@ namespace ft
 		return (&operator*());
 	}
 	
-	//template <typename S, typename B>
-	//bool operator==(map_iterator<S, B>& it) const
-	//{
-	//	if (ptr == it.base())
-	//		return (true);
-	//	return (false);
-	//}
 	template <typename S,typename B>
 	bool operator==(const map_iterator<S, B>& it) const
 	{
@@ -140,34 +133,6 @@ namespace ft
 	bool operator!=(const map_iterator<S, B>& it) const
 	{
 		if (ptr != it.base())
-			return (true);
-		return (false);
-	}
-	template <typename S,typename B>
-	bool operator>(const map_iterator<S, B>& it) const
-	{
-		if (ptr > it.base())
-			return (true);
-		return (false);
-	}
-	template <typename S,typename B>
-	bool operator<(const map_iterator<S, B>& it) const
-	{
-		if (ptr < it.base())
-			return (true);
-		return (false);
-	}
-	template <typename S,typename B>
-	bool operator<=(const map_iterator<S, B>& it) const
-	{
-		if (ptr <= it.base())
-			return (true);
-		return (false);
-	}
-	template <typename S,typename B>
-	bool operator>=(const map_iterator<S, B>& it) const
-	{
-		if (ptr >= it.base())
 			return (true);
 		return (false);
 	}
