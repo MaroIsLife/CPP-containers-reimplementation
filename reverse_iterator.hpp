@@ -19,6 +19,7 @@ namespace ft
 			typedef typename ft::iterator_traits<iterator>::iterator_category iterator_category;
 			typedef ptrdiff_t difference_type;
 
+
 			explicit reverse_iterator(iterator x = NULL)
 			{
 				it = x;
@@ -103,42 +104,48 @@ namespace ft
 			{ 
 				return it[a];
 			}
-			bool operator==(const reverse_iterator& a)
-			{ 
-				if (this->it == a.it)
-					return (true);
-				return (false);
-			}
-			bool operator!=(const reverse_iterator& a)
-			{ 
-				if (this->it != a.it)
-					return (true);
-				return (false);
-			}
-			bool operator>(const reverse_iterator& a)
-			{ 
-				if (this->it < a.it)
-					return (true);
-				return (false);
-			}
-			bool operator<(const reverse_iterator& a)
-			{ 
-				if (this->it > a.it)
-					return (true);
-				return (false);
-			}
-			bool operator<=(const reverse_iterator& a)
-			{ 
-				if (this->it >= a.it)
-					return (true);
-				return (false);
-			}
-			bool operator>=(const reverse_iterator& a)
-			{ 
-				if (this->it <= a.it)
-					return (true);
-				return (false);
-			}
+			//template<typename S>
+			//bool operator==(const reverse_iterator<S>& a)
+			//{ 
+			//	if (this->it.base() == a.base())
+			//		return (true);
+			//	return (false);
+			//}
+			//template<typename S>
+			//bool operator!=(const reverse_iterator<S>& a)
+			//{ 
+			//	if (this->it != a)
+			//		return (true);
+			//	return (false);
+			//}
+			//template<typename S>
+			//bool operator>(const reverse_iterator<S>& a)
+			//{ 
+			//	if (this->it < a)
+			//		return (true);
+			//	return (false);
+			//}
+			//template<typename S>
+			//bool operator<(const reverse_iterator<S>& a)
+			//{ 
+			//	if (this->it > a)
+			//		return (true);
+			//	return (false);
+			//}
+			//template<typename S>
+			//bool operator<=(const reverse_iterator<S>& a)
+			//{ 
+			//	if (this->it >= a)
+			//		return (true);
+			//	return (false);
+			//}
+			//template<typename S>
+			//bool operator>=(const reverse_iterator<S>& a)
+			//{ 
+			//	if (this->it <= a)
+			//		return (true);
+			//	return (false);
+			//}
 		private:
 			iterator it;
 	};
@@ -168,11 +175,6 @@ namespace ft
 			abc++;
 		return (abc);
 	}
-	template <class Iterator>
-  	typename reverse_iterator<Iterator>::difference_type operator-(const reverse_iterator<Iterator>& lhs, const reverse_iterator<Iterator>& rhs)
-	{
-		return (rhs.base() - lhs.base());
-	}
 
 	template <class InputIterator, class Distance>
 	void advance (InputIterator& it, Distance n)
@@ -181,11 +183,42 @@ namespace ft
 			it++;
 	}
 
-	template<class InputIterator>
-	typename iterator_traits<InputIterator>::difference_type distance (InputIterator first, InputIterator last)
+	template <class it1, class it2>
+	bool operator==(const reverse_iterator<it1>& myit1, const reverse_iterator<it2>& myit2)
 	{
-		typename iterator_traits<InputIterator>::difference_type mydiff = last - first;
-				
-		return (mydiff);
+		return (myit1.base() == myit2.base());
+	}
+	template <class it1, class it2>
+	bool operator<(const reverse_iterator<it1>& myit1, const reverse_iterator<it2>& myit2)
+	{
+		return (myit1.base() > myit2.base());
+	}
+	template <class it1, class it2>
+	bool operator>(const reverse_iterator<it1>& myit1, const reverse_iterator<it2>& myit2)
+	{
+		return (myit1.base() < myit2.base());
+	}
+
+	template <class it1, class it2>
+	bool operator!=(const reverse_iterator<it1>& myit1, const reverse_iterator<it2>& myit2)
+	{
+	return myit1.base() != myit2.base();
+	}
+
+	template <class it1, class it2>
+	bool operator<=(const reverse_iterator<it1>& myit1, const reverse_iterator<it2>& myit2)
+	{
+		return (myit1.base() >= myit2.base());
+	}
+
+	template <class it1, class it2>
+	bool operator>=(const reverse_iterator<it1>& myit1, const reverse_iterator<it2>& myit2)
+	{
+		return (myit1.base() <= myit2.base());
+	}
+	template <class it1, class it2>
+	typename reverse_iterator<it1>::difference_type operator-(const reverse_iterator<it1>& myit1, const reverse_iterator<it2>& myit2)
+	{
+		return (myit2.base()) - (myit1.base());
 	}
 }

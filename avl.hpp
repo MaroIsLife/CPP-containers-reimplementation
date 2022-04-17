@@ -254,7 +254,6 @@ class Avl
 		typedef Node<value_type> Node;
 		Node *root;
 		comp comp_;
-		bool deleted;
 		typedef typename value_type::first_type key_type;
 		typedef typename value_type::second_type mapped_type;
 		typedef std::allocator<ft::pair<const key_type, mapped_type> > Alloc;
@@ -285,7 +284,6 @@ class Avl
 				return ;
 				destroyAllNodes(r->left);
 				destroyAllNodes(r->right);
-				//delete r;
 				//alloc.destroy(r);
 				alloc.deallocate(r, 1);
 				r = NULL;
@@ -305,11 +303,6 @@ class Avl
 			if (!r)
 				return (0);
 			return (getHeight(r->left) - getHeight(r->right));
-		}
-
-		Node *newNode(const value_type &data)
-		{
-			return (new Node(data));
 		}
 
 		Node *searchNode(Node *r, const key_type data)

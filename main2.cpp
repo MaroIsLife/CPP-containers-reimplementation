@@ -18,24 +18,20 @@ int main()
 	//std::cout << *(s.find("hello")) << std::endl;
 
 
-	ft::map<int, int> m;
-	ft::map<int, int>::iterator it;
-	ft::map<int, int>::const_iterator cit;
+	//ft::map<int, int> m;
+	//m[0] = 1;
+	//ft::map<int, int>::iterator it = m.begin();
+	//ft::map<int, int>::const_iterator cit = m.end();
 
-	if (it == cit)
-		std::cout << "BRRR" << std::endl;
+	//if (it == cit)
+	//	std::cout << "BRRR" << std::endl;
 
-	m[1] = 2;
-	m[2] = 3;
-	m[3] = 4;
-	m[4] = 5;
-	m[5] = 6;
-	m[6] = 7;
-	m[7] = 8;
-	m[8] = 9;
-	m[9] = 10;
+	std::vector<int> m;
+	//m[0] = true;
+	std::vector<int>::iterator it = m.begin();
 
-	m.erase(m.begin(), m.end());
+	std::cout << *it << std::endl;
+
 
 	//std::cout << m._node.root->left->data.first << std::cout << std::endl;
 	//std::cout << m._node.find(m._node.root, 4)->data.first << std::cout << std::endl;
