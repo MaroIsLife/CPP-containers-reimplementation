@@ -8,3 +8,4 @@ ft_containers is a project from the 42 school common core curriculum that aims a
 * Container Adapters (stack).
 * Iterators / constant iterators.
 * C++ generic programming (templates).
+ 
